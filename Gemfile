@@ -24,6 +24,7 @@ gem 'grape-jbuilder'
 gem 'kaminari'
 gem 'encrypted_id'
 gem 'ip_reverse'
+gem "thin"
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
 
