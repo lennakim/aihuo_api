@@ -5,5 +5,6 @@ class API < Grape::API
   format :json
   formatter :json, Grape::Formatter::Jbuilder
 
+  mount Mobile::Welcome
   mount Mobile::Articles
 end
