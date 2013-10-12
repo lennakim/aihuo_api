@@ -56,6 +56,7 @@ GEM
     encrypted_id (1.1.1)
       activerecord (>= 3.0.0)
     erubis (2.7.0)
+
     eventmachine (1.0.3)
     grape-jbuilder (0.1.0)
       grape (>= 0.3)
