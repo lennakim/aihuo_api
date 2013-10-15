@@ -29,7 +29,7 @@ class BackgroundUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  process :resize_to_fit => [480, 400]
+  # process :resize_to_fit => [480, 400]
   #
   # def scale(width, height)
   #   # do something
@@ -39,6 +39,10 @@ class BackgroundUploader < CarrierWave::Uploader::Base
   # version :thumb do
   #   process :scale => [50, 50]
   # end
+
+  version :ipad
+  version :iphone
+  version :android
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
