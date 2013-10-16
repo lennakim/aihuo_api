@@ -39,6 +39,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Create different versions of your uploaded files:
   version :list
   version :grid
+  version :retain
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:

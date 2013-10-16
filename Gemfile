@@ -54,4 +54,8 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-gem 'pry', group: [:development]
+group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'pry'
+end

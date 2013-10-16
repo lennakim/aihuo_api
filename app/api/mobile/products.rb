@@ -20,6 +20,14 @@ module Mobile
       get "/", jbuilder: 'products/products' do
         @products = Product.tagged_with(tags, :any => true).page(params[:page]).per(params[:per])
       end
+
+      desc "Return a product."
+      params do
+        requires :id, type: String, desc: "Product ID."
+      end
+      get ':id', jbuilder: 'products/product' do
+        @product = Product.find(params[:id])
+      end
     end
   end
 end
