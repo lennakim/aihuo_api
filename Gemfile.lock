@@ -40,8 +40,12 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
+    acts-as-taggable-on (2.4.1)
+      rails (>= 3, < 5)
     arel (4.0.0)
     atomic (1.1.14)
+    awesome_nested_set (2.1.6)
+      activerecord (>= 3.0.0)
     backports (3.3.4)
     builder (3.1.4)
     carrierwave (0.9.0)
@@ -51,12 +55,12 @@ GEM
     carrierwave-aliyun (0.2.1)
       carrierwave (>= 0.5.7)
       rest-client (>= 1.6.7)
+    coderay (1.0.9)
     daemons (1.1.9)
     descendants_tracker (0.0.1)
     encrypted_id (1.1.1)
       activerecord (>= 3.0.0)
     erubis (2.7.0)
-
     eventmachine (1.0.3)
     grape-jbuilder (0.1.0)
       grape (>= 0.3)
@@ -79,6 +83,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    method_source (0.8.2)
     mime-types (1.25)
     mini_magick (3.6.0)
       subexec (~> 0.2.1)
@@ -87,6 +92,10 @@ GEM
     multi_xml (0.5.5)
     mysql2 (0.3.13)
     polyglot (0.3.3)
+    pry (0.9.12.2)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     rack (1.5.2)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -115,6 +124,7 @@ GEM
     sdoc (0.3.20)
       json (>= 1.1.3)
       rdoc (~> 3.10)
+    slop (3.4.6)
     sprockets (2.10.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -148,6 +158,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts-as-taggable-on
+  awesome_nested_set
   carrierwave
   carrierwave-aliyun
   encrypted_id
@@ -158,6 +170,7 @@ DEPENDENCIES
   kaminari
   mini_magick
   mysql2
+  pry
   rails (= 4.0.0)
   rest-client
   sdoc

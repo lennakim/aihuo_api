@@ -21,12 +21,16 @@ gem 'jbuilder', '~> 1.2'
 # Use Jbuilder with Grape https://github.com/milkcocoa/grape-jbuilder
 gem 'grape-jbuilder'
 
+gem 'acts-as-taggable-on'
 gem 'kaminari'
 gem 'encrypted_id'
 gem 'ip_reverse'
 gem "thin"
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
+# https://github.com/collectiveidea/awesome_nested_set
+gem 'awesome_nested_set'
+
 
 gem 'carrierwave'
 gem 'mini_magick'
@@ -50,3 +54,4 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+gem 'pry', group: [:development]
