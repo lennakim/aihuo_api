@@ -30,7 +30,8 @@ gem "thin"
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
 gem 'awesome_nested_set'
-
+# https://github.com/radar/paranoia
+gem 'paranoia', '~> 2.0'
 
 gem 'carrierwave'
 gem 'mini_magick'
