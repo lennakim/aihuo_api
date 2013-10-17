@@ -21,11 +21,11 @@ gem 'jbuilder', '~> 1.2'
 # Use Jbuilder with Grape https://github.com/milkcocoa/grape-jbuilder
 gem 'grape-jbuilder'
 
-gem 'acts-as-taggable-on'
+
 gem 'kaminari'
-gem 'encrypted_id'
 gem 'ip_reverse'
 gem "thin"
+gem 'acts-as-taggable-on'
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
