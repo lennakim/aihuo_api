@@ -5,3 +5,4 @@ json.products @products do |product|
     json.grid product.image.grid.url if product.image
   end
 end
+json.total_number @total_number

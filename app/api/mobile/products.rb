@@ -5,7 +5,7 @@ module Mobile
       def tags
         if params[:tag]
           tag = Tag.find_by_name(params[:tag])
-          tag.children.collect(&:name) << params[:tag] if tag
+          tag.self_and_descendants.collect(&:name) if tag
         end
       end
     end
@@ -19,6 +19,7 @@ module Mobile
       end
       get "/", jbuilder: 'products/products' do
         @products = Product.tagged_with(tags, :any => true).page(params[:page]).per(params[:per])
+        @total_number = Product.tagged_with(tags, :any => true).count
       end
 
       desc "Return a product."
