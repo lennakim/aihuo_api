@@ -32,13 +32,13 @@ module Mobile
 
         desc "Listing trades of the product."
         params do
-          optional :page, type: Integer, desc: "Page number."
+          optional :filter, type: Symbol, values: [:rated, :all], default: :all, desc: "Filtering trades with commented or not."
           optional :page, type: Integer, desc: "Page number."
           optional :per, type: Integer, default: 10, desc: "Per page value."
         end
         get :trades, jbuilder: 'trades/trades' do
           product = Product.find(params[:id])
-          @trades = product.orders.order("created_at DESC").page(params[:page]).per(params[:per])
+          @trades = product.orders.by_filter(params[:filter]).order("created_at DESC").page(params[:page]).per(params[:per])
         end
       end
 

@@ -4,7 +4,11 @@ json.trades @trades do |trade|
   json.city trade.shipping_city
   json.district trade.shipping_district
   json.created_at trade.created_at
-  json.partial! "trades/comment", comment: trade.comments.first unless trade.comments.size.zero?
+  if trade.comments.size.zero?
+    json.comment nil
+  else
+    json.partial! "trades/comment", comment: trade.comments.first
+  end
 end
 json.current_page @trades.current_page
 json.total_pages @trades.total_pages
