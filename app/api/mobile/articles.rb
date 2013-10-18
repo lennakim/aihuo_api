@@ -9,7 +9,6 @@ module Mobile
       end
       get "/", jbuilder: 'articles/articles' do
         @articles = Article.page(params[:page]).per(params[:per])
-        @total_number = @articles.total_count
       end
 
       desc "Return an article."
