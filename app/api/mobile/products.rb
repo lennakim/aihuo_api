@@ -11,7 +11,7 @@ module Mobile
     end
 
     resources :products do
-      desc "Listing of products."
+      desc "Listing products."
       params do
         optional :tag, type: String, desc: "Tag name."
         optional :page, type: Integer, desc: "Page number."
@@ -19,7 +19,11 @@ module Mobile
       end
       get "/", jbuilder: 'products/products' do
         @products = Product.tagged_with(tags, :any => true).page(params[:page]).per(params[:per])
-        @total_number = Product.tagged_with(tags, :any => true).select(:id).distinct.count
+        # Tip:
+        # `products.size` is different from `products.count`.
+        # if u want to use `count` method, please remember to add `distinct` method.
+        # Example: `Product.tagged_with(tags, :any => true).select(:id).distinct.count`
+        @total_number = @products.total_count
       end
 
       params do
@@ -33,6 +37,7 @@ module Mobile
 
         desc "Listing trades of the product."
         params do
+          optional :page, type: Integer, desc: "Page number."
           optional :page, type: Integer, desc: "Page number."
           optional :per, type: Integer, default: 10, desc: "Per page value."
         end

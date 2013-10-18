@@ -1,1 +1,2 @@
-json.(@article, :title, :body, :reading_count, :created_at)
+json.partial! "articles/article", article: @article
+json.(@article, :body)

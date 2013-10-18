@@ -1,13 +1,15 @@
 module Mobile
   class Articles < Grape::API
     resources 'articles' do
-      desc "Return a public timeline of articles."
+
+      desc "Listing articles."
       params do
         optional :page, type: Integer, desc: "Page number."
-        optional :per, type: Integer, default: 10, desc: "Page number."
+        optional :per, type: Integer, default: 10, desc: "Per page value."
       end
-      get :public_timeline, jbuilder: 'articles/public_timeline' do
+      get "/", jbuilder: 'articles/articles' do
         @articles = Article.page(params[:page]).per(params[:per])
+        @total_number = @articles.total_count
       end
 
       desc "Return an article."
