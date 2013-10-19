@@ -18,7 +18,7 @@ module Mobile
         requires :category, type: Symbol, values: [:question], default: :question, desc: "Message category."
       end
       post do
-        product = Product.where(id: params[:object_id]).first
+        product = Product.find(params[:object_id])
         Message.question.create!({ body: params[:body], from: params[:from], object_id: product.id })
       end
     end
