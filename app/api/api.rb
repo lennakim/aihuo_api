@@ -8,4 +8,5 @@ class API < Grape::API
   mount Mobile::Welcome
   mount Mobile::Products
   mount Mobile::Articles
+  mount Mobile::Messages
 end
