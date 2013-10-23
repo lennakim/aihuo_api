@@ -4,9 +4,7 @@ json.trades @trades do |trade|
   json.city trade.shipping_city
   json.district trade.shipping_district
   json.created_at trade.created_at
-  if trade.comments.size.zero?
-    json.comment nil
-  else
+  unless trade.comments.size.zero?
     json.partial! "trades/comment", comment: trade.comments.first
   end
 end

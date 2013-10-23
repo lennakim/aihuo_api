@@ -1,6 +1,8 @@
 json.id article.to_param
-json.image do
-  json.iphone article.background.iphone.url
+if article.background
+  json.image do
+    json.iphone article.carrierwave_background(:iphone, :url)
+  end
 end
 json.title article.title
 json.reading_count article.reading_count

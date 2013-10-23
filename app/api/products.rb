@@ -1,4 +1,4 @@
-module Mobile
+module API
   class Products < Grape::API
     # define helpers with a block
     helpers do

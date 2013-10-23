@@ -1,47 +1,36 @@
-require File.expand_path('../boot', __FILE__)
-
-
-# require 'rails/all'
-# Pick the frameworks you want:
-require "active_record/railtie"
-# require "action_controller/railtie"
-# require "action_mailer/railtie"
-# require "sprockets/railtie"
-# require "rails/test_unit/railtie"
-
-
-# Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
-
-module AihuoApi
-  class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-    config.active_record.default_timezone = :local
-    config.time_zone = 'Beijing'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-
-    # Auto-load API and its subdirectories
-    config.paths.add "app/api", :glob => "**/*.rb"
-    config.autoload_paths += Dir["#{Rails.root}/app/api/*"]
-
-    # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
-
-    # Enable escaping HTML in JSON.
-    config.active_support.escape_html_entities_in_json = true
-
-    config.middleware.use(Rack::Config) do |env|
-      env['api.tilt.root'] = Rails.root.join 'app', 'views', 'api'
-    end
-  end
+# 初始化时加载路径 app/api app/lib app/models
+%w[api models views].each do |folder|
+  $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'app', folder))
 end
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'app', 'models', 'concerns'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+
+# 初始化时加载 boot, require Gemfile 里面的 gem
+require 'boot'
+
+# 设定 Server 运行在什么环境下
+# bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT
+# http://www.modrails.com/documentation/Users%20guide%20Nginx.html#RackEnv
+Bundler.require :default, ENV['RACK_ENV']
+
+environment = ENV['DATABASE_URL'] ? 'production' : 'development'
+
+# puts "ENV['RACK_ENV'] is #{ENV['RACK_ENV']}"
+# puts "ENV['DATABASE_URL'] is #{ENV['DATABASE_URL']}"
+# puts "environment is #{environment}"
+
+# Connection database first way
+# DB_CONFIG = YAML.load_file(File.dirname(__FILE__) + '/database.yml')
+# mysql_config = DB_CONFIG[environment]
+# ActiveRecord::Base.establish_connection(mysql_config)
+# Connection database second way
+db = YAML.load(ERB.new(File.read('config/database.yml')).result)[environment]
+ActiveRecord::Base.establish_connection(db)
+
+# 初始化时加载所有 initializers 文件夹内的文件
+Dir[File.expand_path('../initializers/*.rb', __FILE__)].each { |file| require file }
+
+# 初始化时加载所有 app 文件夹内的文件
+Dir[File.expand_path('../../app/api/*.rb', __FILE__)].each { |file| require file }
+Dir[File.expand_path('../../app/models/*.rb', __FILE__)].each { |file| require file }
+Dir[File.expand_path('../../app/models/concerns/*.rb', __FILE__)].each { |file| require file }

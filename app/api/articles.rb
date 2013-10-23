@@ -1,4 +1,4 @@
-module Mobile
+module API
   class Articles < Grape::API
     resources 'articles' do
 

@@ -1,4 +1,4 @@
-module Mobile
+module API
   class Welcome < Grape::API
     params do
       optional :date, type: Integer, desc: "Device created date."

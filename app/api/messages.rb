@@ -1,4 +1,4 @@
-module Mobile
+module API
   class Messages < Grape::API
     resources 'messages' do
       desc "Return a messages list for test create."
