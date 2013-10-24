@@ -37,6 +37,29 @@ module API
           { success: response }
         end
 
+        resources 'topics' do
+          params do
+            optional :filter, type: Symbol, values: [:hot, :new, :mine, :all], default: :all, desc: "Filtering topics."
+            requires :device_id, type: String, desc: "Device ID."
+            optional :page, type: Integer, default: 1, desc: "Page number."
+            optional :per, type: Integer, default: 10, desc: "Per page value."
+          end
+          get "/", jbuilder: 'topics/topics' do
+            node = Node.find(params[:id])
+            topics = case params[:filter]
+            when :hot
+              node.topics.popular
+            when :new
+              node.topics.lasted
+            when :mine
+              node.topics.by_device(params[:device_id])
+            else :all
+              node.topics
+            end
+            @topics = topics.order("top DESC, updated_at DESC").page(params[:page]).per(params[:per])
+          end
+        end
+
       end
     end
   end
