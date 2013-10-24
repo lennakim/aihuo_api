@@ -3,6 +3,7 @@ require 'welcome'
 require 'products'
 require 'articles'
 require 'messages'
+require 'nodes'
 module ShouQuShop
   class API < Grape::API
     version 'v2', using: :path
@@ -15,5 +16,6 @@ module ShouQuShop
     mount ::API::Products
     mount ::API::Articles
     mount ::API::Messages
+    mount ::API::Nodes
   end
 end
