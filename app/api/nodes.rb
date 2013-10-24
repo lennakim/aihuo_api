@@ -24,6 +24,19 @@ module API
           { role: role }
         end
 
+        desc "Block a user in node."
+        params do
+          requires :device_id, type: String, desc: "Device ID."
+          requires :object_id, type: String, desc: "Object ID."
+          requires :object_type, type: Symbol, values: [:topic, :reply], default: :topic, desc: "Object Type."
+        end
+        post :block_user do
+          node = Node.find(params[:id])
+          obj = eval(params[:object_type].to_s.capitalize).find(params[:object_id])
+          response = node.block_user(params[:device_id], obj.device_id)
+          { success: response }
+        end
+
       end
     end
   end
