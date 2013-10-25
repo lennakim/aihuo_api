@@ -33,7 +33,8 @@ gem 'thin'
 # Can be destroy
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0'
-
+# https://github.com/sickill/racksh
+# gem 'racksh'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

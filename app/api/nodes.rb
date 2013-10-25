@@ -58,6 +58,18 @@ module API
             end
             @topics = topics.order("top DESC, updated_at DESC").page(params[:page]).per(params[:per])
           end
+
+          desc "Create a topic under the node."
+          params do
+            requires :body, type: String, desc: "Topic content."
+            requires :nickname, type: String, desc: "User nickname."
+            requires :device_id, type: String, desc: "Deivce ID."
+          end
+          post "/", jbuilder: 'topics/topic' do
+            node = Node.find(params[:id])
+            @topic = node.topics.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
+            @topic.save
+          end
         end
 
       end
