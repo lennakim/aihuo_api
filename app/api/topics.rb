@@ -65,6 +65,18 @@ module API
             topic = Topic.find(params[:id])
             @replies = topic.replies.page(params[:page]).per(params[:per])
           end
+
+          desc "Create a reply to the topic."
+          params do
+            requires :body, type: String, desc: "Reply content."
+            requires :nickname, type: String, desc: "User nickname."
+            requires :device_id, type: String, desc: "Deivce ID."
+          end
+          post "/", jbuilder: 'replies/reply' do
+            topic = Topic.find(params[:id])
+            @reply = topic.replies.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
+            @reply.save
+          end
         end
       end
 

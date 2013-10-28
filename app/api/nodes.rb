@@ -59,7 +59,7 @@ module API
             @topics = topics.order("top DESC, updated_at DESC").page(params[:page]).per(params[:per])
           end
 
-          desc "Create a topic under the node."
+          desc "Create a topic to the node."
           params do
             requires :body, type: String, desc: "Topic content."
             requires :nickname, type: String, desc: "User nickname."
