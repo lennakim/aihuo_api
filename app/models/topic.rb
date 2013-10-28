@@ -25,6 +25,16 @@ class Topic < ActiveRecord::Base
   def unliked
     update_attribute(:unlikes_count, self.unlikes_count += 1)
   end
+
+  # User is a device id.
+  def can_destroy_by?(user)
+    user.present? && (user == device_id || node.manager_list.include?(user))
+  end
+
+  def destroy_by(device_id)
+    update_attribute(:deleted_by, device_id)
+    destroy
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end

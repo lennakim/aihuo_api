@@ -96,6 +96,9 @@ GEM
       rack (>= 1.0.0)
     rack-test (0.6.2)
       rack (>= 1.0)
+    racksh (1.0.0)
+      rack (>= 1.0)
+      rack-test (>= 0.5)
     rails (4.0.0)
       actionmailer (= 4.0.0)
       actionpack (= 4.0.0)
@@ -156,5 +159,6 @@ DEPENDENCIES
   paranoia (~> 2.0)
   pry
   rack (~> 1.5.0)
+  racksh
   rake
   thin

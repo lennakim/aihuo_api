@@ -33,8 +33,6 @@ gem 'thin'
 # Can be destroy
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0'
-# https://github.com/sickill/racksh
-# gem 'racksh'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -48,5 +46,7 @@ gem 'paranoia', '~> 2.0'
 # gem 'debugger', group: [:development, :test]
 group :development do
   gem "rake"
+  # https://github.com/sickill/racksh
+  gem "racksh"
   gem 'pry'
 end

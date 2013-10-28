@@ -29,6 +29,18 @@ module API
           @topic = Topic.find(params[:id])
         end
 
+        desc "Delete a topic."
+        params do
+          requires :device_id, type: String, desc: "Device ID."
+        end
+        delete "/", jbuilder: 'topics/topic' do
+          @topic = Topic.find(params[:id])
+          if @topic.can_destroy_by?(params[:device_id])
+            @topic.destroy_by(params[:device_id])
+            status 202
+          end
+        end
+
         desc "Like a topic."
         put :like, jbuilder: 'topics/topic' do
           @topic = Topic.find(params[:id])

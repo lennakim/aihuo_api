@@ -20,7 +20,7 @@ class Node < ActiveRecord::Base
 
   def block_user(manager, user)
     blacklist = Blacklist.new({ device_id: user, node_id: self.id })
-    manager_list.include?(manager) && blacklist.save ? true : false
+    manager_list.include?(manager) && blacklist.save
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
