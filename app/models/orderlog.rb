@@ -1,37 +1,17 @@
-require 'encrypted_id_finder'
-class Order < ActiveRecord::Base
+class Orderlog < ActiveRecord::Base
   # extends ...................................................................
-  acts_as_paranoid
-  encrypted_id key: 'bYqILlFMZn3xd8Cy'
   # includes ..................................................................
-  include EncryptedIdFinder
   # security (i.e. attr_accessible) ...........................................
   # relationships .............................................................
-  has_many :comments
-  has_many :orderlogs
   # validations ...............................................................
   # callbacks .................................................................
-  before_destroy :logging_action
   # scopes ....................................................................
-  scope :by_filter, ->(filter) { filter == :rated ? with_comments : self }
-  scope :with_comments, -> { joins(:comments) }
-  scope :done, -> { where("state = ? OR state = ?", "客户拒签，原件返回", "客户签收，订单完成") }
   # additional config .........................................................
   # class methods .............................................................
+  def self.logging_action(method, user)
+    create({ content: "Device ID: #{user} 刪除了订单。"}) if method.to_sym == :delete
+  end
   # public instance methods ...................................................
-  def number
-    created_at.to_i.to_s + (id * 2 + 19871030).to_s
-  end
-
-  def total
-    total = item_total.zero? ? price : item_total
-    return (total + shipping_charge).to_f
-  end
-
   # protected instance methods ................................................
   # private instance methods ..................................................
-  private
-  def logging_action
-    orderlogs.logging_action(:delete, device_id)
-  end
 end

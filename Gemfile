@@ -30,7 +30,6 @@ gem 'encrypted_id'
 # Can be destroy
 gem 'awesome_nested_set', '~> 3.0.0.rc.1'
 gem 'thin'
-# Can be destroy
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0'
 # Use ActiveModel has_secure_password
