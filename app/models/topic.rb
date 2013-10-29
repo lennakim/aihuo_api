@@ -28,18 +28,11 @@ class Topic < ActiveRecord::Base
   end
 
   # User is a device id.
-  def can_destroy_by?(user)
-    user.present? && (user == device_id || node.manager_list.include?(user))
-  end
-
-  # User is a device id.
   def destroy_by(user)
     if user == device_id
-      # 帖主本人删除
-      update_attributes({ device_id: nil, nickname: "匿名" })
+      update_attributes({ device_id: nil, nickname: "匿名" }) # 帖主本人删除
     else
-      # 管理员删除
-      update_attribute(:deleted_by, user)
+      update_attribute(:deleted_by, user) # 管理员删除
       destroy
     end
   end

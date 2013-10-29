@@ -17,5 +17,12 @@ module ForumValidations
         errors.add(:body, error_msg) if body.strip.downcase.include?(word.strip.downcase)
       end
     end
+
+    # User is a device id.
+    def can_destroy_by?(user)
+      # Reply object try to return its topic device.
+      owner = try(:topic).try(:device_id) || try(:device_id)
+      user.present? && (user == owner || node.manager_list.include?(user))
+    end
   end
 end
