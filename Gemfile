@@ -20,18 +20,15 @@ gem 'grape', "~> 0.6.1"
 # gem 'jbuilder', '~> 1.2'
 # Use Jbuilder with Grape https://github.com/milkcocoa/grape-jbuilder
 gem 'grape-jbuilder'
-
 gem 'kaminari', '0.14.1', :require => 'kaminari/grape'
-# Can be destroy
-gem 'acts-as-taggable-on', '2.4.1'
+gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-as-taggable-on.git"
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
-# Can be destroy
 gem 'awesome_nested_set', '~> 3.0.0.rc.1'
 gem 'thin'
 # https://github.com/radar/paranoia
-gem 'paranoia', '~> 2.0'
+gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
