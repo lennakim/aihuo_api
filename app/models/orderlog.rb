@@ -8,8 +8,15 @@ class Orderlog < ActiveRecord::Base
   # scopes ....................................................................
   # additional config .........................................................
   # class methods .............................................................
-  def self.logging_action(method, user)
-    create({ content: "Device ID: #{user} 刪除了订单。"}) if method.to_sym == :delete
+  def self.logging_action(method, content)
+    case method.to_sym
+    when :delete # 用户自己删除订单
+      create({ content: "Device ID: #{content} 刪除了订单。" })
+    when :send_confirm_sms # 用户下单
+      create({ content: "【自动短信】#{content}" })
+    when :send_confirm_sms_error
+      create({ content: "【短信失败】订单号码 #{content} 发送自动确认短信失败。请检查短信网关。" })
+    end
   end
   # public instance methods ...................................................
   # protected instance methods ................................................

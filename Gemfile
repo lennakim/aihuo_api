@@ -32,6 +32,7 @@ gem 'awesome_nested_set', '~> 3.0.0.rc.1'
 gem 'thin'
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0'
+gem 'china_sms'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

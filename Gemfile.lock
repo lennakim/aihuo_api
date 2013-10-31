@@ -36,6 +36,7 @@ GEM
       ice_nine (~> 0.9)
     backports (3.3.5)
     builder (3.1.4)
+    china_sms (0.0.5)
     coderay (1.0.9)
     coercible (0.2.0)
       backports (~> 3.0, >= 3.1.0)
@@ -151,6 +152,7 @@ DEPENDENCIES
   activerecord (= 4.0.0)
   acts-as-taggable-on (= 2.4.1)
   awesome_nested_set (~> 3.0.0.rc.1)
+  china_sms
   encrypted_id
   grape (~> 0.6.1)
   grape-jbuilder
