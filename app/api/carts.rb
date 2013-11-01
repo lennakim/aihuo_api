@@ -2,7 +2,8 @@ module API
   class Carts < Grape::API
     helpers do
       def current_cart
-        @cart = Cart.where(device_id: params[:device_id]).first_or_create!
+        current_application
+        @cart = Cart.where(device_id: params[:device_id], application_id: @application.id).first_or_create!
         @cart.clear_items!
       end
 
@@ -23,8 +24,10 @@ module API
       desc "Create a cart."
       params do
         requires :device_id, type: String, desc: "Device ID"
+        requires :api_key, type: String, desc: "Application API Key"
         group :cart do
           requires :line_items_attributes, type: Hash, desc: "商品"
+          optional :application_id, type: Integer, desc: "Application ID"
         end
       end
       post '/', jbuilder: 'carts/cart' do

@@ -2,7 +2,9 @@ module API
   class Orders < Grape::API
     helpers do
       def order_params
+        current_application
         params[:order][:device_id] = params[:device_id]
+        params[:order][:application_id] = @application.id
 
         params[:order][:line_items_attributes].values.each do |item|
           product_id = EncryptedId.decrypt(Product.encrypted_id_key, item[:product_id])
@@ -30,6 +32,7 @@ module API
       desc "Create an order."
       params do
         requires :device_id, type: String, desc: "Device ID"
+        requires :api_key, type: String, desc: "Application API Key"
         group :order do
           requires :line_items_attributes, type: Hash, desc: "商品"
           requires :name, type: String, desc: "姓名"
@@ -41,6 +44,7 @@ module API
           requires :shipping_charge, type: Integer, desc: "运费"
           optional :comment, type: String, desc: "买家留言"
           optional :device_id, type: String, desc: "Device ID"
+          optional :application_id, type: Integer, desc: "Application ID"
         end
       end
       post '/', jbuilder: 'orders/order' do

@@ -18,6 +18,12 @@ module ShouQuShop
     format :json
     formatter :json, Grape::Formatter::Jbuilder
 
+    helpers do
+      def current_application
+        @application = Application.where(api_key: params[:api_key]).first
+      end
+    end
+
     mount ::API::Welcome
     mount ::API::Products
     mount ::API::Articles
