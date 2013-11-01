@@ -59,5 +59,8 @@ class Order < ActiveRecord::Base
   end
 
   def destroy_cart
+    # cart = Cart.find_by_device_id_and_application_id(device_id, application_id)
+    cart = Cart.where(device_id: device_id).first
+    cart.destroy if cart
   end
 end

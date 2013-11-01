@@ -128,7 +128,7 @@ DEPENDENCIES
   grape-jbuilder
   kaminari (= 0.14.1)
   mysql2
-  paranoia (~> 2.0)
+  paranoia (~> 2.0.1)
   pry
   rack (~> 1.5.0)
   racksh
