@@ -9,6 +9,7 @@ require 'replies'
 require 'orders'
 require 'carts'
 require 'devices'
+require 'device_infos'
 module ShouQuShop
   class API < Grape::API
     version 'v2', using: :path
@@ -27,5 +28,6 @@ module ShouQuShop
     mount ::API::Orders
     mount ::API::Carts
     mount ::API::Devices
+    mount ::API::DeviceInfos
   end
 end
