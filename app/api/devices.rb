@@ -4,6 +4,10 @@ module API
       def current_device
         @device = Device.where(device_id: params[:device_id]).first_or_create!
       end
+
+      def device_params
+        declared(params, include_missing: false)[:device]
+      end
     end
 
     resources 'devices' do
@@ -31,7 +35,7 @@ module API
       end
       post '/', jbuilder: 'devices/device' do
         current_device
-        @device.update_attributes(params[:device])
+        @device.update_attributes(device_params)
       end
     end
   end
