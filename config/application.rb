@@ -13,8 +13,8 @@ require 'boot'
 # http://www.modrails.com/documentation/Users%20guide%20Nginx.html#RackEnv
 Bundler.require :default, ENV['RACK_ENV']
 
-environment = ENV['DATABASE_URL'] ? 'production' : 'development'
-
+environment =  ENV['RACK_ENV']
+#environment = ENV['DATABASE_URL'] ? 'production' : 'development'
 # puts "ENV['RACK_ENV'] is #{ENV['RACK_ENV']}"
 # puts "ENV['DATABASE_URL'] is #{ENV['DATABASE_URL']}"
 # puts "environment is #{environment}"

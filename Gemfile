@@ -26,15 +26,12 @@ gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
 gem 'awesome_nested_set', '~> 3.0.0.rc.1'
-gem 'thin'
+gem 'puma'
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
-
-# Use unicorn as the app server
-# gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
