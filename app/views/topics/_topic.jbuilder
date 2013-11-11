@@ -6,3 +6,4 @@ json.unlikes_count topic.unlikes_count
 json.replies_count topic.replies_count
 json.top topic.top
 json.lock topic.lock
+json.created_at topic.created_at
