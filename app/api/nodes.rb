@@ -34,6 +34,11 @@ module API
           node = Node.find(params[:id])
           obj = eval(params[:object_type].to_s.capitalize).find(params[:object_id])
           response = node.block_user(params[:device_id], obj.device_id)
+          if response
+            status 201
+          else
+            status 200
+          end
           { success: response }
         end
 
