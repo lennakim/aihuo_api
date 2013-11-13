@@ -16,10 +16,13 @@ if ENV['RACK_ENV'] == "development"
   use Rack::Reloader
   use Rack::ShowExceptions
   # use Rack::Logger, Logger.new('log/development.log', :debug)
-  use Rack::CommonLogger, Logger.new('log/development.log')
-
+  use Rack::CommonLogger
 else
   use Rack::CommonLogger, Logger.new('log/production.log', :debug)
 end
+
+# Puma, Sinatra, ActiveRecord and "could not obtain a database connection"
+# http://snippets.aktagon.com/snippets/621-puma-sinatra-activerecord-and-could-not-obtain-a-database-connection-
+use ActiveRecord::ConnectionAdapters::ConnectionManagement
 
 run ShouQuShop::API

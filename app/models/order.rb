@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
   # callbacks .................................................................
   before_destroy :logging_action
   after_create :calculate_item_total
-  after_create :send_confirm_sms
+  # after_create :send_confirm_sms
   after_create :destroy_cart
   # scopes ....................................................................
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : self }
