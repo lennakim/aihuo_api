@@ -2,10 +2,11 @@ module API
   class Products < Grape::API
     # define helpers with a block
     helpers do
-      def tags
+      def keyword
         if params[:tag]
           tag = Tag.find_by_name(params[:tag])
-          tag.self_and_descendants.collect(&:name) if tag
+          tag = tag.self_and_descendants.collect(&:name) if tag
+          tag || params[:tag]
         end
       end
     end
@@ -18,7 +19,7 @@ module API
         optional :per, type: Integer, default: 10, desc: "Per page value."
       end
       get "/", jbuilder: 'products/products' do
-        @products = Product.tagged_with(tags, :any => true).page(params[:page]).per(params[:per])
+        @products = Product.search(keyword).page(params[:page]).per(params[:per])
       end
 
       params do

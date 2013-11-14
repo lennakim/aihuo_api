@@ -7,6 +7,7 @@ class Order < ActiveRecord::Base
   include EncryptedIdFinder
   # security (i.e. attr_accessible) ...........................................
   # relationships .............................................................
+  belongs_to :express, foreign_key: "shippingorder_id"
   has_many :line_items
   accepts_nested_attributes_for :line_items
   has_many :comments
@@ -28,6 +29,8 @@ class Order < ActiveRecord::Base
   scope :newly, -> { where(state: "订单已下，等待确认") }
   scope :done, -> { where("state = ? OR state = ?", "客户拒签，原件返回", "客户签收，订单完成") }
   # additional config .........................................................
+  delegate :extra_order_id, to: :express
+
   # class methods .............................................................
   # public instance methods ...................................................
   def number
@@ -38,6 +41,10 @@ class Order < ActiveRecord::Base
   def total
     total = item_total.zero? ? price : item_total
     return (total + shipping_charge).to_f
+  end
+
+  def express_number
+    express ? extra_order_id : delivery_no
   end
 
   # protected instance methods ................................................
