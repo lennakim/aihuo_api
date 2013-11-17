@@ -10,6 +10,7 @@ require 'orders'
 require 'carts'
 require 'devices'
 require 'device_infos'
+require 'coupons'
 module ShouQuShop
   class API < Grape::API
     version 'v2', using: :path
@@ -35,5 +36,6 @@ module ShouQuShop
     mount ::API::Carts
     mount ::API::Devices
     mount ::API::DeviceInfos
+    mount ::API::Coupons
   end
 end
