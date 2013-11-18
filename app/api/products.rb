@@ -2,11 +2,15 @@ module API
   class Products < Grape::API
     # define helpers with a block
     helpers do
-      def keyword
+      def query_params
         if params[:tag]
           tag = Tag.find_by_name(params[:tag])
           tag = tag.self_and_descendants.collect(&:name) if tag
           tag || params[:tag]
+        elsif params[:id]
+          params[:id].inject([]) do |ids, id|
+            ids << EncryptedId.decrypt(Product.encrypted_id_key, id)
+          end
         end
       end
     end
@@ -14,12 +18,13 @@ module API
     resources :products do
       desc "Listing products."
       params do
+        optional :id, type: Array, desc: "Product ids."
         optional :tag, type: String, desc: "Tag name."
         optional :page, type: Integer, desc: "Page number."
         optional :per, type: Integer, default: 10, desc: "Per page value."
       end
       get "/", jbuilder: 'products/products' do
-        @products = Product.search(keyword).page(params[:page]).per(params[:per])
+        @products = Product.search(query_params).page(params[:page]).per(params[:per])
       end
 
       params do

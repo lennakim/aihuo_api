@@ -1,4 +1,5 @@
 require 'carrierwave'
+require 'encrypted_id_finder'
 class Product < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
@@ -6,6 +7,7 @@ class Product < ActiveRecord::Base
   encrypted_id key: 'XRbLEgrUCLHh94qG'
   # includes ..................................................................
   include CarrierWave
+  include EncryptedIdFinder
   # security (i.e. attr_accessible) ...........................................
   # relationships .............................................................
   has_many :product_props
@@ -15,10 +17,17 @@ class Product < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
-  default_scope { order("rank DESC") }
+  default_scope { order("products.out_of_stock, products.rank DESC") }
   scope :search, ->(keyword) {
-    products = tagged_with(keyword, :any => true)
-    products = where("title like ?", "%#{keyword}%") if products.size.zero?
+    case keyword.class
+    when Array
+      puts "11111"
+      where(id: keyword)
+    when String
+      puts "2222"
+      products = tagged_with(keyword, :any => true)
+      products = where("products.title like ?", "%#{keyword}%") if products.size.zero?
+    end
   }
   # additional config .........................................................
   # class methods .............................................................
