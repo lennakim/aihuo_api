@@ -20,6 +20,7 @@ module API
       params do
         optional :id, type: Array, desc: "Product ids."
         optional :tag, type: String, desc: "Tag name."
+        optional :sku_visible, type: Boolean, default: false, desc: "Should return skus or not."
         optional :page, type: Integer, desc: "Page number."
         optional :per, type: Integer, default: 10, desc: "Per page value."
       end

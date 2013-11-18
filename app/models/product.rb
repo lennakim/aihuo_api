@@ -19,12 +19,10 @@ class Product < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { order("products.out_of_stock, products.rank DESC") }
   scope :search, ->(keyword) {
-    case keyword.class
+    case keyword # was case keyword.class
     when Array
-      puts "11111"
       where(id: keyword)
     when String
-      puts "2222"
       products = tagged_with(keyword, :any => true)
       products = where("products.title like ?", "%#{keyword}%") if products.size.zero?
     end

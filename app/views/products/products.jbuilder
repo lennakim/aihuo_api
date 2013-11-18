@@ -6,6 +6,11 @@ json.products @products do |product|
       json.grid product.carrierwave_image(:grid, :url)
     end
   end
+  if params[:sku_visible] == true
+    json.product_props product.product_props do |product_prop|
+      json.partial! "products/product_prop", product_prop: product_prop
+    end
+  end
 end
 json.current_page @products.current_page
 json.total_pages @products.total_pages
