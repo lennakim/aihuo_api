@@ -43,4 +43,7 @@ group :development do
   # https://github.com/sickill/racksh
   gem "racksh"
   gem 'pry'
+  # reloading rack development server / forking version of rackup
+  # Start your app by running 'shotgun'
+  gem 'shotgun'
 end
