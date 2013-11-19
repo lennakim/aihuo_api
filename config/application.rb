@@ -13,19 +13,13 @@ require 'boot'
 # http://www.modrails.com/documentation/Users%20guide%20Nginx.html#RackEnv
 Bundler.require :default, ENV['RACK_ENV']
 
+# 建立数据库连接
 environment =  ENV['RACK_ENV']
-#environment = ENV['DATABASE_URL'] ? 'production' : 'development'
-# puts "ENV['RACK_ENV'] is #{ENV['RACK_ENV']}"
-# puts "ENV['DATABASE_URL'] is #{ENV['DATABASE_URL']}"
-# puts "environment is #{environment}"
-
-# Connection database first way
-# DB_CONFIG = YAML.load_file(File.dirname(__FILE__) + '/database.yml')
-# mysql_config = DB_CONFIG[environment]
-# ActiveRecord::Base.establish_connection(mysql_config)
-# Connection database second way
-db = YAML.load(ERB.new(File.read('config/database.yml')).result)[environment]
-ActiveRecord::Base.establish_connection(db)
+dbconfig = YAML.load(ERB.new(File.read('config/database.yml')).result)[environment]
+ActiveRecord::Base.establish_connection(dbconfig)
+# ActiveRecord::Base.logger = Logger.new(STDERR)
+ActiveRecord::Base.logger = Logger.new('log/database.log')
+ActiveSupport::LogSubscriber.colorize_logging = false
 
 # 初始化时加载所有 initializers 文件夹内的文件
 Dir[File.expand_path('../initializers/*.rb', __FILE__)].each { |file| require file }
