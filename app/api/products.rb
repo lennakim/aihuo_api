@@ -45,7 +45,7 @@ module API
         end
         get :trades, jbuilder: 'trades/trades' do
           product = Product.find(params[:id])
-          @trades = product.orders.by_filter(params[:filter]).order("created_at DESC").page(params[:page]).per(params[:per])
+          @trades = product.orders.by_filter(params[:filter]).distinct.order("created_at DESC").page(params[:page]).per(params[:per])
         end
       end
 
