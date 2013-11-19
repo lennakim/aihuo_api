@@ -21,8 +21,13 @@ class Product < ActiveRecord::Base
   scope :search, ->(keyword) {
     case keyword # was case keyword.class
     when Array
-      where(id: keyword)
-    when String
+      case keyword[0] # was case keyword[0].class
+      when Integer # keyword is ids
+        where(id: keyword)
+      when String # keyword is tags
+        tagged_with(keyword, :any => true)
+      end
+    when String # keyword is a tag or word.
       products = tagged_with(keyword, :any => true)
       products = where("products.title like ?", "%#{keyword}%") if products.size.zero?
     end

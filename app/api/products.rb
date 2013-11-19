@@ -9,7 +9,7 @@ module API
           tag || params[:tag]
         elsif params[:id]
           params[:id].inject([]) do |ids, id|
-            ids << EncryptedId.decrypt(Product.encrypted_id_key, id)
+            ids << EncryptedId.decrypt(Product.encrypted_id_key, id).to_i
           end
         end
       end
