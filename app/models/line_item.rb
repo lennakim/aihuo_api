@@ -23,7 +23,7 @@ class LineItem < ActiveRecord::Base
   def update_product_prop_info
     update_attributes({
       sku: product_prop.sku,
-      purchase_price: product_prop.purchase_price,
+      original_price: product_prop.original_price,
       product_prop_name: product_prop.name,
       product_prop_value: product_prop.values
     })

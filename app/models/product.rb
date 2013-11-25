@@ -38,7 +38,7 @@ class Product < ActiveRecord::Base
 
   # 市場價（原價）顯示SKU售賣價的最高值
   def market_price
-    product_props.order("purchase_price DESC").first.purchase_price
+    product_props.order("original_price DESC").first.original_price
   end
 
   # 零售價（現價）顯示SKU售賣價的最低值
