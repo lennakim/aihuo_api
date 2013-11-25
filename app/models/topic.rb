@@ -1,10 +1,12 @@
 require 'forum_validations'
+require 'voting'
 class Topic < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
   encrypted_id key: '36aAoQHCaJKETWHR'
   # includes ..................................................................
   include ForumValidations
+  include Voting
   # security (i.e. attr_accessible) ...........................................
   # relationships .............................................................
   belongs_to :node, :counter_cache => true
@@ -19,14 +21,6 @@ class Topic < ActiveRecord::Base
   # additional config .........................................................
   # class methods .............................................................
   # public instance methods ...................................................
-  def add_liked
-    update_attribute(:likes_count, self.likes_count += 1)
-  end
-
-  def add_disliked
-    update_attribute(:unlikes_count, self.unlikes_count += 1)
-  end
-
   # User is a device id.
   def destroy_by(user)
     if user == device_id
