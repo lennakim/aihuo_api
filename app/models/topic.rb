@@ -19,11 +19,11 @@ class Topic < ActiveRecord::Base
   # additional config .........................................................
   # class methods .............................................................
   # public instance methods ...................................................
-  def liked
+  def add_liked
     update_attribute(:likes_count, self.likes_count += 1)
   end
 
-  def unliked
+  def add_disliked
     update_attribute(:unlikes_count, self.unlikes_count += 1)
   end
 

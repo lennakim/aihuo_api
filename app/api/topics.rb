@@ -44,14 +44,14 @@ module API
         desc "Like a topic."
         put :like, jbuilder: 'topics/topic' do
           @topic = Topic.find(params[:id])
-          @topic.liked
+          @topic.add_liked
           status 202
         end
 
         desc 'Unlike a topic.'
-        put :unlike, jbuilder: 'topics/topic' do
+        put :dislike, jbuilder: 'topics/topic' do
           @topic = Topic.find(params[:id])
-          @topic.unliked
+          @topic.add_disliked
           status 202
         end
 
