@@ -22,6 +22,7 @@ class Order < ActiveRecord::Base
   before_destroy :logging_action
   after_create :calculate_item_total
   # after_create :send_confirm_sms
+  after_create :register_device
   after_create :destroy_cart
   # scopes ....................................................................
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : self }
@@ -60,7 +61,7 @@ class Order < ActiveRecord::Base
     update_attribute(:item_total, item_total)
   end
 
-  # 创建订单成功则发送手机短信息
+  # send sms if create order successful.
   def send_confirm_sms
     ShortMessage.send_confirm_sms(self)
   end
@@ -68,5 +69,9 @@ class Order < ActiveRecord::Base
   def destroy_cart
     carts = Cart.where(device_id: device_id, application_id: application_id)
     carts.destroy_all if carts
+  end
+
+  def register_device
+    Device.where(device_id: device_id).first_or_create! if device_id.present?
   end
 end

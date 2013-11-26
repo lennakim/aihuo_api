@@ -23,7 +23,11 @@ class LineItem < ActiveRecord::Base
   def update_product_prop_info
     update_attributes({
       sku: product_prop.sku,
-      original_price: product_prop.original_price,
+      # Named Bug:
+      # The purchase_price in line_items as same as the original_price in product_props.
+      # 命名错误:
+      # line_items 中 purchase_price 是市场价，而 product_props 中 original_price 是市场价
+      purchase_price: product_prop.original_price,
       product_prop_name: product_prop.name,
       product_prop_value: product_prop.values
     })
