@@ -30,6 +30,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     arel (4.0.1)
+    ast (1.1.0)
     atomic (1.1.14)
     awesome_nested_set (3.0.0.rc.2)
       activerecord (~> 4.0.0)
@@ -80,6 +81,10 @@ GEM
     mysql2 (0.3.13)
     paranoia (2.0.1)
       activerecord (~> 4.0)
+    parser (2.0.0)
+      ast (~> 1.1)
+      slop (~> 3.4, >= 3.4.5)
+    powerpack (0.0.9)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -96,7 +101,12 @@ GEM
     racksh (1.0.0)
       rack (>= 1.0)
       rack-test (>= 0.5)
+    rainbow (1.1.4)
     rake (10.1.0)
+    rubocop (0.15.0)
+      parser (~> 2.0)
+      powerpack (~> 0.0.6)
+      rainbow (>= 1.1.4)
     shotgun (0.9)
       rack (>= 1.0)
     slop (3.4.6)
@@ -132,4 +142,5 @@ DEPENDENCIES
   rack (~> 1.5.0)
   racksh
   rake
+  rubocop
   shotgun

@@ -39,6 +39,9 @@ gem 'china_sms'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 group :development do
+  # A robust Ruby code analyzer, based on the community Ruby style guide.
+  # https://github.com/bbatsov/rubocop
+  gem 'rubocop'
   gem "rake"
   # https://github.com/sickill/racksh
   gem "racksh"
