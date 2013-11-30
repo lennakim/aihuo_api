@@ -10,6 +10,8 @@ module API
         if @reply.can_destroy_by?(params[:device_id])
           @reply.destroy
           status 202
+        else
+          error! "Access Denied", 401
         end
       end
     end
