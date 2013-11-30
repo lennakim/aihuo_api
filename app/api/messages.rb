@@ -34,6 +34,7 @@ module API
       desc "Create a messages."
       params do
         requires :device_id, type: String, desc: "Device ID"
+        requires :sign, type: String, desc: "Sign value."
         group :message do
           requires :body, type: String, desc: "Message content."
           optional :category, type: Symbol, values: [:question], default: :question, desc: "Message category."
@@ -43,7 +44,12 @@ module API
         end
       end
       post "/", jbuilder: 'messages/message'  do
-        @message = Message.question.create!(message_params)
+        if sign_approval?(declared(params, include_missing: false), params[:sign])
+          @message = Message.question.new(message_params)
+          status 500 unless @message.save
+        else
+          error! "Access Denied", 401
+        end
       end
     end
   end
