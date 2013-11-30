@@ -69,11 +69,20 @@ module API
             requires :body, type: String, desc: "Topic content."
             requires :nickname, type: String, desc: "User nickname."
             requires :device_id, type: String, desc: "Deivce ID."
+            requires :sign, type: String, desc: "sign value."
           end
           post "/", jbuilder: 'topics/topic' do
-            node = Node.find(params[:id])
-            @topic = node.topics.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
-            @topic.save
+            if sign_approval?(declared(params, include_missing: false), params[:sign])
+              node = Node.find(params[:id])
+              @topic = node.topics.new({
+                         body: params[:body],
+                         nickname: params[:nickname],
+                         device_id: params[:device_id]
+                       })
+              status 500 unless @topic.save
+            else
+              error! "Access Denied", 401
+            end
           end
         end
 

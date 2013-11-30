@@ -5,7 +5,6 @@ module API
     end
     get :home, jbuilder: 'welcome/home' do
       current_application
-      sign
       if params[:date] == 20131010
         # 日期参数在3日内的显示0元购的banner
         @banners = Article.banner.with_gifts
