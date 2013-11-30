@@ -23,6 +23,17 @@ module ShouQuShop
       def current_application
         @application = Application.where(api_key: params[:api_key]).first
       end
+
+      def sign
+        url = ""
+        secret_key = @application.secret_key
+        url += request.request_method # GET or POST
+        url += request.scheme # http or https
+        url += "//"
+        url += request.host # example: api.aihuo360.com
+        url += request.path_info # example: /api/v2/home
+        binding.pry
+      end
     end
 
     mount ::API::Welcome
