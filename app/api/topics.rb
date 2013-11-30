@@ -38,6 +38,8 @@ module API
           if @topic.can_destroy_by?(params[:device_id])
             @topic.destroy_by(params[:device_id])
             status 202
+          else
+            error! "Access Denied", 401
           end
         end
 
@@ -71,11 +73,16 @@ module API
             requires :body, type: String, desc: "Reply content."
             requires :nickname, type: String, desc: "User nickname."
             requires :device_id, type: String, desc: "Deivce ID."
+            requires :sign, type: String, desc: "sign value."
           end
           post "/", jbuilder: 'replies/reply' do
-            topic = Topic.find(params[:id])
-            @reply = topic.replies.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
-            @reply.save
+            if sign_approval?(declared(params, include_missing: false), params[:sign])
+              topic = Topic.find(params[:id])
+              @reply = topic.replies.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
+              status 500 unless @reply.save
+            else
+              error! "Access Denied", 401
+            end
           end
         end
       end
