@@ -21,6 +21,12 @@ module ShouQuShop
     formatter :json, Grape::Formatter::Jbuilder
 
     helpers do
+      # example:
+      # logger.info "something" can be found in log/api_puma.out.log
+      def logger
+        API.logger
+      end
+
       def current_application
         api_key = request.headers["Apikey"] || params[:api_key]
         @application = Application.where(api_key: api_key).first
@@ -44,7 +50,7 @@ module ShouQuShop
         # example:
         # url += "GEThttp://api.aihuo360.com/api/v2/home"
         base_url = request.request_method
-        base_url += "#{request.scheme}//#{request.host}#{request.path_info}"
+        base_url += "#{request.scheme}://#{request.host}#{request.path_info}"
 
         # Getting secret key of current application
         current_application
