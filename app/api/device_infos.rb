@@ -16,6 +16,7 @@ module API
       params do
         requires :device_id, type: String, desc: "Device ID"
         requires :api_key, type: String, desc: "Application API Key"
+        requires :sign, type: String, desc: "Sign value"
         group :device_info do
           requires :baidu_user_id, type: String
           requires :baidu_channel_id, type: String
