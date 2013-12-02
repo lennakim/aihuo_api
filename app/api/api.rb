@@ -42,14 +42,16 @@ module ShouQuShop
 
         # Getting secret key of current application
         current_application
+        return unless @application
         secret_key = @application.secret_key
 
         # Final calculated_signature to compare against
         Digest::MD5.hexdigest(base_url + calculated_signature + secret_key)
       end
 
-      def sign_approval?(hash_signature, signature, signature_keys = ['sign'])
-        sign(hash_signature, signature_keys).eql? signature
+      def sign_approval?(signature_keys = ['sign'])
+        hash_signature = declared(params, include_missing: false)
+        sign(hash_signature, signature_keys).eql? params[:sign]
       end
     end
 

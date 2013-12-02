@@ -22,13 +22,12 @@ module API
         end
       end
       post '/', jbuilder: 'device_infos/device_info' do
-        current_device_info
-        if @device_info.update_attributes(device_info_params)
-          status 201
+        if sign_approval?
+          current_device_info
+          status 500 unless @device_info.update_attributes(device_info_params)
         else
-          status 200
+          error! "Access Denied", 401
         end
-        @device_info
       end
     end
   end

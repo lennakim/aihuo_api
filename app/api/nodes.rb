@@ -72,7 +72,7 @@ module API
             requires :sign, type: String, desc: "sign value."
           end
           post "/", jbuilder: 'topics/topic' do
-            if sign_approval?(declared(params, include_missing: false), params[:sign])
+            if sign_approval?
               node = Node.find(params[:id])
               @topic = node.topics.new({
                          body: params[:body],

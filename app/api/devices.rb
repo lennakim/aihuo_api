@@ -14,6 +14,7 @@ module API
       desc "Create a device."
       params do
         requires :device_id, type: String, desc: "Device ID"
+        requires :sign, type: String, desc: "Sign value"
         group :device do
           optional :device_id, type: String
           optional :model_ver, type: String
@@ -34,8 +35,12 @@ module API
         end
       end
       post '/', jbuilder: 'devices/device' do
-        current_device
-        @device.update_attributes(device_params)
+        if sign_approval?
+          current_device
+          status 500 unless @device.update_attributes(device_params)
+        else
+          error! "Access Denied", 401
+        end
       end
     end
   end

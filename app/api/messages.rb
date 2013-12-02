@@ -44,7 +44,7 @@ module API
         end
       end
       post "/", jbuilder: 'messages/message'  do
-        if sign_approval?(declared(params, include_missing: false), params[:sign])
+        if sign_approval?
           @message = Message.question.new(message_params)
           status 500 unless @message.save
         else

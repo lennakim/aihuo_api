@@ -76,7 +76,7 @@ module API
             requires :sign, type: String, desc: "sign value."
           end
           post "/", jbuilder: 'replies/reply' do
-            if sign_approval?(declared(params, include_missing: false), params[:sign])
+            if sign_approval?
               topic = Topic.find(params[:id])
               @reply = topic.replies.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
               status 500 unless @reply.save
