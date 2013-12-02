@@ -11,6 +11,7 @@ require 'carts'
 require 'devices'
 require 'device_infos'
 require 'coupons'
+require 'digest/md5'
 module ShouQuShop
   class API < Grape::API
     version 'v2', using: :path
@@ -25,6 +26,10 @@ module ShouQuShop
         @application = Application.where(api_key: api_key).first
       end
 
+      def flatten_hash(hash)
+        hash.collect { |k, v| v.is_a?(Hash) ? flatten_hash(v) : "#{k}=#{v}" }
+      end
+
       def sign(hash_signature, signature_keys)
         # Remove the "sign" entry
         signature_keys.each do |signature_key|
@@ -32,8 +37,9 @@ module ShouQuShop
           hash_signature.delete(signature_key.to_sym)
         end
 
-        calculated_signature = hash_signature.collect { |k, v| "#{k}=#{v}" }
-        calculated_signature = calculated_signature.sort.join
+        # calculated_signature = hash_signature.collect { |k, v| "#{k}=#{v}" }
+        calculated_signature = flatten_hash(hash_signature)
+        calculated_signature = calculated_signature.flatten.sort.join
 
         # example:
         # url += "GEThttp://api.aihuo360.com/api/v2/home"

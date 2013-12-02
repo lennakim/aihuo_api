@@ -25,14 +25,19 @@ module API
       params do
         requires :device_id, type: String, desc: "Device ID"
         requires :api_key, type: String, desc: "Application API Key"
+        requires :sign, type: String, desc: "Sign value"
         group :cart do
           requires :line_items_attributes, type: Hash, desc: "商品"
           optional :application_id, type: Integer, desc: "Application ID"
         end
       end
       post '/', jbuilder: 'carts/cart' do
-        current_cart
-        @cart.update_attributes(cart_params)
+        if sign_approval?
+          current_cart
+          status 500 unless @cart.update_attributes(cart_params)
+        else
+          error! "Access Denied", 401
+        end
       end
     end
   end

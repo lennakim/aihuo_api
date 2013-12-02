@@ -33,6 +33,7 @@ module API
       params do
         requires :device_id, type: String, desc: "Device ID"
         requires :api_key, type: String, desc: "Application API Key"
+        requires :sign, type: String, desc: "Sign value"
         group :order do
           requires :line_items_attributes, type: Hash, desc: "商品"
           requires :name, type: String, desc: "姓名"
@@ -48,8 +49,12 @@ module API
         end
       end
       post '/', jbuilder: 'orders/order' do
-        @order = Order.newly.build(order_params)
-        @order.save
+        if sign_approval?
+          @order = Order.newly.build(order_params)
+          status 500 unless @order.save
+        else
+          error! "Access Denied", 401
+        end
       end
 
       params do
