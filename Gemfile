@@ -11,8 +11,11 @@ gem 'activerecord', '4.0.0', require: 'active_record'
 # An opinionated micro-framework for creating REST-like APIs in Ruby.
 # https://github.com/intridea/grape
 gem 'grape', "~> 0.6.1"
-# gem 'grape', :git => "https://github.com/intridea/grape.git"
-# gem "grape", github: "intridea/grape"
+
+# A set of Rack middleware and cache helpers that implement various caching strategies.
+# https://github.com/artsy/garner
+gem 'garner'
+
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 

@@ -1,3 +1,5 @@
+require 'digest/md5'
+require "garner/mixins/rack"
 # Need to require other api controllers at first.
 require 'welcome'
 require 'products'
@@ -11,7 +13,7 @@ require 'carts'
 require 'devices'
 require 'device_infos'
 require 'coupons'
-require 'digest/md5'
+
 module ShouQuShop
   class API < Grape::API
     version 'v2', using: :path
@@ -20,7 +22,15 @@ module ShouQuShop
     format :json
     formatter :json, Grape::Formatter::Jbuilder
 
+    # http://stackoverflow.com/questions/13675879/activerecordconnectiontimeouterror
+    # https://devcenter.heroku.com/articles/concurrency-and-database-connections
+    after do
+      ActiveRecord::Base.connection.close
+    end
+
     helpers do
+      include Garner::Mixins::Rack
+
       # example:
       # logger.info "something" can be found in log/api_puma.out.log
       def logger
@@ -57,6 +67,8 @@ module ShouQuShop
         return unless @application
         secret_key = @application.secret_key
 
+        # logger.info "string: #{base_url + calculated_signature + secret_key}"
+        # logger.info "sign: #{Digest::MD5.hexdigest(base_url + calculated_signature + secret_key)}"
         # Final calculated_signature to compare against
         Digest::MD5.hexdigest(base_url + calculated_signature + secret_key)
       end
