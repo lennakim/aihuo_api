@@ -1,7 +1,6 @@
-# Need to require other api controllers at first.
 require 'digest/md5'
 require "garner/mixins/rack"
-
+# Need to require other api controllers at first.
 require 'welcome'
 require 'products'
 require 'articles'
@@ -22,6 +21,12 @@ module ShouQuShop
 
     format :json
     formatter :json, Grape::Formatter::Jbuilder
+
+    # http://stackoverflow.com/questions/13675879/activerecordconnectiontimeouterror
+    # https://devcenter.heroku.com/articles/concurrency-and-database-connections
+    after do
+      ActiveRecord::Base.connection.close
+    end
 
     helpers do
       include Garner::Mixins::Rack

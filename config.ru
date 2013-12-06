@@ -14,14 +14,15 @@ end
 if ENV['RACK_ENV'] == "development"
   # use Rack::ContentLength
   # use Rack::ContentType, "text/plain"
-  # use Rack::ConditionalGet
-  # use Rack::ETag
-
   use Rack::ShowExceptions
   use Rack::CommonLogger, Logger.new('log/development.log')
 else
   use Rack::CommonLogger, Logger.new('log/production.log')
 end
+
+# Make garner works
+use Rack::ConditionalGet
+use Rack::ETag
 
 # Puma, Sinatra, ActiveRecord and "could not obtain a database connection"
 # http://snippets.aktagon.com/snippets/621-puma-sinatra-activerecord-and-could-not-obtain-a-database-connection-
