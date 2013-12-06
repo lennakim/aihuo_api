@@ -4,7 +4,6 @@ module API
       def current_cart
         current_application
         @cart = Cart.where(device_id: params[:device_id], application_id: @application.id).first_or_create!
-        @cart.clear_items!
       end
 
       def cart_params
@@ -21,6 +20,15 @@ module API
     end
 
     resources 'carts' do
+      desc "Get current cart."
+      params do
+        requires :device_id, type: String, desc: "Device ID"
+        requires :api_key, type: String, desc: "Application API Key"
+      end
+      get '/', jbuilder: 'carts/cart' do
+        current_cart
+      end
+
       desc "Create a cart."
       params do
         requires :device_id, type: String, desc: "Device ID"
@@ -34,6 +42,7 @@ module API
       post '/', jbuilder: 'carts/cart' do
         if sign_approval?
           current_cart
+          @cart.clear_items!
           status 500 unless @cart.update_attributes(cart_params)
         else
           error! "Access Denied", 401
