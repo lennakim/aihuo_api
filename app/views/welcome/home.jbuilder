@@ -9,3 +9,8 @@ json.banners @banners do |article|
     end
   end
 end
+json.categories @tags do |tag|
+  json.id tag.id
+  json.name tag.name
+  json.image tag.carrierwave_image(nil, :url) if tag.image
+end

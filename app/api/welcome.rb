@@ -12,6 +12,7 @@ module API
         # 默认显示不带0元购的banner
         @banners = Article.banner.without_gifts
       end
+      @tags = Tag.where(id: Tag::CATEGORIES)
     end
 
   end

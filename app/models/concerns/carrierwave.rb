@@ -26,7 +26,7 @@ module CarrierWave
   #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   # end
   def carrierwave_image(version, path)
-    store_host + store_dir(:image) + version.to_s + '_' + image
+    combination_url(:image, version)
   end
 
   # version :list, :grid, :retain
@@ -35,7 +35,17 @@ module CarrierWave
   #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   # end
   def carrierwave_background(version, path)
-    store_host + store_dir(:background) + version.to_s + '_' + background
+    combination_url(:background, version)
   end
+
+  private
+
+    def combination_url(type, version)
+      if version
+        store_host + store_dir(type) + version.to_s + '_' + send(type)
+      else
+        store_host + store_dir(type) + send(type)
+      end
+    end
 
 end
