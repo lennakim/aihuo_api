@@ -28,3 +28,6 @@ Dir[File.expand_path('../initializers/*.rb', __FILE__)].each { |file| require fi
 Dir[File.expand_path('../../app/api/*.rb', __FILE__)].each { |file| require file }
 Dir[File.expand_path('../../app/models/*.rb', __FILE__)].each { |file| require file }
 Dir[File.expand_path('../../app/models/concerns/*.rb', __FILE__)].each { |file| require file }
+
+require 'api'
+require 'app'

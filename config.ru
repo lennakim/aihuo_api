@@ -14,6 +14,9 @@ end
 if ENV['RACK_ENV'] == "development"
   # use Rack::ContentLength
   # use Rack::ContentType, "text/plain"
+  # use Rack::ConditionalGet
+  # use Rack::ETag
+
   use Rack::ShowExceptions
   use Rack::CommonLogger, Logger.new('log/development.log')
 else
@@ -24,4 +27,5 @@ end
 # http://snippets.aktagon.com/snippets/621-puma-sinatra-activerecord-and-could-not-obtain-a-database-connection-
 use ActiveRecord::ConnectionAdapters::ConnectionManagement
 
-run ShouQuShop::API
+# run ShouQuShop::API
+run ShouQuShop::App.instance
