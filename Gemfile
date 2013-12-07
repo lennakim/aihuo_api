@@ -12,10 +12,6 @@ gem 'activerecord', '4.0.0', require: 'active_record'
 # https://github.com/intridea/grape
 gem 'grape', "~> 0.6.1"
 
-# A set of Rack middleware and cache helpers that implement various caching strategies.
-# https://github.com/artsy/garner
-gem 'garner'
-
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -23,6 +19,7 @@ gem 'garner'
 # gem 'jbuilder', '~> 1.2'
 # Use Jbuilder with Grape https://github.com/milkcocoa/grape-jbuilder
 gem 'grape-jbuilder'
+
 gem 'kaminari', '0.14.1', :require => 'kaminari/grape'
 gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-as-taggable-on.git"
 # https://github.com/pencil/encrypted_id

@@ -1,21 +1,9 @@
 require 'digest/md5'
-require "garner/mixins/rack"
-# Need to require other api controllers at first.
-require 'welcome'
-require 'products'
-require 'articles'
-require 'messages'
-require 'nodes'
-require 'topics'
-require 'replies'
-require 'orders'
-require 'carts'
-require 'devices'
-require 'device_infos'
-require 'coupons'
-
 module ShouQuShop
   class API < Grape::API
+    # TODO: caches not working.
+    # include ShamanCache
+
     version 'v2', using: :path
     prefix 'api'
 
@@ -29,8 +17,6 @@ module ShouQuShop
     end
 
     helpers do
-      include Garner::Mixins::Rack
-
       # example:
       # logger.info "something" can be found in log/api_puma.out.log
       def logger
@@ -79,17 +65,17 @@ module ShouQuShop
       end
     end
 
-    mount ::API::Welcome
-    mount ::API::Products
-    mount ::API::Articles
-    mount ::API::Messages
-    mount ::API::Nodes
-    mount ::API::Topics
-    mount ::API::Replies
-    mount ::API::Orders
-    mount ::API::Carts
-    mount ::API::Devices
-    mount ::API::DeviceInfos
-    mount ::API::Coupons
+    mount ::Welcome
+    mount ::Products
+    mount ::Articles
+    mount ::Messages
+    mount ::Nodes
+    mount ::Topics
+    mount ::Replies
+    mount ::Orders
+    mount ::Carts
+    mount ::Devices
+    mount ::DeviceInfos
+    mount ::Coupons
   end
 end

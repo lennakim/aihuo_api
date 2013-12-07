@@ -1,4 +1,3 @@
-require 'forum_validations'
 class Reply < ActiveRecord::Base
   # extends ...................................................................
   encrypted_id key: 'vfKYGu3kbQ3skEWr'

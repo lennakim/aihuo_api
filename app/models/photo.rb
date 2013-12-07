@@ -1,4 +1,3 @@
-require 'carrierwave'
 class Photo < ActiveRecord::Base
   # extends ...................................................................
   encrypted_id key: 'XRiQcywupJ44cAaR'

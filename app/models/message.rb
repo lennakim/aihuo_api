@@ -1,4 +1,3 @@
-require 'encrypted_id_finder'
 class Message < ActiveRecord::Base
   # extends ...................................................................
   encrypted_id key: '9dQQjevhdWx4BwxV'

@@ -1,5 +1,3 @@
-require 'carrierwave'
-require 'article_formatter'
 class Article < ActiveRecord::Base
   # extends ...................................................................
   encrypted_id key: 'AJ03lQmVmtomCfug'

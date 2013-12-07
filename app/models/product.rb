@@ -1,5 +1,3 @@
-require 'carrierwave'
-require 'encrypted_id_finder'
 class Product < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid

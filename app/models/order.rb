@@ -1,4 +1,3 @@
-require 'encrypted_id_finder'
 class Order < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid

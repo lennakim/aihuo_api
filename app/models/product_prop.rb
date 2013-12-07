@@ -1,4 +1,3 @@
-require 'encrypted_id_finder'
 class ProductProp < ActiveRecord::Base
   # extends ...................................................................
   encrypted_id key: 'F8qK9WWnWRtszMJP'

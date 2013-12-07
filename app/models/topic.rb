@@ -1,5 +1,3 @@
-require 'forum_validations'
-require 'voting'
 class Topic < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
