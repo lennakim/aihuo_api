@@ -1,5 +1,5 @@
 # 初始化时加载路径 app/app app/api app/views app/models app/concerns
-%w[app api models views models/concerns].each do |folder|
+%w[app api models views concerns].each do |folder|
   $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'app', folder))
 end
 $LOAD_PATH.unshift(File.dirname(__FILE__))
@@ -24,11 +24,11 @@ ActiveSupport::LogSubscriber.colorize_logging = false
 Dir[File.expand_path('../initializers/*.rb', __FILE__)].each { |f| require f }
 
 # 初始化时加载所有 app 文件夹内的文件
+Dir[File.expand_path('../../app/concerns/*.rb', __FILE__)].each { |f| require f }
 Dir[File.expand_path('../../app/api/*.rb', __FILE__)].each { |f| require f }
-Dir[File.expand_path('../../app/models/concerns/*.rb', __FILE__)].each { |f| require f }
 Dir[File.expand_path('../../app/models/*.rb', __FILE__)].each { |f| require f }
 
-ShamanCache.config.cache = ActiveSupport::Cache::MemoryStore.new
+# ShamanCache.config.cache = ActiveSupport::Cache::FileStore.new("tmp/cache")
 
 require "api"
 require "app"
