@@ -20,7 +20,7 @@ gem 'grape', "~> 0.6.1"
 # Use Jbuilder with Grape https://github.com/milkcocoa/grape-jbuilder
 gem 'grape-jbuilder'
 
-gem 'kaminari', '0.14.1', :require => 'kaminari/grape'
+gem 'grape-kaminari'
 gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-as-taggable-on.git"
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'

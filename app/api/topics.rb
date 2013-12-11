@@ -1,11 +1,12 @@
 class Topics < Grape::API
   resources 'topics' do
+
     desc "Return topics list for all nodes."
     params do
       optional :filter, type: Symbol, values: [:hot, :new, :mine], default: :mine, desc: "Filtering topics."
       requires :device_id, type: String, desc: "Device ID."
       optional :page, type: Integer, default: 1, desc: "Page number."
-      optional :per, type: Integer, default: 10, desc: "Per page value."
+      optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'topics/topics' do
       topics = case params[:filter]
@@ -16,7 +17,7 @@ class Topics < Grape::API
       when :mine
         Topic.by_device(params[:device_id])
       end
-      @topics = topics.order("top DESC, updated_at DESC").page(params[:page]).per(params[:per])
+      @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
 
     params do
@@ -60,11 +61,11 @@ class Topics < Grape::API
         desc "Return a listing of replies for a topic."
         params do
           optional :page, type: Integer, default: 1, desc: "Page number."
-          optional :per, type: Integer, default: 10, desc: "Per page value."
+          optional :per_page, type: Integer, default: 10, desc: "Per page value."
         end
         get "/", jbuilder: 'replies/replies' do
           topic = Topic.find(params[:id])
-          @replies = topic.replies.page(params[:page]).per(params[:per])
+          @replies = paginate(topic.replies)
         end
 
         desc "Create a reply to the topic."
@@ -87,5 +88,4 @@ class Topics < Grape::API
     end
 
   end
-
 end
