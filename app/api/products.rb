@@ -21,10 +21,10 @@ class Products < Grape::API
       optional :tag, type: String, desc: "Tag name."
       optional :sku_visible, type: Boolean, default: false, desc: "Should return skus or not."
       optional :page, type: Integer, desc: "Page number."
-      optional :per, type: Integer, default: 10, desc: "Per page value."
+      optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'products/products' do
-      @products = Product.search(query_params).page(params[:page]).per(params[:per])
+      @products = paginate(Product.search(query_params))
     end
 
     params do
@@ -40,11 +40,11 @@ class Products < Grape::API
       params do
         optional :filter, type: Symbol, values: [:rated, :all], default: :all, desc: "Filtering trades with commented or not."
         optional :page, type: Integer, desc: "Page number."
-        optional :per, type: Integer, default: 10, desc: "Per page value."
+        optional :per_page, type: Integer, default: 10, desc: "Per page value."
       end
       get :trades, jbuilder: 'trades/trades' do
         product = Product.find(params[:id])
-        @trades = product.orders.by_filter(params[:filter]).distinct.order("created_at DESC").page(params[:page]).per(params[:per])
+        @trades = paginate(product.orders.by_filter(params[:filter]).distinct.order("created_at DESC"))
       end
     end
 

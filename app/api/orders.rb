@@ -22,10 +22,10 @@ class Orders < Grape::API
     params do
       requires :device_id, type: String, desc: "Device ID."
       optional :page, type: Integer, desc: "Page number."
-      optional :per, type: Integer, default: 10, desc: "Per page value."
+      optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get '/', jbuilder: 'orders/orders' do
-      @orders = Order.where(device_id: params[:device_id]).page(params[:page]).per(params[:per])
+      @orders = paginate(Order.where(device_id: params[:device_id]))
     end
 
     desc "Create an order."

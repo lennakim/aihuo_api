@@ -12,6 +12,3 @@ json.products @products do |product|
     end
   end
 end
-json.current_page @products.current_page
-json.total_pages @products.total_pages
-json.total_count @products.total_count

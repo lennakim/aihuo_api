@@ -8,7 +8,3 @@ json.trades @trades do |trade|
     json.partial! "trades/comment", comment: trade.comments.first
   end
 end
-json.current_page @trades.current_page
-json.total_pages @trades.total_pages
-json.total_count @trades.total_count
-

@@ -3,10 +3,10 @@ class Nodes < Grape::API
     desc "Return public nodes list."
     params do
       optional :page, type: Integer, default: 1, desc: "Page number."
-      optional :per, type: Integer, default: 10, desc: "Per page value."
+      optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'nodes/nodes' do
-      @nodes = Node.public.page(params[:page]).per(params[:per])
+      @nodes = paginate(Node.public)
     end
 
     params do
@@ -46,7 +46,7 @@ class Nodes < Grape::API
           optional :filter, type: Symbol, values: [:hot, :new, :mine, :all], default: :all, desc: "Filtering topics."
           requires :device_id, type: String, desc: "Device ID."
           optional :page, type: Integer, default: 1, desc: "Page number."
-          optional :per, type: Integer, default: 10, desc: "Per page value."
+          optional :per_page, type: Integer, default: 10, desc: "Per page value."
         end
         get "/", jbuilder: 'topics/topics' do
           node = Node.find(params[:id])
@@ -60,7 +60,7 @@ class Nodes < Grape::API
           else :all
             node.topics
           end
-          @topics = topics.order("top DESC, updated_at DESC").page(params[:page]).per(params[:per])
+          @topics = paginate(topics.order("top DESC, updated_at DESC"))
         end
 
         desc "Create a topic to the node."

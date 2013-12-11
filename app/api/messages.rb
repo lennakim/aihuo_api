@@ -24,10 +24,10 @@ class Messages < Grape::API
       requires :device_id, type: String, desc: "Device id."
       optional :since_id, type: String, desc: "Mesaage id."
       optional :page, type: Integer, desc: "Page number."
-      optional :per, type: Integer, default: 10, desc: "Per page value."
+      optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'messages/messages' do
-      @messages = Message.by_device(params[:device_id]).since(params[:since_id]).page(params[:page]).per(params[:per])
+      @messages = paginate(Message.by_device(params[:device_id]).since(params[:since_id]))
     end
 
     desc "Create a messages."
