@@ -2,13 +2,13 @@ require 'digest/md5'
 module ShouQuShop
   class API < Grape::API
     # TODO: caches not working.
-    include ShamanCache
+    # include ShamanCache
 
     # Include Grape::Kaminari module in your api
     include Grape::Kaminari
 
     version 'v2', using: :path
-    prefix 'api'
+    # prefix 'api'
 
     format :json
     formatter :json, Grape::Formatter::Jbuilder
