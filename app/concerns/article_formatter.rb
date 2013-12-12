@@ -1,8 +1,10 @@
 module ArticleFormatter
   extend ActiveSupport::Concern
 
+  CKEDITOR_ASSETS_SERVER = "http://www.yepcolor.com"
+
   included do
-    # 过滤编辑的文章内容，让新版旧版的文章内部连接可以返回适配iOS的数据
+    # step 1. 过滤编辑的文章内容，让新版旧版的文章内部连接可以返回适配iOS的数据
     # 例如：
     # <a href="185?mobile=1">test</a> 改为:
     # <a href="articles?5592f518373333f6a0a3b30a20b6a2b9">test</a>
@@ -12,9 +14,11 @@ module ArticleFormatter
     #   style="width: 450px; height: 166px;" /> 改为:
     # <a href="products?b8618303e2e90a25d868609258c5c21d"><img ... /></a>
     #
+    # step 2. 过滤编辑的文章内容，让 yepcolor 上的图片数据显示 url 而不是 path
     def body
       content = read_attribute(:body)
 
+      # step 1
       article_ids = []
       product_ids = []
 
@@ -38,6 +42,11 @@ module ArticleFormatter
 
         content.gsub!(reg, text)
       end
+
+      # step 2
+      img_path_reg = "\"/system/ckeditor_assets/"
+      img_url_text = "\"#{ArticleFormatter::CKEDITOR_ASSETS_SERVER}/system/ckeditor_assets/"
+      content.gsub!(img_path_reg, img_url_text)
 
       content
     end
