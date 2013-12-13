@@ -78,7 +78,7 @@ class Nodes < Grape::API
                        nickname: params[:nickname],
                        device_id: params[:device_id]
                      })
-            status 500 unless @topic.save
+            status 422 unless @topic.save
           else
             error! "Access Denied", 401
           end

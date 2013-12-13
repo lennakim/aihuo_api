@@ -79,7 +79,7 @@ class Topics < Grape::API
           if sign_approval?
             topic = Topic.find(params[:id])
             @reply = topic.replies.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
-            status 500 unless @reply.save
+            status 422 unless @reply.save
           else
             error! "Access Denied", 401
           end
