@@ -14,7 +14,9 @@ module ArticleFormatter
     #   style="width: 450px; height: 166px;" /> 改为:
     # <a href="products?b8618303e2e90a25d868609258c5c21d"><img ... /></a>
     #
-    # step 2. 过滤编辑的文章内容，让 yepcolor 上的图片数据显示 url 而不是 path
+    # step 2. 过滤图片的 style 属性，设置为全屏宽
+    #
+    # step 3. 过滤编辑的文章内容，让 yepcolor 上的图片数据显示 url 而不是 path
     def body
       content = read_attribute(:body)
 
@@ -44,6 +46,12 @@ module ArticleFormatter
       end
 
       # step 2
+      img_styles = []
+      img_style_pattern = /(?<style>\"width:[\w| |;]+height:[\w| |;]+\")/
+      content.scan(img_style_pattern) { |result| img_styles << result[0] }
+      img_styles.each { |style| content.gsub!(style.to_s, "\"width:100%\"") }
+
+      # step 3
       img_path_reg = "\"/system/ckeditor_assets/"
       img_url_text = "\"#{ArticleFormatter::CKEDITOR_ASSETS_SERVER}/system/ckeditor_assets/"
       content.gsub!(img_path_reg, img_url_text)
