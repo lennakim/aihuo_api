@@ -3,10 +3,7 @@ source 'http://ruby.taobao.org/'
 
 gem "rack", "~> 1.5.0"
 gem 'mysql2'
-gem 'activerecord', '4.0.0', require: 'active_record'
-
-# gem 'activesupport'
-# gem 'actionpack', '4.0.1.rc1'
+gem 'activerecord', '4.0.2', require: 'active_record'
 
 # An opinionated micro-framework for creating REST-like APIs in Ruby.
 # https://github.com/intridea/grape
@@ -21,6 +18,7 @@ gem 'grape', "~> 0.6.1"
 gem 'grape-jbuilder'
 
 gem 'grape-kaminari'
+gem 'rack-cache'
 gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-as-taggable-on.git"
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
@@ -36,8 +34,6 @@ gem 'china_sms'
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
 group :development do
   # A robust Ruby code analyzer, based on the community Ruby style guide.
   # https://github.com/bbatsov/rubocop

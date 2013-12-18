@@ -8,22 +8,22 @@ GIT
 GEM
   remote: http://ruby.taobao.org/
   specs:
-    actionpack (4.0.0)
-      activesupport (= 4.0.0)
+    actionpack (4.0.2)
+      activesupport (= 4.0.2)
       builder (~> 3.1.0)
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
-    activemodel (4.0.0)
-      activesupport (= 4.0.0)
+    activemodel (4.0.2)
+      activesupport (= 4.0.2)
       builder (~> 3.1.0)
-    activerecord (4.0.0)
-      activemodel (= 4.0.0)
+    activerecord (4.0.2)
+      activemodel (= 4.0.2)
       activerecord-deprecated_finders (~> 1.0.2)
-      activesupport (= 4.0.0)
+      activesupport (= 4.0.2)
       arel (~> 4.0.0)
     activerecord-deprecated_finders (1.0.3)
-    activesupport (4.0.0)
+    activesupport (4.0.2)
       i18n (~> 0.6, >= 0.6.4)
       minitest (~> 4.2)
       multi_json (~> 1.3)
@@ -32,22 +32,20 @@ GEM
     arel (4.0.1)
     ast (1.1.0)
     atomic (1.1.14)
-    awesome_nested_set (3.0.0.rc.2)
-      activerecord (~> 4.0.0)
+    awesome_nested_set (3.0.0.rc.3)
+      activerecord (>= 4.0.0, < 5)
     axiom-types (0.0.5)
       descendants_tracker (~> 0.0.1)
       ice_nine (~> 0.9)
-    backports (3.3.5)
     builder (3.1.4)
     china_sms (0.0.5)
-    coderay (1.0.9)
-    coercible (0.2.0)
-      backports (~> 3.0, >= 3.1.0)
+    coderay (1.1.0)
+    coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     descendants_tracker (0.0.3)
     encrypted_id (1.1.1)
       activerecord (>= 3.0.0)
-    equalizer (0.0.7)
+    equalizer (0.0.8)
     erubis (2.7.0)
     grape (0.6.1)
       activesupport
@@ -69,9 +67,9 @@ GEM
       grape
       kaminari
     hashie (2.0.5)
-    i18n (0.6.5)
+    i18n (0.6.9)
     ice_nine (0.10.0)
-    jbuilder (1.5.2)
+    jbuilder (1.5.3)
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)
     kaminari (0.15.0)
@@ -81,21 +79,23 @@ GEM
     minitest (4.7.5)
     multi_json (1.8.2)
     multi_xml (0.5.5)
-    mysql2 (0.3.13)
+    mysql2 (0.3.14)
     paranoia (2.0.1)
       activerecord (~> 4.0)
     parser (2.0.0)
       ast (~> 1.1)
       slop (~> 3.4, >= 3.4.5)
     powerpack (0.0.9)
-    pry (0.9.12.2)
-      coderay (~> 1.0.5)
+    pry (0.9.12.4)
+      coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
-    puma (2.6.0)
+    puma (2.7.1)
       rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-accept (0.4.5)
+      rack (>= 0.4)
+    rack-cache (1.2)
       rack (>= 0.4)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
@@ -112,17 +112,17 @@ GEM
       rainbow (>= 1.1.4)
     shotgun (0.9)
       rack (>= 1.0)
-    slop (3.4.6)
+    slop (3.4.7)
     thread_safe (0.1.3)
       atomic
-    tilt (1.4.1)
+    tilt (2.0.0)
     tilt-jbuilder (0.5.2)
       jbuilder
       tilt
     tzinfo (0.3.38)
-    virtus (1.0.0)
+    virtus (1.0.1)
       axiom-types (~> 0.0.5)
-      coercible (~> 0.2)
+      coercible (~> 1.0)
       descendants_tracker (~> 0.0.1)
       equalizer (~> 0.0.7)
 
@@ -130,7 +130,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (= 4.0.0)
+  activerecord (= 4.0.2)
   acts-as-taggable-on (~> 2.4.1)!
   awesome_nested_set (~> 3.0.0.rc.1)
   china_sms
@@ -143,6 +143,7 @@ DEPENDENCIES
   pry
   puma
   rack (~> 1.5.0)
+  rack-cache
   racksh
   rake
   rubocop

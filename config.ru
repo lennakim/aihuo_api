@@ -23,7 +23,11 @@ end
 # Make garner works
 use Rack::ConditionalGet
 use Rack::ETag
-# use Rack::Cache, { :verbose => true, :metastore => 'heap:/', :entitystore => 'heap:/' }
+# use Rack::Cache, {
+#   :verbose => true,
+#   :metastore => 'file:/Users/victor/Work/Projects/aihuo_api/tmp/cache/meta',
+#   :entitystore => 'file:/Users/victor/Work/Projects/aihuo_api/tmp/cache/body'
+# }
 
 
 # Puma, Sinatra, ActiveRecord and "could not obtain a database connection"

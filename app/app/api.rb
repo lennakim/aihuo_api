@@ -13,6 +13,10 @@ module ShouQuShop
     format :json
     formatter :json, Grape::Formatter::Jbuilder
 
+    # before do
+    #   header "Cache-Control", "public, max-age=3153600"
+    # end
+
     # http://stackoverflow.com/questions/13675879/activerecordconnectiontimeouterror
     # https://devcenter.heroku.com/articles/concurrency-and-database-connections
     after do
