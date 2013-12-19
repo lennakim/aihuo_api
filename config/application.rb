@@ -28,7 +28,9 @@ Dir[File.expand_path('../../app/concerns/*.rb', __FILE__)].each { |f| require f 
 Dir[File.expand_path('../../app/api/*.rb', __FILE__)].each { |f| require f }
 Dir[File.expand_path('../../app/models/*.rb', __FILE__)].each { |f| require f }
 
-# ShamanCache.config.cache = ActiveSupport::Cache::FileStore.new("tmp/cache")
+Grape::ShamanCache.configure do |config|
+  config.cache = ActiveSupport::Cache::FileStore.new("tmp/cache")
+end
 
 require "api"
 require "app"

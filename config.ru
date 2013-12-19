@@ -20,15 +20,8 @@ else
   use Rack::CommonLogger, Logger.new('log/production.log')
 end
 
-# Make garner works
 use Rack::ConditionalGet
 use Rack::ETag
-# use Rack::Cache, {
-#   :verbose => true,
-#   :metastore => 'file:/Users/victor/Work/Projects/aihuo_api/tmp/cache/meta',
-#   :entitystore => 'file:/Users/victor/Work/Projects/aihuo_api/tmp/cache/body'
-# }
-
 
 # Puma, Sinatra, ActiveRecord and "could not obtain a database connection"
 # http://snippets.aktagon.com/snippets/621-puma-sinatra-activerecord-and-could-not-obtain-a-database-connection-

@@ -1,8 +1,7 @@
 require 'digest/md5'
 module ShouQuShop
   class API < Grape::API
-    # TODO: caches not working.
-    # include ShamanCache
+    include Grape::ShamanCache
 
     # Include Grape::Kaminari module in your api
     include Grape::Kaminari
