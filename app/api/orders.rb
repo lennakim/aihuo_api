@@ -46,11 +46,16 @@ class Orders < Grape::API
         optional :device_id, type: String, desc: "Device ID"
         optional :application_id, type: Integer, desc: "Application ID"
       end
+      optional :coupon, type: String, desc: "优惠劵"
     end
     post '/', jbuilder: 'orders/order' do
       if sign_approval?
         @order = Order.newly.build(order_params)
-        status 500 unless @order.save
+        if @order.save
+          @order.calculate_total_by_coupon(params[:coupon])
+        else
+          status 500
+        end
       else
         error! "Access Denied", 401
       end
