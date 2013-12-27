@@ -21,12 +21,11 @@ class Coupon < ActiveRecord::Base
   # additional config .........................................................
   # class methods .............................................................
   # public instance methods ...................................................
-  def used!(device_id, order)
-    number = self.number - 1
-    number = number < 0 ? 0 : number
-    update_attribute(:number, number)
-    update_attribute(:enabled, false) if number == 0
-    order.coupons << self
+  def used!
+    new_number = number - 1
+    new_number = new_number < 0 ? 0 : new_number
+    update_attribute(:number, new_number)
+    update_attribute(:enabled, false) if new_number == 0
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

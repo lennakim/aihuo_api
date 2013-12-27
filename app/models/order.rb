@@ -59,7 +59,8 @@ class Order < ActiveRecord::Base
       when 9 # 总价减折扣
         update_attribute(:item_total, item_total - coupon.money)
       end
-      coupon.used!(device_id, self)
+      coupon.used!
+      coupons << coupon
     end
   end
 
