@@ -27,7 +27,7 @@ class Order < ActiveRecord::Base
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : self }
   scope :with_comments, -> { joins(:comments) }
   scope :newly, -> { where(state: "订单已下，等待确认") }
-  scope :done, -> { where("state = ? OR state = ?", "客户拒签，原件返回", "客户签收，订单完成") }
+  scope :done, -> { where("state = ? OR state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
   # additional config .........................................................
   delegate :extra_order_id, to: :express
   accepts_nested_attributes_for :line_items

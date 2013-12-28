@@ -12,10 +12,6 @@ module ShouQuShop
     format :json
     formatter :json, Grape::Formatter::Jbuilder
 
-    # before do
-    #   header "Cache-Control", "public, max-age=3153600"
-    # end
-
     # http://stackoverflow.com/questions/13675879/activerecordconnectiontimeouterror
     # https://devcenter.heroku.com/articles/concurrency-and-database-connections
     after do
@@ -36,6 +32,12 @@ module ShouQuShop
 
       def flatten_hash(hash)
         hash.collect { |k, v| v.is_a?(Hash) ? flatten_hash(v) : "#{k}=#{v}" }
+      end
+
+      def url_encode(s)
+        s.to_s.dup.force_encoding("ASCII-8BIT").gsub(/[^a-zA-Z0-9_\-.]/) {
+          sprintf("%%%02X", $&.unpack("C")[0])
+        }
       end
 
       def sign(hash_signature, signature_keys)
@@ -59,10 +61,11 @@ module ShouQuShop
         return unless @application
         secret_key = @application.secret_key
 
-        # logger.info "string: #{base_url + calculated_signature + secret_key}"
-        # logger.info "sign: #{Digest::MD5.hexdigest(base_url + calculated_signature + secret_key)}"
         # Final calculated_signature to compare against
-        Digest::MD5.hexdigest(base_url + calculated_signature + secret_key)
+        string = base_url + calculated_signature + secret_key
+        logger.info "string: #{string}"
+        logger.info "sign: #{Digest::MD5.hexdigest(url_encode(string))}"
+        Digest::MD5.hexdigest(url_encode(string))
       end
 
       def sign_approval?(signature_keys = ['sign'])
