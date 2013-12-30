@@ -3,8 +3,8 @@ require 'puma'
 environment "production"
 daemonize true
 
-workers 0
-threads 4, 32
+workers 2
+threads 8, 32
 
 wd = File.expand_path('../../', __FILE__)
 tmp_path = File.join(wd, 'log')
