@@ -44,7 +44,8 @@ class Order < ActiveRecord::Base
   end
 
   def express_number
-    (express ? extra_order_id : delivery_no).strip
+    number = express ? extra_order_id : delivery_no
+    number.strip if number
   end
 
   def calculate_with_coupon(coupon)
