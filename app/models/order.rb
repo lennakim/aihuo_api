@@ -19,6 +19,7 @@ class Order < ActiveRecord::Base
   validates :shipping_charge, presence: true, numericality: true
   # callbacks .................................................................
   before_destroy :logging_action
+  before_create :compose_ship_address
   after_create :calculate_item_total
   # after_create :send_confirm_sms
   after_create :register_device
@@ -77,6 +78,12 @@ class Order < ActiveRecord::Base
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
+
+  def compose_ship_address
+    self.address =
+      "#{shipping_province} #{shipping_city} #{shipping_district} #{shipping_address}"
+  end
+
   def logging_action
     orderlogs.logging_action(:delete, device_id)
   end
