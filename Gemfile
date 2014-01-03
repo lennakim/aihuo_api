@@ -18,6 +18,7 @@ gem 'grape', "~> 0.6.1"
 gem 'grape-jbuilder'
 gem 'grape-kaminari'
 gem 'grape-shaman_cache'
+gem 'newrelic-grape'
 
 gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-as-taggable-on.git"
 # https://github.com/pencil/encrypted_id
