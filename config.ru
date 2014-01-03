@@ -16,6 +16,10 @@ if ENV['RACK_ENV'] == "development"
   # use Rack::ContentType, "text/plain"
   use Rack::ShowExceptions
   use Rack::CommonLogger, Logger.new('log/development.log')
+
+  puts "Loading NewRelic in developer mode ..."
+  require 'new_relic/rack/developer_mode'
+  use NewRelic::Rack::DeveloperMode
 else
   use Rack::CommonLogger, Logger.new('log/production.log')
 end
@@ -26,6 +30,8 @@ use Rack::ETag
 # Puma, Sinatra, ActiveRecord and "could not obtain a database connection"
 # http://snippets.aktagon.com/snippets/621-puma-sinatra-activerecord-and-could-not-obtain-a-database-connection-
 use ActiveRecord::ConnectionAdapters::ConnectionManagement
+
+NewRelic::Agent.manual_start
 
 # run ShouQuShop::API
 run ShouQuShop::App.instance
