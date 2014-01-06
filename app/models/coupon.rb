@@ -9,13 +9,11 @@ class Coupon < ActiveRecord::Base
   # callbacks .................................................................
   # scopes ....................................................................
   scope :by_device, ->(device_id) { where(:to => [device_id, 'ALL']) }
-  scope :today, -> {
-    today = Date.today.beginning_of_day
-    where("start_time <= ? AND end_time >= ?", today, today)
-  }
   scope :enabled, -> { where(enabled: true) }
   scope :separate, -> { where(separate: true) }
-  scope :validity, -> { today.enabled }
+  scope :available_for, ->(t) {
+    enabled.where("start_time <= ? AND end_time >= ?", t, t)
+  }
 
 
   # additional config .........................................................

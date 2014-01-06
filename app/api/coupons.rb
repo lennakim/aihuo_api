@@ -8,7 +8,8 @@ class Coupons < Grape::API
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get '/', jbuilder: 'coupons/coupons' do
-      @coupons = paginate(Coupon.validity.by_device(params[:device_id]))
+      @coupons =
+        paginate(Coupon.available_for(Time.now).by_device(params[:device_id]))
     end
 
   end
