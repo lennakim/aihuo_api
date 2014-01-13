@@ -12,6 +12,11 @@ class Products < Grape::API
         end
       end
     end
+
+    def data_param
+      date =  request.headers["date"] || params[:date]
+      date.to_date if date
+    end
   end
 
   resources :products do
@@ -19,12 +24,13 @@ class Products < Grape::API
     params do
       optional :id, type: Array, desc: "Product ids."
       optional :tag, type: String, desc: "Tag name."
+      optional :date, type: String, desc: "Date looks like '20130401'."
       optional :sku_visible, type: Boolean, default: false, desc: "Should return skus or not."
       optional :page, type: Integer, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'products/products' do
-      @products = paginate(Product.search(query_params))
+      @products = paginate(Product.search(query_params, data_param, Date.today))
     end
 
     params do
