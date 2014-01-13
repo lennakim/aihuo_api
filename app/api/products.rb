@@ -14,7 +14,7 @@ class Products < Grape::API
     end
 
     def data_param
-      date = request.headers["RegisterDate"] || params[:register_date]
+      date = request.headers["Registerdate"] || params[:register_date]
       date.to_date if date
     end
   end
