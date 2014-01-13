@@ -27,6 +27,9 @@ class Topics < Grape::API
       desc "Return a topic."
       get "/", jbuilder: 'topics/topic'  do
         @topic = Topic.find(params[:id])
+        cache(key: [:v2, :topic, @topic], expires_in: 2.days) do
+          @topic
+        end
       end
 
       desc "Delete a topic."

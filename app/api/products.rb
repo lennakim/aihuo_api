@@ -40,6 +40,9 @@ class Products < Grape::API
       desc "Return a product."
       get "/", jbuilder: 'products/product' do
         @product = Product.find(params[:id])
+        cache(key: [:v2, :product, @product], expires_in: 2.days) do
+          @product
+        end
       end
 
       desc "Listing trades of the product."

@@ -16,6 +16,9 @@ class Articles < Grape::API
     end
     get ':id', jbuilder: 'articles/article' do
       @article = Article.find(params[:id])
+      cache(key: [:v2, :article, @article], expires_in: 2.days) do
+        @article
+      end
     end
   end
 end

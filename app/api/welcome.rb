@@ -6,7 +6,7 @@ class Welcome < Grape::API
   get :home, jbuilder: 'welcome/home' do
     @banners = Article.banner.without_gifts
     @tags = Tag.where(id: Tag::CATEGORIES)
-    cache(key: [:v2, :home, @banners.last], expires_in: 1.minute) do
+    cache(key: [:v2, :home, @banners.last], expires_in: 2.days) do
       @banners
       @tags
     end
