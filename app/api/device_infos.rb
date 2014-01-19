@@ -14,7 +14,7 @@ class DeviceInfos < Grape::API
     desc "Create a device info about baidu sdk."
     params do
       requires :device_id, type: String, desc: "Device ID"
-      requires :api_key, type: String, desc: "Application API Key"
+      optional :api_key, type: String, desc: "Application API Key"
       requires :sign, type: String, desc: "Sign value"
       group :device_info do
         requires :baidu_user_id, type: String

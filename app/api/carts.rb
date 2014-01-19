@@ -22,7 +22,7 @@ class Carts < Grape::API
     desc "Get current cart."
     params do
       requires :device_id, type: String, desc: "Device ID"
-      requires :api_key, type: String, desc: "Application API Key"
+      optional :api_key, type: String, desc: "Application API Key"
     end
     get '/', jbuilder: 'carts/cart' do
       current_cart
@@ -31,7 +31,7 @@ class Carts < Grape::API
     desc "Create a cart."
     params do
       requires :device_id, type: String, desc: "Device ID"
-      requires :api_key, type: String, desc: "Application API Key"
+      optional :api_key, type: String, desc: "Application API Key"
       requires :sign, type: String, desc: "Sign value"
       group :cart do
         requires :line_items_attributes, type: Hash, desc: "商品"

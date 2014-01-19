@@ -31,7 +31,7 @@ class Orders < Grape::API
     desc "Create an order."
     params do
       requires :device_id, type: String, desc: "Device ID"
-      requires :api_key, type: String, desc: "Application API Key"
+      optional :api_key, type: String, desc: "Application API Key"
       requires :sign, type: String, desc: "Sign value"
       group :order do
         requires :line_items_attributes, type: Hash, desc: "商品"
