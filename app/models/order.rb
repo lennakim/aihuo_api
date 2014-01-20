@@ -20,6 +20,7 @@ class Order < ActiveRecord::Base
   # callbacks .................................................................
   before_destroy :logging_action
   before_create :compose_ship_address
+  after_create :merge_pending_orders
   after_create :calculate_item_total
   # after_create :send_confirm_sms
   after_create :register_device
@@ -66,18 +67,45 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def calculate_total_by_coupon(coupon_id)
+  # validate 参数用来标示，优惠劵是否需要验证在有效期内
+  def calculate_total_by_coupon(coupon_id, validate = true)
     return if coupon_id.blank?
-    return unless Coupon.by_device(device_id).enabled.collect(&:to_param).include?(coupon_id) # 如果优惠劵已经作废
+
+    # 有效的优惠劵不包含本卷，说明如果优惠劵已经作废
+    return if validate && !Coupon.by_device(device_id).enabled.collect(&:to_param).include?(coupon_id)
     coupon = Coupon.find coupon_id
+
     # FIXME: 如果 id 是虚构的，则会造成程序出错
-    return if coupon.blank? # 优惠劵ID是错误的
+    # 优惠劵ID是错误的
+    return if coupon.blank?
     calculate_with_coupon(coupon)
+  end
+
+  def calculate_total_by_coupons(coupon_ids)
+    coupon_ids.each { |coupon_id| calculate_total_by_coupon(coupon_id, false) }
   end
 
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
+
+  def merge_pending_orders
+    orders = Order.newly.where(device_id: device_id).
+      where(application_id: application_id).
+      where.not(id: id)
+
+    return if orders && orders.size.zero?
+
+    orders.each do |order|
+      order.line_items.each { |item| self.line_items << item }
+      order.coupons.each { |coupon| self.coupons << coupon }
+    end
+
+    coupon_ids = coupons.collect(&:to_param)
+    calculate_total_by_coupons(coupon_ids)
+
+    orders.destroy_all
+  end
 
   def compose_ship_address
     self.address =
