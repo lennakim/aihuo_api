@@ -41,14 +41,18 @@ class Product < ActiveRecord::Base
   # class methods .............................................................
   # public instance methods ...................................................
 
-  # 市場價（原價）顯示SKU售賣價的最高值
+  # 市场价（原价）显示SKU市场价的最高值
   def market_price
     product_props.order("original_price DESC").first.original_price
+  rescue
+    'No SKU'
   end
 
-  # 零售價（現價）顯示SKU售賣價的最低值
+  # 零售价（现价）显示SKU零售价的最低值
   def retail_price
     product_props.order("sale_price").first.sale_price
+  rescue
+    'No SKU'
   end
 
   def labels
