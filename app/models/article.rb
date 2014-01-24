@@ -1,5 +1,6 @@
 class Article < ActiveRecord::Base
   # extends ...................................................................
+  acts_as_paranoid
   encrypted_id key: 'AJ03lQmVmtomCfug'
   # includes ..................................................................
   include CarrierWave
