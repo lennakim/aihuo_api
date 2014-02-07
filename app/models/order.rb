@@ -26,7 +26,7 @@ class Order < ActiveRecord::Base
   after_create :register_device
   after_create :destroy_cart
   # scopes ....................................................................
-  default_scope order("id DESC")
+  default_scope { order("id DESC") }
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : self }
   scope :with_comments, -> { joins(:comments) }
   scope :newly, -> { where(state: "订单已下，等待确认") }
