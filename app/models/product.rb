@@ -26,15 +26,15 @@ class Product < ActiveRecord::Base
         when Integer # keyword is ids
           where(id: keyword)
         when String # keyword is tags
-          tagged_with(keyword, :any => true)
+          tagged_with(keyword, any: true).distinct
         end
       when String # keyword is a tag or word.
-        products = tagged_with(keyword, :any => true)
+        products = tagged_with(keyword, any: true).distinct
         products = where("products.title like ?", "%#{keyword}%") if products.size.zero?
         products
       end
-    # 用户日期不在三天内，不显示0元购
-    if date && today && date < 2.days.ago(today)
+    # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购
+    if date.blank? || date && today && date < 2.days.ago(today)
       gifts_ids = self.gifts.pluck(:id)
       products = products.where.not(id: gifts_ids)
     end
