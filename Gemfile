@@ -40,7 +40,7 @@ gem 'mina-puma', :require => false
 group :development do
   # A robust Ruby code analyzer, based on the community Ruby style guide.
   # https://github.com/bbatsov/rubocop
-  gem 'rubocop'
+  gem 'rubocop', '~> 0.18.1'
   gem "rake"
   # https://github.com/sickill/racksh
   gem "racksh"

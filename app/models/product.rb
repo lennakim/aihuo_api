@@ -32,6 +32,8 @@ class Product < ActiveRecord::Base
         products = tagged_with(keyword, any: true).distinct
         products = where("products.title like ?", "%#{keyword}%") if products.size.zero?
         products
+      when NilClass # keyword is nil, return all the products
+        self
       end
     # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购
     if date.blank? || date && today && date < 2.days.ago(today)
