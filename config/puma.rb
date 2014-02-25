@@ -1,19 +1,35 @@
 require 'puma'
 #!/usr/bin/env puma
-environment "production"
+
+# Start Puma with next command:
+# bundle exec puma -e production -C ./config/puma.rb
+app_path = '/var/www/api.aihuo360.com'
+
+# The directory to operate out of.
+directory app_path
+
+# Set the environment in which the rack's app will run.
+environment 'production'
+
+# Daemonize the server into the background. Highly suggest that
+# this be combined with `pidfile` and `stdout_redirect`.
 daemonize true
 
 workers 2
 threads 8, 32
 
-wd = File.expand_path('../../', __FILE__)
-tmp_path = File.join(wd, 'log')
-Dir.mkdir(tmp_path) unless File.exist?(tmp_path)
+# Store the pid of the server in the file at `path`.
+pidfile "#{app_path}/tmp/pids/puma.pid"
 
-bind  "unix:///var/run/adultshop_api.sock"
-pidfile File.join(tmp_path, 'api_puma.pid')
-state_path File.join(tmp_path, 'api_puma.state')
-stdout_redirect File.join(tmp_path, 'api_puma.out.log'), File.join(tmp_path, 'api_puma.err.log'), true
+# Use `path` as the file to store the server info state. This is
+# used by `pumactl` to query and control the server.
+state_path "#{app_path}/tmp/pids/puma.state"
+
+# Redirect STDOUT and STDERR to files specified.
+stdout_redirect "#{app_path}/log/puma.out.log", "#{app_path}/log/puma.err.log"
+
+# Bind the server.
+bind "unix://#{app_path}/tmp/sockets/puma.sock"
 
 preload_app! #utilizing copy-on-write
-activate_control_app
+activate_control_app "unix://#{app_path}/tmp/sockets/puma.sock"
