@@ -32,12 +32,12 @@ gem 'china_sms'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
-# Use mina for deployment
-# https://github.com/nadarei/mina
-gem 'mina'
-gem 'mina-puma', :require => false
-
 group :development do
+  # Use mina for deployment
+  # https://github.com/nadarei/mina
+  gem 'mina'
+  # gem 'mina-puma', :require => false
+
   # A robust Ruby code analyzer, based on the community Ruby style guide.
   # https://github.com/bbatsov/rubocop
   gem 'rubocop', '~> 0.18.1'

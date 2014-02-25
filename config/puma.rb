@@ -1,13 +1,6 @@
 require 'puma'
 #!/usr/bin/env puma
 
-# Start Puma with next command:
-# bundle exec puma -e production -C ./config/puma.rb
-app_path = '/var/www/api.aihuo360.com'
-
-# The directory to operate out of.
-directory app_path
-
 # Set the environment in which the rack's app will run.
 environment 'production'
 
@@ -18,18 +11,23 @@ daemonize true
 workers 2
 threads 8, 32
 
+wd = File.expand_path('../../', __FILE__)
+tmp_path = File.join(wd, 'tmp')
+log_path = File.join(wd, 'log')
+Dir.mkdir(tmp_path) unless File.exist?(tmp_path)
+
 # Store the pid of the server in the file at `path`.
-pidfile "#{app_path}/tmp/pids/puma.pid"
+pidfile File.join(tmp_path, 'pids', 'puma.pid')
 
 # Use `path` as the file to store the server info state. This is
 # used by `pumactl` to query and control the server.
-state_path "#{app_path}/tmp/pids/puma.state"
+state_path File.join(tmp_path, 'pids', 'puma.state')
 
 # Redirect STDOUT and STDERR to files specified.
-stdout_redirect "#{app_path}/log/puma.out.log", "#{app_path}/log/puma.err.log"
+stdout_redirect File.join(log_path, 'puma.out.log'), File.join(log_path, 'puma.err.log'), true
 
 # Bind the server.
-bind "unix://#{app_path}/tmp/sockets/puma.sock"
+bind "unix:///var/run/api.aihuo360.com.sock"
 
 preload_app! #utilizing copy-on-write
-activate_control_app "unix://#{app_path}/tmp/sockets/puma.sock"
+activate_control_app

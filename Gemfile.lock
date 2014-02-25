@@ -84,9 +84,6 @@ GEM
     mina (0.3.0)
       open4
       rake
-    mina-puma (0.1.0)
-      mina
-      puma
     minitest (4.7.5)
     multi_json (1.8.2)
     multi_xml (0.5.5)
@@ -155,7 +152,6 @@ DEPENDENCIES
   grape-kaminari
   grape-shaman_cache
   mina
-  mina-puma
   mysql2
   newrelic-grape
   paranoia (~> 2.0.1)
