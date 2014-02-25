@@ -74,7 +74,7 @@ task :deploy => :environment do
 
     to :launch do
       # queue "touch #{deploy_to}/tmp/restart.txt"
-      # invoke :start
+      invoke :start
     end
   end
 end
@@ -82,25 +82,26 @@ end
 desc 'Starts the application'
 task :start => :environment do
   queue "cd #{app_path} ; bundle exec puma -C config/puma.rb -d"
-  # queue "cd #{app_path} ; RAILS_ENV=#{rails_env} ./script/delayed_job start"
 end
 
-task :restart => :environment do
-  queue "bundle exec pumactl -P #{deploy_to}/tmp/pids/puma.pid restart"
+desc 'Stop the application'
+task :stop => :environment do
+  queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid stop"
+end
 
-  # queue """
-  # if [ -d #{deploy_to}/current/tmp ]
-  # then
-  #   touch #{deploy_to}/current/tmp/restart.txt
-  # else
-  #   mkdir #{deploy_to}/current/tmp
-  #   touch #{deploy_to}/current/tmp/restart.txt
-  # fi
-  # """
+desc 'Restart the application'
+task :restart => :environment do
+  # invoke :stop
+  # invoke :start
+  queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid restart"
 end
 
 task :cat_server_log => :environment do
-  # queue "tail -n 200 #{deploy_to}/current/log/production.log"
+  queue "tail -n 200 #{app_path}/log/production.log"
+end
+
+task :cat_err_log => :environment do
+  queue "tail -n 200 #{app_path}/log/puma.err.log"
 end
 
 # For help in making your deploy script, see the Mina documentation:
