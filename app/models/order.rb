@@ -40,6 +40,11 @@ class Order < ActiveRecord::Base
     created_at.to_i.to_s + (id * 2 + 19871030).to_s
   end
 
+  # 购买记录中的订单创建时间显示第一条评论的评论时间
+  def commented_at
+    comments.first.created_at rescue created_at
+  end
+
   # 订单总价兼容新版本用户查看旧版订单
   def total
     total = item_total.zero? ? price : item_total

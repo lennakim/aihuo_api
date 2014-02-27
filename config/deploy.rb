@@ -14,8 +14,7 @@ require 'mina/rvm'    # for rvm support. (http://rvm.io)
 set :domain, 'api.aihuo360.com'
 set :deploy_to, '/var/www/api.aihuo360.com'
 set :repository, 'git@bitbucket.org:Xiaopuzhu/adultshop_new.git'
-# set :branch, 'master'
-set :branch, 'feature/try_mina'
+set :branch, 'master'
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.

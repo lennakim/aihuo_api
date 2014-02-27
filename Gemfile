@@ -25,7 +25,7 @@ gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
 gem 'awesome_nested_set', '~> 3.0.0.rc.1'
-gem 'puma'
+
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
@@ -36,8 +36,6 @@ group :development do
   # Use mina for deployment
   # https://github.com/nadarei/mina
   gem 'mina'
-  # gem 'mina-puma', :require => false
-
   # A robust Ruby code analyzer, based on the community Ruby style guide.
   # https://github.com/bbatsov/rubocop
   gem 'rubocop', '~> 0.18.1'
@@ -48,4 +46,9 @@ group :development do
   # reloading rack development server / forking version of rackup
   # Start your app by running 'shotgun'
   gem 'shotgun'
+end
+
+group :production do
+  # Ruby Web Server
+  gem 'puma'
 end
