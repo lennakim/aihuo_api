@@ -21,7 +21,7 @@ pidfile File.join(tmp_path, 'pids', 'puma.pid')
 
 # Use `path` as the file to store the server info state. This is
 # used by `pumactl` to query and control the server.
-state_path File.join(tmp_path, 'pids', 'puma.state')
+state_path File.join(tmp_path, 'sockets', 'puma.state')
 
 # Redirect STDOUT and STDERR to files specified.
 stdout_redirect File.join(log_path, 'puma.out.log'), File.join(log_path, 'puma.err.log'), true
