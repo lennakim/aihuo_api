@@ -1,5 +1,15 @@
 # This file is used by Rack-based servers to start the application.
 
+# supports JavaScript Cross-Domain XMLHttpRequest Calls works
+require 'rack/cors'
+use Rack::Cors do
+  allow do
+    origins '*'
+    # resource '*', headers: :any, methods: :get
+    resource '*', headers: :any
+  end
+end
+
 # Fixed: extended the Logger class to handle the write method.
 # https://github.com/customink/stoplight/issues/14
 require 'logger'

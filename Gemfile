@@ -32,6 +32,9 @@ gem 'china_sms'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
+#supports CORS
+gem 'rack-cors'
+
 group :development do
   # Use mina for deployment
   # https://github.com/nadarei/mina
