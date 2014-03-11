@@ -1,4 +1,7 @@
 # source 'https://rubygems.org'
+LANG="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
+
 source 'http://ruby.taobao.org/'
 
 gem "rack", "~> 1.5.0"
