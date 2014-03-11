@@ -7,7 +7,7 @@ class Articles < Grape::API
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'articles/articles' do
-      @articles = paginate(Article)
+      @articles = paginate(Article.available)
     end
 
     desc "Return an article."
