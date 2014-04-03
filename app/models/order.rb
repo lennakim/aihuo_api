@@ -50,6 +50,9 @@ class Order < ActiveRecord::Base
     return (total + shipping_charge).to_f
   end
 
+  # 运单号有两种情况:
+  #  extra_order_id 从ERP同步回来的运单, 储存在 shippingorders 中
+  #  delivery_no 自己填写的运单号, 储存在 orders 中
   def express_number
     number = express ? extra_order_id : delivery_no
     number.strip if number
