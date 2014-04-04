@@ -15,17 +15,25 @@ class Product < ActiveRecord::Base
   # callbacks .................................................................
   # scopes ....................................................................
   default_scope { order("products.out_of_stock, products.rank DESC") }
-  scope :gifts, -> { joins(:product_props).where("product_props.sale_price = 0").group('products.id') }
 
-  scope :search, ->(keyword, date, today) {
+  scope :gifts, -> {
+    joins(:product_props).where("product_props.sale_price = 0").group('products.id')
+  }
+
+  scope :search, ->(keyword, date, today, match) {
     products =
       case keyword # was case keyword.class
       when Array
         case keyword[0] # was case keyword[0].class
-        when Integer # keyword is ids
+        when Integer # keyword is array of ids
           where(id: keyword)
-        when String # keyword is tags
-          tagged_with(keyword, any: true).distinct
+        when String # keyword is array of tags
+          case match
+          when "any" # keyword is array of tags
+            tagged_with(keyword, any: true).distinct
+          when "match_all" # keyword is array of categories and brands
+            keyword.inject(self) { |mem, k| mem.tagged_with(k, any: true).distinct }
+          end
         end
       when String # keyword is a tag or word.
         products = tagged_with(keyword, any: true).distinct
@@ -41,6 +49,8 @@ class Product < ActiveRecord::Base
     end
     products
   }
+
+  scope :price_between, ->(min, max) { where(price: min...max) if min && max }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
   # public instance methods ...................................................
