@@ -2,17 +2,17 @@ class Products < Grape::API
   # define helpers with a block
   helpers do
     def query_params
-      # 传递的是一个 tag 或者搜索关键词
-      if params[:tag]
-        tag = Tag.find_by(name: params[:tag])
-        tag = tag.self_and_descendants.collect(&:name) if tag
-        tag || params[:tag]
       # 传递的是二级分类过滤器中的 category 和 brand
-      elsif params[:tags]
+      if params[:tags]
         params[:match] = "match_all"
         params[:tags].inject([]) do |tags, tag|
           tags << tag
         end
+      # 传递的是一个 tag 或者搜索关键词
+      elsif params[:tag]
+        tag = Tag.find_by(name: params[:tag])
+        tag = tag.self_and_descendants.collect(&:name) if tag
+        tag || params[:tag]
       # 传递的是一组产品ID
       elsif params[:id]
         params[:id].inject([]) do |ids, id|
