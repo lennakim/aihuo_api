@@ -1,5 +1,5 @@
 if @tag
-  json.category @tag.value.split("/")[0] if @tag.value.split("/")[0]
-  json.brand @tag.value.split("/")[1] if @tag.value.split("/")[1]
-  json.price @tag.value.split("/")[2] if @tag.value.split("/")[2]
+  json.categories @tag.value.split("/")[0].split("|") if @tag.value.split("/")[0]
+  json.brands @tag.value.split("/")[1].split("|") if @tag.value.split("/")[1]
+  json.prices @tag.value.split("/")[2].split("|") if @tag.value.split("/")[2]
 end
