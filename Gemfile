@@ -1,12 +1,9 @@
-# source 'https://rubygems.org'
-LANG="en_US.UTF-8"
-LC_ALL="en_US.UTF-8"
-
-source 'http://ruby.taobao.org/'
+source 'https://rubygems.org'
+# source 'http://ruby.taobao.org/'
 
 # An opinionated micro-framework for creating REST-like APIs in Ruby.
 # https://github.com/intridea/grape
-gem 'grape', "~> 0.6.1"
+gem 'grape', "0.7.0"
 
 gem "rack", "~> 1.5.0"
 gem 'mysql2'
@@ -21,7 +18,7 @@ gem 'activerecord', '4.0.2', require: 'active_record'
 gem 'grape-jbuilder'
 gem 'grape-kaminari'
 gem 'grape-shaman_cache'
-gem 'newrelic-grape'
+# gem 'newrelic-grape'
 
 gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-as-taggable-on.git"
 # https://github.com/pencil/encrypted_id
