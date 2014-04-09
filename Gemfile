@@ -7,7 +7,7 @@ gem 'grape', "0.7.0"
 
 gem "rack", "~> 1.5.0"
 gem 'mysql2'
-gem 'activerecord', '4.0.2', require: 'active_record'
+gem 'activerecord', '4.1.0.rc2'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -16,11 +16,11 @@ gem 'activerecord', '4.0.2', require: 'active_record'
 # gem 'jbuilder', '~> 1.2'
 # Use Jbuilder with Grape https://github.com/milkcocoa/grape-jbuilder
 gem 'grape-jbuilder'
-gem 'grape-kaminari'
-gem 'grape-shaman_cache'
+gem 'grape-kaminari', github: 'wjp2013/grape-kaminari'
+gem 'grape-shaman_cache', '0.2.0', github: 'wjp2013/grape-shaman_cache'
 # gem 'newrelic-grape'
 
-gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-as-taggable-on.git"
+# gem 'acts-as-taggable-on', '~> 2.4.1', github: 'wjp2013/acts-as-taggable-on'
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
@@ -45,7 +45,6 @@ group :development do
   gem "rake"
   # https://github.com/sickill/racksh
   gem "racksh"
-  gem 'pry'
   # reloading rack development server / forking version of rackup
   # Start your app by running 'shotgun'
   gem 'shotgun'
@@ -56,7 +55,13 @@ group :test do
   gem 'rack-test', require: 'rack/test'
 end
 
+group :development, :test do
+  # gem 'api_taster', '0.6.0'
+  gem 'pry'
+end
+
 group :production do
   # Ruby Web Server
   gem 'puma'
 end
+
