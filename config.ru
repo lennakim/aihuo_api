@@ -20,7 +20,7 @@ class ::Logger; alias_method :write, :<<; end
 require ::File.expand_path('../config/environment', __FILE__)
 
 use Rack::Config do |env|
-  env['api.tilt.root'] = ::File.expand_path('../app/views', __FILE__)
+  env['api.tilt.root'] = ::File.expand_path('../lib/views', __FILE__)
 end
 
 if ENV['RACK_ENV'] == "development"
