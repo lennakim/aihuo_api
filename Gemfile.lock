@@ -153,6 +153,7 @@ DEPENDENCIES
   grape-kaminari
   grape-shaman_cache
   mina
+  minitest
   mysql2
   newrelic-grape
   paranoia (~> 2.0.1)
@@ -160,6 +161,7 @@ DEPENDENCIES
   puma
   rack (~> 1.5.0)
   rack-cors
+  rack-test
   racksh
   rake
   rubocop (~> 0.18.1)

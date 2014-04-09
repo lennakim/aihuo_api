@@ -4,13 +4,13 @@ LC_ALL="en_US.UTF-8"
 
 source 'http://ruby.taobao.org/'
 
-gem "rack", "~> 1.5.0"
-gem 'mysql2'
-gem 'activerecord', '4.0.2', require: 'active_record'
-
 # An opinionated micro-framework for creating REST-like APIs in Ruby.
 # https://github.com/intridea/grape
 gem 'grape', "~> 0.6.1"
+
+gem "rack", "~> 1.5.0"
+gem 'mysql2'
+gem 'activerecord', '4.0.2', require: 'active_record'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -52,6 +52,11 @@ group :development do
   # reloading rack development server / forking version of rackup
   # Start your app by running 'shotgun'
   gem 'shotgun'
+end
+
+group :test do
+  gem 'minitest', require: false
+  gem 'rack-test', require: 'rack/test'
 end
 
 group :production do
