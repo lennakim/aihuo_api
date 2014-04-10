@@ -34,7 +34,7 @@ class Messages < Grape::API
     params do
       requires :device_id, type: String, desc: "Device ID"
       requires :sign, type: String, desc: "Sign value."
-      group :message do
+      group :message, type: Hash do
         requires :body, type: String, desc: "Message content."
         optional :category, type: Symbol, values: [:question], default: :question, desc: "Message category."
         optional :object_id, type: String, desc: "Product id."

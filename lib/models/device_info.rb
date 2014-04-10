@@ -18,6 +18,7 @@ class DeviceInfo < ActiveRecord::Base
     update_attribute(:tag_list, date_tag) if date_tag
   end
 
+  # 设备注册之后发送第一条0元购通知
   def send_sales_promotion_msg
     # 设备没有百度用户信息，不发送通知
     return if baidu_user_id.blank?
