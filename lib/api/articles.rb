@@ -1,13 +1,21 @@
 class Articles < Grape::API
+  helpers do
+    def date_param
+      date = request.headers["Registerdate"] || params[:register_date]
+      date.to_date if date
+    end
+  end
+
   resources 'articles' do
 
     desc "Listing articles."
     params do
+      optional :register_date, type: String, desc: "Date looks like '20130401'."
       optional :page, type: Integer, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'articles/articles' do
-      @articles = paginate(Article.available)
+      @articles = paginate(Article.available.search(date_param, Date.today))
     end
 
     desc "Return an article."

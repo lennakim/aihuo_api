@@ -85,6 +85,10 @@ class Product < ActiveRecord::Base
   def labels
     Tag.for_popularize.pluck(:name) & tag_list
   end
+
+  def detail_link
+    "http://image.yepcolor.com/hdfk_aihuo/" + self[:detail_link]
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
