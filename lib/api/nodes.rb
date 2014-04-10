@@ -6,7 +6,7 @@ class Nodes < Grape::API
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'nodes/nodes' do
-      @nodes = paginate(Node.public)
+      @nodes = paginate(Node.by_state(:public))
       cache(key: [:v2, :nodes, @nodes], expires_in: 2.days) do
         @nodes
       end
