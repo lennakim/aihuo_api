@@ -83,7 +83,7 @@ class Product < ActiveRecord::Base
   end
 
   def labels
-    Tag.for_popularize.collect(&:name) & tag_list
+    Tag.for_popularize.pluck(:name) & tag_list
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

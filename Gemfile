@@ -7,20 +7,19 @@ gem 'grape', "0.7.0"
 
 gem "rack", "~> 1.5.0"
 gem 'mysql2'
-gem 'activerecord', '4.1.0.rc2'
+gem 'activerecord', '4.0.2'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 1.2'
-# Use Jbuilder with Grape https://github.com/milkcocoa/grape-jbuilder
 gem 'grape-jbuilder'
-gem 'grape-kaminari', github: 'wjp2013/grape-kaminari'
-gem 'grape-shaman_cache', '0.2.0', github: 'wjp2013/grape-shaman_cache'
+# gem 'kaminari', :require => 'kaminari/grape'
+gem 'grape-kaminari'
+gem 'grape-shaman_cache', '0.2.0'
 # gem 'newrelic-grape'
 
-# gem 'acts-as-taggable-on', '~> 2.4.1', github: 'wjp2013/acts-as-taggable-on'
+gem 'acts-as-taggable-on', '~> 2.4.1'
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
