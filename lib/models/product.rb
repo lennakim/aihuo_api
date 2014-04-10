@@ -17,7 +17,8 @@ class Product < ActiveRecord::Base
   default_scope { order("products.out_of_stock, products.rank DESC") }
 
   scope :gifts, -> {
-    joins(:product_props).where("product_props.sale_price = 0").group('products.id')
+    joins(:product_props).where(product_props: { sale_price: 0 })
+      .group('products.id')
   }
 
   scope :search, ->(keyword, date, today, match) {
@@ -32,12 +33,16 @@ class Product < ActiveRecord::Base
           when "any" # keyword is array of tags
             tagged_with(keyword, any: true).distinct
           when "match_all" # keyword is array of categories and brands
-            keyword.inject(self) { |mem, k| mem.tagged_with(k, any: true).distinct }
+            keyword.inject(self) {
+              |mem, k| mem.tagged_with(k, any: true).distinct
+            }
           end
         end
       when String # keyword is a tag or word.
         products = tagged_with(keyword, any: true).distinct
-        products = where("products.title like ?", "%#{keyword}%") if products.size.zero?
+        if products.size.zero?
+          products = where("products.title like ?", "%#{keyword}%")
+        end
         products
       when NilClass # keyword is nil, return all the products
         self
@@ -50,7 +55,15 @@ class Product < ActiveRecord::Base
     products
   }
 
-  scope :price_between, ->(min, max) { where(price: min...max) if min && max }
+  # Example: scope through associations :joins or :includes.
+  # scope :without_children, -> {
+  #   includes(:children).where(:children => { :id => nil })
+  # }
+  scope :price_between, ->(min, max) {
+    if min && max
+      joins(:product_props).where(product_props: { sale_price: min...max })
+    end
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
   # public instance methods ...................................................
@@ -70,7 +83,7 @@ class Product < ActiveRecord::Base
   end
 
   def labels
-    Tag.for_popularize.collect(&:name) & tag_list
+    Tag.for_popularize.pluck(:name) & tag_list
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

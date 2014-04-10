@@ -9,6 +9,7 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
+# add command 'rake routes'
 require 'rake'
 
 task :environment do
@@ -23,3 +24,15 @@ task :routes => :environment do
     puts "#{method} #{path}"
   end
 end
+
+# add command 'rake test'
+require 'rake/testtask'
+
+Rake::TestTask.new do |t|
+  t.pattern = "test/**/*_test.rb"
+  # t.libs << "lib"
+  t.libs << "test"
+end
+
+# run 'rake' will be run 'rake test'
+task default: :test

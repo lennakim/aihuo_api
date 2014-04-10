@@ -1,29 +1,25 @@
-# source 'https://rubygems.org'
-LANG="en_US.UTF-8"
-LC_ALL="en_US.UTF-8"
-
-source 'http://ruby.taobao.org/'
-
-gem "rack", "~> 1.5.0"
-gem 'mysql2'
-gem 'activerecord', '4.0.2', require: 'active_record'
+source 'https://rubygems.org'
+# source 'http://ruby.taobao.org/'
 
 # An opinionated micro-framework for creating REST-like APIs in Ruby.
 # https://github.com/intridea/grape
-gem 'grape', "~> 0.6.1"
+gem 'grape', "0.7.0"
+
+gem "rack", "~> 1.5.0"
+gem 'mysql2'
+gem 'activerecord', '4.0.2'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 1.2'
-# Use Jbuilder with Grape https://github.com/milkcocoa/grape-jbuilder
 gem 'grape-jbuilder'
+# gem 'kaminari', :require => 'kaminari/grape'
 gem 'grape-kaminari'
-gem 'grape-shaman_cache'
-gem 'newrelic-grape'
+gem 'grape-shaman_cache', '0.2.0'
+# gem 'newrelic-grape'
 
-gem 'acts-as-taggable-on', '~> 2.4.1', :git => "https://github.com/wjp2013/acts-as-taggable-on.git"
+gem 'acts-as-taggable-on', '~> 2.4.1'
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
@@ -48,13 +44,23 @@ group :development do
   gem "rake"
   # https://github.com/sickill/racksh
   gem "racksh"
-  gem 'pry'
   # reloading rack development server / forking version of rackup
   # Start your app by running 'shotgun'
   gem 'shotgun'
+end
+
+group :test do
+  gem 'minitest', require: false
+  gem 'rack-test', require: 'rack/test'
+end
+
+group :development, :test do
+  # gem 'api_taster', '0.6.0'
+  gem 'pry'
 end
 
 group :production do
   # Ruby Web Server
   gem 'puma'
 end
+
