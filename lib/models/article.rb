@@ -11,6 +11,7 @@ class Article < ActiveRecord::Base
   # callbacks .................................................................
   # scopes ....................................................................
   default_scope { order("position DESC") }
+  scope :gifts, -> { where(title: "0元任你购 你想要我就敢送！") }
   scope :banner, -> { where(:banner => true) }
   scope :available, -> {
     where(
@@ -18,6 +19,13 @@ class Article < ActiveRecord::Base
       Date.today,
       Date.today
     )
+  }
+  scope :search, ->(date, today) {
+    # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购宝典
+    if date.blank? || date && today && date < 2.days.ago(today)
+      gifts_ids = self.gifts.pluck(:id)
+      where.not(id: gifts_ids)
+    end
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................

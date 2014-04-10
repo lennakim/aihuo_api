@@ -21,7 +21,7 @@ class Products < Grape::API
       end
     end
 
-    def data_param
+    def date_param
       date = request.headers["Registerdate"] || params[:register_date]
       date.to_date if date
     end
@@ -44,7 +44,7 @@ class Products < Grape::API
     get "/", jbuilder: 'products/products' do
       @products =
         paginate(
-          Product.search(query_params, data_param, Date.today, params[:match])
+          Product.search(query_params, date_param, Date.today, params[:match])
             .price_between(params[:min_price], params[:max_price])
         )
     end
