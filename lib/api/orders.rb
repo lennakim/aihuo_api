@@ -33,7 +33,7 @@ class Orders < Grape::API
       requires :device_id, type: String, desc: "Device ID"
       optional :api_key, type: String, desc: "Application API Key"
       requires :sign, type: String, desc: "Sign value"
-      group :order do
+      group :order, type: Hash do
         requires :line_items_attributes, type: Hash, desc: "商品"
         requires :name, type: String, desc: "姓名"
         requires :phone, type: String, desc: "电话"

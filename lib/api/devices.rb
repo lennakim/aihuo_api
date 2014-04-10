@@ -14,7 +14,7 @@ class Devices < Grape::API
     params do
       requires :device_id, type: String, desc: "Device ID"
       requires :sign, type: String, desc: "Sign value"
-      group :device do
+      group :device, type: Hash do
         optional :device_id, type: String
         optional :model_ver, type: String
         optional :manufacture, type: String
