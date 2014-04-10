@@ -12,10 +12,10 @@ class Notification < ActiveRecord::Base
   # 刚注册的用户，发送第一条0元购的通知
   def self.send_sales_promotion_msg(device_id)
     device_info = DeviceInfo.where(device_id: device_id).first
-    article = Article.where(title: "0元任你购 你想要我就敢送！").first
+    article_id = Article.where(title: "0元任你购 你想要我就敢送！").pluck(:id).first
     notification_info = {
       notice_type: "Article",
-      notice_id: article,
+      notice_id: article_id,
       application_id: device_info.application_id,
       user_id: device_info.baidu_user_id,
       channel_id: device_info.baidu_channel_id,

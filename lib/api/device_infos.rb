@@ -2,7 +2,12 @@ class DeviceInfos < Grape::API
   helpers do
     def current_device_info
       current_application
-      @device_info = DeviceInfo.where(device_id: params[:device_id], application_id: @application.id).first_or_create!
+      @device_info = DeviceInfo.where(
+        device_id: params[:device_id],
+        application_id: @application.id,
+        baidu_user_id: params[:device_info][:baidu_user_id],
+        baidu_channel_id: params[:device_info][:baidu_channel_id]
+      ).first_or_create!
     end
 
     def device_info_params
@@ -16,7 +21,7 @@ class DeviceInfos < Grape::API
       requires :device_id, type: String, desc: "Device ID"
       optional :api_key, type: String, desc: "Application API Key"
       requires :sign, type: String, desc: "Sign value"
-      group :device_info do
+      group :device_info, type: Hash do
         requires :baidu_user_id, type: String
         requires :baidu_channel_id, type: String
       end
@@ -24,7 +29,7 @@ class DeviceInfos < Grape::API
     post '/', jbuilder: 'device_infos/device_info' do
       if sign_approval?
         current_device_info
-        status 500 unless @device_info.update_attributes(device_info_params)
+        status 500 unless @device_info
       else
         error! "Access Denied", 401
       end
