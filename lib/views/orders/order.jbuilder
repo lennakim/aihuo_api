@@ -1,4 +1,6 @@
 json.partial! "orders/order", order: @order
+json.payment_state @order.payment_state
+json.payment_total @order.payment_total
 json.comment @order.comment if @order.comment.present?
 json.consignee do
   json.name @order.name

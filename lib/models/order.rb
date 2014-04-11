@@ -30,6 +30,13 @@ class Order < ActiveRecord::Base
   scope :with_comments, -> { joins(:comments) }
   scope :newly, -> { where(state: "订单已下，等待确认") }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
+
+  # +pay_type+ attribute according to the following logic:
+  #
+  # 0 means '先付款后发货'
+  # 1 means '货到付款'
+  # Notice: 目前版本不涉及到分期付款所以只根据 payment total 是否为 0 来判断是否已经付费
+  scope :unpaid, -> { where(pay_type: 0).where.not(payment_state: 'paid') }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   delegate :extra_order_id, to: :express
   accepts_nested_attributes_for :line_items
@@ -93,9 +100,42 @@ class Order < ActiveRecord::Base
     coupon_ids.each { |coupon_id| calculate_total_by_coupon(coupon_id, false) }
   end
 
+  def update_payment(amount)
+    self.payment_total += amount
+    save!
+    update_payment_state
+    orderlogs.logging_action(:order_pay, amount)
+  end
+
+  # Updates the +payment_state+ attribute according to the following logic:
+  #
+  # paid          when +payment_total+ is equal to +total+
+  # balance_due   when +payment_total+ is less than +total+
+  # credit_owed   when +payment_total+ is greater than +total+
+  # failed        when most recent payment is in the failed state
+  #
+  # The +payment_state+ value helps with reporting, etc. since it provides a quick and easy way to locate Orders needing attention.
+  def update_payment_state
+    payment_state =
+      if payment_total.zero?
+        'failed'
+      elsif round_money(payment_total) < round_money(total)
+        'balance_due'
+      elsif round_money(payment_total) > round_money(total)
+        'credit_owed'
+      else
+        'paid'
+      end
+    update_column(:payment_state, payment_state)
+  end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
+
+  def round_money(n)
+    (n * 100).round / 100.0
+  end
 
   def merge_pending_orders
     orders = Order.newly.where(device_id: device_id).

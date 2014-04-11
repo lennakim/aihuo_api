@@ -15,6 +15,8 @@ class Orderlog < ActiveRecord::Base
       create({ content: "【自动短信】#{content}" })
     when :send_confirm_sms_error
       create({ content: "【短信失败】订单号码 #{content} 发送自动确认短信失败。请检查短信网关。" })
+    when :order_pay
+      create({ content: "【付款记录】客户成功支付 #{content} 元。" })
     end
   end
   # public instance methods ...................................................
