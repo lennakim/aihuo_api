@@ -1,5 +1,5 @@
 # 初始化时加载路径 lib/app lib/api lib/views lib/models lib/concerns
-%w[app api models views concerns].each do |folder|
+%w[app apis models views concerns].each do |folder|
   $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib', folder))
 end
 $LOAD_PATH.unshift(File.dirname(__FILE__))
@@ -25,7 +25,7 @@ Dir[File.expand_path('../initializers/*.rb', __FILE__)].each { |f| require f }
 
 # 初始化时加载所有 lib 文件夹内的文件
 Dir[File.expand_path('../../lib/concerns/*.rb', __FILE__)].each { |f| require f }
-Dir[File.expand_path('../../lib/api/*.rb', __FILE__)].each { |f| require f }
+Dir[File.expand_path('../../lib/apis/*.rb', __FILE__)].each { |f| require f }
 Dir[File.expand_path('../../lib/models/*.rb', __FILE__)].each { |f| require f }
 
 Grape::ShamanCache.configure do |config|

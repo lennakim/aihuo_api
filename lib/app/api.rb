@@ -20,8 +20,8 @@ module ShouQuShop
 
     helpers do
       # example:
-      # logger.info "something" can be found in log/api_puma.out.log
-      def logger
+      # log.info "something" can be found in log/api_puma.out.log
+      def log
         API.logger
       end
 
@@ -63,8 +63,8 @@ module ShouQuShop
 
         # Final calculated_signature to compare against
         string = base_url + calculated_signature + secret_key
-        logger.info "string: #{string}"
-        logger.info "sign: #{Digest::MD5.hexdigest(url_encode(string))}"
+        log.info "string: #{string}"
+        log.info "sign: #{Digest::MD5.hexdigest(url_encode(string))}"
         Digest::MD5.hexdigest(url_encode(string))
       end
 
