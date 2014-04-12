@@ -19,6 +19,12 @@ class Orders < Grape::API
     def format_amount
       params[:amount].to_f
     end
+
+    def validate_remote_host
+      unless request.env["REMOTE_HOST"] == "paybank.sinaapp.com"
+        error!({error: "unknown host"}, 500)
+      end
+    end
   end
 
   resources 'orders' do
@@ -67,12 +73,10 @@ class Orders < Grape::API
 
     params do
       requires :id, type: String, desc: "Order id."
+      requires :device_id, type: String, desc: "Device ID."
     end
     route_param :id do
       desc "Return an order."
-      params do
-        requires :device_id, type: String, desc: "Device ID."
-      end
       get "/", jbuilder: 'orders/order' do
         @order = Order.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
         cache(key: [:v2, :order, @order], expires_in: 2.days) do
@@ -81,9 +85,6 @@ class Orders < Grape::API
       end
 
       desc "Delete an order."
-      params do
-        requires :device_id, type: String, desc: "Device ID."
-      end
       delete "/", jbuilder: 'orders/order' do
         @order = Order.done.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
         status 202 if @order.destroy
@@ -94,9 +95,9 @@ class Orders < Grape::API
         requires :amount, type: String, regexp: /^\d+(?:\.\d{2})?$/, desc: "Payment amount."
       end
       put "/", jbuilder: 'orders/order' do
-        # authenticate!
+        validate_remote_host
         begin
-          @order = Order.unpaid.find_by_encrypted_id(params[:id])
+          @order = Order.unpaid.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
           @order.update_payment(format_amount)
         rescue Exception => e
           error!({
