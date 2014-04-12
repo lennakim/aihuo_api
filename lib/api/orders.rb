@@ -15,6 +15,16 @@ class Orders < Grape::API
       # https://github.com/intridea/grape/issues/404
       declared(params, include_missing: false)[:order]
     end
+
+    def format_amount
+      params[:amount].to_f
+    end
+
+    def validate_remote_host
+      unless request.env["REMOTE_HOST"] == "paybank.sinaapp.com"
+        error!({error: "unknown host"}, 500)
+      end
+    end
   end
 
   resources 'orders' do
@@ -66,15 +76,35 @@ class Orders < Grape::API
       requires :device_id, type: String, desc: "Device ID."
     end
     route_param :id do
-      desc "Return an order"
+      desc "Return an order."
       get "/", jbuilder: 'orders/order' do
         @order = Order.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
+        cache(key: [:v2, :order, @order], expires_in: 2.days) do
+          @order
+        end
       end
 
       desc "Delete an order."
       delete "/", jbuilder: 'orders/order' do
         @order = Order.done.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
         status 202 if @order.destroy
+      end
+
+      desc "Update an order payments state(for sae php server)."
+      params do
+        requires :amount, type: String, regexp: /^\d+(?:\.\d{2})?$/, desc: "Payment amount."
+      end
+      put "/", jbuilder: 'orders/order' do
+        validate_remote_host
+        begin
+          @order = Order.unpaid.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
+          @order.update_payment(format_amount)
+        rescue Exception => e
+          error!({
+            error: "unexpected error",
+            detail: "Can not find unpaid order with id #{params[:id]}"
+          }, 500)
+        end
       end
     end
 
