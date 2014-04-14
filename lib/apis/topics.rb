@@ -3,19 +3,23 @@ class Topics < Grape::API
 
     desc "Return topics list for all nodes."
     params do
-      optional :filter, type: Symbol, values: [:hot, :new, :mine], default: :mine, desc: "Filtering topics."
+      optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine], default: :mine, desc: "Filtering topics."
       requires :device_id, type: String, desc: "Device ID."
       optional :page, type: Integer, default: 1, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'topics/topics' do
       topics = case params[:filter]
+      when :best
+        Topic.excellent
+      when :checking
+        Topic.checking
       when :hot
         Topic.popular
       when :new
         Topic.lasted
       when :mine
-        Topic.by_device(params[:device_id])
+        Topic.unscoped.by_device(params[:device_id])
       end
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
