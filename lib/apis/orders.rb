@@ -52,6 +52,7 @@ class Orders < Grape::API
         optional :shipping_district, type: String, desc: "区"
         optional :shipping_address, type: String, desc: "详细地址"
         requires :shipping_charge, type: Integer, desc: "运费"
+        requires :pay_type, type: Integer, values: [0, 1], default: 1, desc: "支付方法"
         optional :comment, type: String, desc: "买家留言"
         optional :device_id, type: String, desc: "Device ID"
         optional :application_id, type: Integer, desc: "Application ID"
