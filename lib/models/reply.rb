@@ -4,11 +4,15 @@ class Reply < ActiveRecord::Base
   # includes ..................................................................
   include ForumValidations
   # relationships .............................................................
-  belongs_to :topic, :counter_cache => true, :touch => true
-  delegate :node, to: :topic
-  delegate :node_id, to: :topic
+  belongs_to :replyable, polymorphic: true
+  belongs_to :topic, foreign_key: 'replyable_id', counter_cache: true, touch: true
+  has_many :replies, as: :replyable
+  delegate :node, to: :topic, allow_nil: true
+  delegate :node_id, to: :topic, allow_nil: true
   # validations ...............................................................
-  validates_uniqueness_of :body, :scope => [:topic_id, :device_id], :message => "请勿重复发言"
+  validates_uniqueness_of :body,
+    :scope => [:replyable_id, :replyable_type, :device_id],
+    :message => "请勿重复发言"
   # callbacks .................................................................
   # scopes ....................................................................
   default_scope { order("created_at DESC") }
