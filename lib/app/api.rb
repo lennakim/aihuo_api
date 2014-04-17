@@ -85,6 +85,7 @@ module ShouQuShop
     mount ::Carts
     mount ::Devices
     mount ::DeviceInfos
+    mount ::Members
     mount ::Coupons
     mount ::Tags
   end
