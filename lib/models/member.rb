@@ -46,6 +46,20 @@ class Member < ActiveRecord::Base
     message = "手机验证码:#{captcha}【首趣商城】"
     ChinaSMS.to phone, message
   end
+
+  def validate_captcha?(phone, captcha)
+    self.phone == phone && self.captcha == captcha && !verified
+  end
+
+  def verified!
+    update_column(:verified, true)
+  end
+
+  def relate_to_device(device_id)
+    verified!
+    device = Device.find_by(device_id: device_id)
+    device.update_column(:member_id, self.id) if device
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
   private

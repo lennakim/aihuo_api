@@ -38,20 +38,46 @@ class Members < Grape::API
       desc "Send captcha"
       params do
         requires :sign, type: String, desc: "Sign value"
-        group :member, type: Hash do
-          requires :phone, type: String
-        end
+        requires :phone, type: String
       end
 
       put :send_captcha, jbuilder: 'members/member' do
         if sign_approval?
           @member = Member.find(params[:id])
-          @member.update_attribute(:phone, params[:member][:phone])
+          @member.update_attribute(:phone, params[:phone])
           @member.send_captcha
         else
           error! "Access Denied", 401
         end
       end
+
+      desc "Validate captcha"
+      params do
+        requires :device_id, type: String, desc: "Device ID"
+        requires :sign, type: String, desc: "Sign value"
+        requires :captcha, type: String
+        requires :phone, type: String
+      end
+
+      put :validate_captcha, jbuilder: 'members/member' do
+        if sign_approval?
+          @member = Member.find(params[:id])
+          if @member.validate_captcha?(params[:phone], params[:captcha])
+            @member.relate_to_device(params[:device_id])
+          end
+        else
+          error! "Access Denied", 401
+        end
+      end
+      #  def validate
+      #   @member = Member.find_by_phone_and_captcha(params[:phone], params[:captcha])
+      #   @member.validated! if @member
+      #   if @member
+      #     render json: @member.as_json(base: true)
+      #   else
+      #     render json: { success: false }, status: 200
+      #   end
+      # end
     end
 
   end
