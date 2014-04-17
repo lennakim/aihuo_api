@@ -13,7 +13,6 @@ class Members < Grape::API
 
     desc "Create a member."
     params do
-      requires :device_id, type: String, desc: "Device ID"
       requires :sign, type: String, desc: "Sign value"
       group :member, type: Hash do
         requires :nickname, type: String, desc: "Member nickname"
@@ -69,15 +68,25 @@ class Members < Grape::API
           error! "Access Denied", 401
         end
       end
-      #  def validate
-      #   @member = Member.find_by_phone_and_captcha(params[:phone], params[:captcha])
-      #   @member.validated! if @member
-      #   if @member
-      #     render json: @member.as_json(base: true)
-      #   else
-      #     render json: { success: false }, status: 200
-      #   end
-      # end
+
+      desc "Update member attribute"
+      params do
+        requires :sign, type: String, desc: "Sign value"
+        group :member, type: Hash do
+          requires :nickname, type: String, desc: "Member nickname"
+          requires :avatar, type: String, desc: "Member avatar url"
+          requires :gender, type: Integer, values: [0, 1], default: 0, desc: "Member gender"
+        end
+      end
+
+      put "/", jbuilder: 'members/member' do
+        if sign_approval?
+          @member = Member.find(params[:id])
+          @member.update_attributes(member_params)
+        else
+          error! "Access Denied", 401
+        end
+      end
     end
 
   end
