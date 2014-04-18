@@ -16,6 +16,10 @@ class Member < ActiveRecord::Base
     Digest::SHA2.hexdigest(password + "yepcolor" + salt)
   end
   # public instance methods ...................................................
+  def authenticate?(password)
+    hashed_password == encrypt_password(password, salt)
+  end
+
   def password=(password)
     @password = password
 
@@ -44,7 +48,7 @@ class Member < ActiveRecord::Base
       password: Setting.find_by_name(:sms_pwd).value
     )
     message = "手机验证码:#{captcha}【首趣商城】"
-    ChinaSMS.to phone, message
+    # ChinaSMS.to phone, message
   end
 
   def validate_captcha?(phone, captcha)

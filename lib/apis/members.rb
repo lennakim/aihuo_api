@@ -16,7 +16,7 @@ class Members < Grape::API
       requires :sign, type: String, desc: "Sign value"
       group :member, type: Hash do
         requires :nickname, type: String, desc: "Member nickname"
-        requires :avatar, type: String, desc: "Member avatar url"
+        optional :avatar, type: String, desc: "Member avatar url"
         requires :gender, type: Integer, values: [0, 1], default: 0, desc: "Member gender"
       end
     end
@@ -54,8 +54,8 @@ class Members < Grape::API
       params do
         requires :device_id, type: String, desc: "Device ID"
         requires :sign, type: String, desc: "Sign value"
-        requires :captcha, type: String
-        requires :phone, type: String
+        requires :captcha, type: String, desc: "Member phone"
+        requires :phone, type: String, desc: "Member password"
       end
 
       put :validate_captcha, jbuilder: 'members/member' do
@@ -72,16 +72,17 @@ class Members < Grape::API
       desc "Update member attribute"
       params do
         requires :sign, type: String, desc: "Sign value"
+        requires :password, type: String, desc: "Member password"
         group :member, type: Hash do
           requires :nickname, type: String, desc: "Member nickname"
-          requires :avatar, type: String, desc: "Member avatar url"
           requires :gender, type: Integer, values: [0, 1], default: 0, desc: "Member gender"
+          optional :avatar, type: String, desc: "Member avatar url"
         end
       end
 
       put "/", jbuilder: 'members/member' do
-        if sign_approval?
-          @member = Member.find(params[:id])
+        @member = Member.find(params[:id])
+        if sign_approval? && @member.authenticate?(params[:password])
           @member.update_attributes(member_params)
         else
           error! "Access Denied", 401
