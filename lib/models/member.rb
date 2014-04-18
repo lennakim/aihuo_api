@@ -17,7 +17,7 @@ class Member < ActiveRecord::Base
   end
   # public instance methods ...................................................
   def authenticate?(password)
-    hashed_password == encrypt_password(password, salt)
+    hashed_password == self.class.encrypt_password(password, salt)
   end
 
   def password=(password)
