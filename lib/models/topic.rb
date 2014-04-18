@@ -7,6 +7,7 @@ class Topic < ActiveRecord::Base
   include Voting
   # relationships .............................................................
   belongs_to :node, :counter_cache => true
+  belongs_to :member
   has_many :replies, as: :replyable, :dependent => :destroy
   # validations ...............................................................
   validates_uniqueness_of :body, :scope => :device_id, :message => "请勿重复发言"
@@ -29,6 +30,11 @@ class Topic < ActiveRecord::Base
       update_attribute(:deleted_by, user) # 管理员删除
       destroy
     end
+  end
+
+  def relate_to_member_with_authenticate(member_id, password)
+    member = Member.find(member_id) if member_id
+    self.member = member if member && member.authenticate?(password)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

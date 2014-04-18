@@ -5,9 +5,13 @@ class Replies < Grape::API
       requires :id, type: String, desc: "Reply ID."
     end
     route_param :id do
+
+      before do
+        @reply = Reply.find(params[:id])
+      end
+
       desc "Destroy a reply."
       delete "/", jbuilder: 'replies/reply' do
-        @reply = Reply.find(params[:id])
         if @reply.can_destroy_by?(params[:device_id])
           @reply.destroy
           status 202
@@ -22,16 +26,32 @@ class Replies < Grape::API
         requires :nickname, type: String, desc: "User nickname."
         requires :device_id, type: String, desc: "Deivce ID."
         requires :sign, type: String, desc: "sign value."
+        optional :member, type: Hash do
+          requires :id, type: String, desc: "Member ID."
+          requires :password, type: String, desc: "Member password."
+        end
       end
       post "/", jbuilder: 'replies/reply' do
         if sign_approval?
-          reply = Reply.find(params[:id])
-          @reply = reply.replies.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
+          @reply = @reply.replies.new({
+                     body: params[:body],
+                     nickname: params[:nickname],
+                     device_id: params[:device_id]
+                   })
+
+
+          if params[:member]
+            @reply.relate_to_member_with_authenticate(
+              params[:member][:id],
+              params[:member][:password]
+            )
+          end
           status 422 unless @reply.save
         else
           error! "Access Denied", 401
         end
       end
+
     end
 
   end

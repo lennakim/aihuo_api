@@ -8,6 +8,7 @@ class Topics < Grape::API
       optional :page, type: Integer, default: 1, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
+
     get "/", jbuilder: 'topics/topics' do
       topics = case params[:filter]
       when :best
@@ -28,9 +29,13 @@ class Topics < Grape::API
       requires :id, type: String, desc: "Topic id."
     end
     route_param :id do
+
+      before do
+        @topic = Topic.find(params[:id])
+      end
+
       desc "Return a topic."
       get "/", jbuilder: 'topics/topic'  do
-        @topic = Topic.find(params[:id])
         cache(key: [:v2, :topic, @topic], expires_in: 2.days) do
           @topic
         end
@@ -41,7 +46,6 @@ class Topics < Grape::API
         requires :device_id, type: String, desc: "Device ID."
       end
       delete "/", jbuilder: 'topics/topic' do
-        @topic = Topic.find(params[:id])
         if @topic.can_destroy_by?(params[:device_id])
           @topic.destroy_by(params[:device_id])
           status 202
@@ -52,14 +56,12 @@ class Topics < Grape::API
 
       desc "Like a topic."
       put :like, jbuilder: 'topics/topic' do
-        @topic = Topic.find(params[:id])
         @topic.liked
         status 202
       end
 
       desc 'Unlike a topic.'
       put :dislike, jbuilder: 'topics/topic' do
-        @topic = Topic.find(params[:id])
         @topic.disliked
         status 202
       end
@@ -71,8 +73,7 @@ class Topics < Grape::API
           optional :per_page, type: Integer, default: 10, desc: "Per page value."
         end
         get "/", jbuilder: 'replies/replies' do
-          topic = Topic.find(params[:id])
-          @replies = paginate(topic.replies)
+          @replies = paginate(@topic.replies)
         end
 
         desc "Create a reply to the topic."
@@ -81,17 +82,32 @@ class Topics < Grape::API
           requires :nickname, type: String, desc: "User nickname."
           requires :device_id, type: String, desc: "Deivce ID."
           requires :sign, type: String, desc: "sign value."
+          optional :member, type: Hash do
+            requires :id, type: String, desc: "Member ID."
+            requires :password, type: String, desc: "Member password."
+          end
         end
         post "/", jbuilder: 'replies/reply' do
           if sign_approval?
-            topic = Topic.find(params[:id])
-            @reply = topic.replies.new({ body: params[:body], nickname: params[:nickname], device_id: params[:device_id] })
+            @reply = @topic.replies.new({
+                       body: params[:body],
+                       nickname: params[:nickname],
+                       device_id: params[:device_id]
+                     })
+
+            if params[:member]
+              @reply.relate_to_member_with_authenticate(
+                params[:member][:id],
+                params[:member][:password]
+              )
+            end
             status 422 unless @reply.save
           else
             error! "Access Denied", 401
           end
         end
       end
+
     end
 
   end

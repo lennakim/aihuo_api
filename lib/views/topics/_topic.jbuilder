@@ -9,3 +9,8 @@ json.lock topic.lock
 json.best topic.best
 json.approved topic.approved
 json.created_at topic.created_at
+if topic.member
+  json.member do
+    json.partial! "members/member", member: topic.member
+  end
+end
