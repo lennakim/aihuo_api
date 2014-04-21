@@ -88,5 +88,6 @@ module ShouQuShop
     mount ::Members
     mount ::Coupons
     mount ::Tags
+    mount ::PrivateMessages
   end
 end
