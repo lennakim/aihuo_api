@@ -1,9 +1,5 @@
 class Members < Grape::API
   helpers do
-    def current_device
-      @device = Device.where(device_id: params[:device_id]).first_or_create!
-    end
-
     def member_params
       declared(params, include_missing: false)[:member]
     end
