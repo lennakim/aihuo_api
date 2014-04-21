@@ -2,6 +2,11 @@ json.id reply.to_param
 json.body reply.body
 json.nickname reply.nickname
 json.created_at reply.created_at
+
+replyable_class = reply.replyable_type.constantize.new
+json.replyable_id EncryptedId.encrypt(replyable_class.encrypted_id_key, reply.replyable_id)
+json.replyable_type reply.replyable_type
+
 if reply.member
   json.member do
     json.partial! "members/member", member: reply.member
