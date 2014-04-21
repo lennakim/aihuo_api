@@ -31,7 +31,7 @@ class Topics < Grape::API
     route_param :id do
 
       before do
-        @topic = Topic.find(params[:id])
+        @topic = Topic.unscoped.find_by_encrypted_id(params[:id])
       end
 
       desc "Return a topic."

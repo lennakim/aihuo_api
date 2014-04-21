@@ -3,6 +3,7 @@ class Topic < ActiveRecord::Base
   acts_as_paranoid
   encrypted_id key: '36aAoQHCaJKETWHR'
   # includes ..................................................................
+  include EncryptedIdFinder
   include ForumValidations
   include Voting
   # relationships .............................................................
