@@ -84,6 +84,7 @@ class Topics < Grape::API
           requires :sign, type: String, desc: "sign value."
           optional :member, type: Hash do
             requires :id, type: String, desc: "Member ID."
+            requires :password, type: String, desc: "Member password."
           end
         end
         post "/", jbuilder: 'replies/reply' do
@@ -93,7 +94,12 @@ class Topics < Grape::API
                        nickname: params[:nickname],
                        device_id: params[:device_id]
                      })
-            @reply.relate_to_member(params[:member][:id]) if params[:member]
+            if params[:member]
+              @reply.relate_to_member_with_authenticate(
+                params[:member][:id],
+                params[:member][:password]
+              )
+            end
             status 422 unless @reply.save
           else
             error! "Access Denied", 401

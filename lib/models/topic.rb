@@ -34,8 +34,9 @@ class Topic < ActiveRecord::Base
     end
   end
 
-  def relate_to_member(member_id)
-    self.member_id = member_id if member_id && Member.find(member_id)
+  def relate_to_member_with_authenticate(member_id, password)
+    member = Member.find(member_id) if member_id
+    self.member = member if member && member.authenticate?(password)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

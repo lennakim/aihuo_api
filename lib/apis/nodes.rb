@@ -80,6 +80,7 @@ class Nodes < Grape::API
           requires :sign, type: String, desc: "sign value."
           optional :member, type: Hash do
             requires :id, type: String, desc: "Member ID."
+            requires :password, type: String, desc: "Member Password."
           end
         end
         post "/", jbuilder: 'topics/topic' do
@@ -89,7 +90,12 @@ class Nodes < Grape::API
                        nickname: params[:nickname],
                        device_id: params[:device_id]
                      })
-            @topic.relate_to_member(params[:member][:id]) if params[:member]
+            if params[:member]
+              @topic.relate_to_member_with_authenticate(
+                params[:member][:id],
+                params[:member][:password]
+              )
+            end
             status 422 unless @topic.save
           else
             error! "Access Denied", 401
