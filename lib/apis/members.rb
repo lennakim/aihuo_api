@@ -12,6 +12,7 @@ class Members < Grape::API
       requires :sign, type: String, desc: "Sign value"
       group :member, type: Hash do
         requires :nickname, type: String, desc: "Member nickname"
+        requires :password, type: String, desc: "Member password"
         optional :avatar, type: String, desc: "Member avatar url"
         requires :gender, type: Integer, values: [0, 1], default: 0, desc: "Member gender"
       end
@@ -50,8 +51,8 @@ class Members < Grape::API
       params do
         requires :device_id, type: String, desc: "Device ID"
         requires :sign, type: String, desc: "Sign value"
-        requires :captcha, type: String, desc: "Member phone"
-        requires :phone, type: String, desc: "Member password"
+        requires :captcha, type: String, desc: "Member captcha"
+        requires :phone, type: String, desc: "Member phone"
       end
 
       put :validate_captcha, jbuilder: 'members/member' do

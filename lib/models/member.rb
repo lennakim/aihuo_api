@@ -58,7 +58,9 @@ class Member < ActiveRecord::Base
   end
 
   def verified!
-    update_column(:verified, true)
+    self.password = captcha
+    self.verified = true
+    save
   end
 
   def relate_to_device(device_id)
@@ -78,7 +80,6 @@ class Member < ActiveRecord::Base
   def set_flag
     self.captcha_flag = should_reset_flag? ? 0 : captcha_flag + 1
     self.captcha_updated_at = Time.now
-    self.password = captcha
     save
   end
 
