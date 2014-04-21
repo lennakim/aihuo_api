@@ -1,6 +1,16 @@
 class Replies < Grape::API
   resources 'replies' do
 
+    desc "Listing replies for the user."
+    params do
+      requires :device_id, type: String, desc: "Device ID."
+      optional :page, type: Integer, desc: "Page number."
+      optional :per_page, type: Integer, default: 10, desc: "Per page value."
+    end
+    get '/', jbuilder: 'replies/replies' do
+      @replies = paginate(Reply.to_me(params[:device_id]))
+    end
+
     params do
       requires :id, type: String, desc: "Reply ID."
     end
@@ -28,7 +38,6 @@ class Replies < Grape::API
         requires :sign, type: String, desc: "sign value."
         optional :member, type: Hash do
           requires :id, type: String, desc: "Member ID."
-          requires :password, type: String, desc: "Member password."
         end
       end
       post "/", jbuilder: 'replies/reply' do
@@ -38,14 +47,7 @@ class Replies < Grape::API
                      nickname: params[:nickname],
                      device_id: params[:device_id]
                    })
-
-
-          if params[:member]
-            @reply.relate_to_member_with_authenticate(
-              params[:member][:id],
-              params[:member][:password]
-            )
-          end
+          @reply.relate_to_member(params[:member][:id]) if params[:member]
           status 422 unless @reply.save
         else
           error! "Access Denied", 401

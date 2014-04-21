@@ -12,8 +12,9 @@ class Topic < ActiveRecord::Base
   # validations ...............................................................
   validates_uniqueness_of :body, :scope => :device_id, :message => "请勿重复发言"
   # callbacks .................................................................
+  after_initialize :set_approved_status
   # scopes ....................................................................
-  default_scope { where(approved: true) }
+  default_scope { where(approved: true).order("created_at DESC") }
   scope :by_device, ->(device_id) { where(device_id: device_id) }
   scope :popular, -> { where("replies_count >= 50") }
   scope :lasted, -> { where("replies_count < 50") }
@@ -32,10 +33,14 @@ class Topic < ActiveRecord::Base
     end
   end
 
-  def relate_to_member_with_authenticate(member_id, password)
-    member = Member.find(member_id) if member_id
-    self.member = member if member && member.authenticate?(password)
+  def relate_to_member(member_id)
+    self.member_id = member_id if member_id && Member.find(member_id)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
+  private
+
+  def set_approved_status
+    self.approved = false
+  end
 end

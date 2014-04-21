@@ -36,7 +36,15 @@ class Order < ActiveRecord::Base
   # 0 means '先付款后发货'
   # 1 means '货到付款'
   # Notice: 目前版本不涉及到分期付款所以只根据 payment total 是否为 0 来判断是否已经付费
-  scope :unpaid, -> { where(pay_type: 0).where.not(payment_state: 'paid') }
+  # scope :unpaid, -> { where(pay_type: 0).where.not(payment_state: 'paid') }
+  scope :unpaid, -> {
+    where(pay_type: 0)
+      .where(
+        "payment_state IS NULL OR (payment_state != ? AND payment_state != ?)",
+        'paid',
+        'credit_owed'
+      )
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   delegate :extra_order_id, to: :express
   accepts_nested_attributes_for :line_items
@@ -148,6 +156,11 @@ class Order < ActiveRecord::Base
       order.line_items.each { |item| self.line_items << item }
       order.coupons.each { |coupon| self.coupons << coupon }
     end
+
+    # 汇总已经支付的订单金额
+    orders_payment_total = orders.inject(self.payment_total) { |sum, o| sum + o.payment_total }
+    self.update_column(:payment_total, orders_payment_total)
+    update_payment_state
 
     coupon_ids = coupons.collect(&:to_param)
     calculate_total_by_coupons(coupon_ids)
