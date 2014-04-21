@@ -41,6 +41,6 @@ class Topic < ActiveRecord::Base
   private
 
   def set_approved_status
-    self.approved = false
+    self.approved = false if new_record?
   end
 end
