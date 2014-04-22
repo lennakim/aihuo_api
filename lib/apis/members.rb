@@ -10,6 +10,7 @@ class Members < Grape::API
     desc "Create a member."
     params do
       requires :sign, type: String, desc: "Sign value"
+      requires :device_id, type: String, desc: "Device ID"
       group :member, type: Hash do
         requires :nickname, type: String, desc: "Member nickname"
         requires :password, type: String, desc: "Member password"
@@ -21,7 +22,11 @@ class Members < Grape::API
     post "/", jbuilder: 'members/member' do
       if sign_approval?
         @member = Member.new(member_params)
-        error!(@member.errors.full_messages.join, 500) unless @member.save
+        if @member.save
+          @member.relate_to_device(params[:device_id])
+        else
+          error!(@member.errors.full_messages.join, 500)
+        end
       else
         error! "Access Denied", 401
       end
@@ -74,6 +79,7 @@ class Members < Grape::API
           requires :nickname, type: String, desc: "Member nickname"
           requires :gender, type: Integer, values: [0, 1], default: 0, desc: "Member gender"
           optional :avatar, type: String, desc: "Member avatar url"
+          optional :receive_notification, type: Integer, values: [0, 1], default: 1, desc: "Member receive notification"
         end
       end
 
