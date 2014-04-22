@@ -75,5 +75,16 @@ class PrivateMessages < Grape::API
       end
     end
 
+    params do
+      requires :id, type: String, desc: "Message ID."
+    end
+    route_param :id do
+      desc "Return a message."
+      get "/", jbuilder: 'private_messages/message' do
+        @private_message = PrivateMessage.find(params[:id])
+        @private_message.opened!
+      end
+    end
+
   end
 end
