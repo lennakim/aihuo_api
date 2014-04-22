@@ -79,7 +79,8 @@ class Members < Grape::API
           requires :nickname, type: String, desc: "Member nickname"
           requires :gender, type: Integer, values: [0, 1], default: 0, desc: "Member gender"
           optional :avatar, type: String, desc: "Member avatar url"
-          optional :receive_notification, type: Integer, values: [0, 1], default: 1, desc: "Member receive notification"
+          optional :receive_message_notification, type: Integer, values: [0, 1], default: 1, desc: "Member receive notification"
+          optional :receive_reply_notification, type: Integer, values: [0, 1], default: 1, desc: "Member receive notification"
         end
       end
 
