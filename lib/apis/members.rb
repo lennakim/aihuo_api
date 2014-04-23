@@ -65,6 +65,7 @@ class Members < Grape::API
           @member = Member.find(params[:id])
           if @member.validate_captcha?(params[:phone], params[:captcha])
             @member.relate_to_device(params[:device_id])
+            @member.verified!
           end
         else
           error! "Access Denied", 401

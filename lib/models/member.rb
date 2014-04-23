@@ -4,6 +4,7 @@ class Member < ActiveRecord::Base
   # includes ..................................................................
   # mount_uploader :avatar, AvatarUploader
   # relationships .............................................................
+  has_one :device, -> { order('updated_at DESC') }, class_name: "Device"
   has_many :devices
   has_many :sended_private_messages, class_name: "PrivateMessage", foreign_key: "sender_id"
   has_many :received_private_messages, class_name: "PrivateMessage", foreign_key: "receiver_id"
@@ -12,6 +13,8 @@ class Member < ActiveRecord::Base
   # callbacks .................................................................
   # scopes ....................................................................
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
+  delegate :baidu_user_id, to: :device, allow_nil: true
+
   attr_reader :password
   # class methods .............................................................
   def self.encrypt_password(password, salt)
@@ -64,7 +67,6 @@ class Member < ActiveRecord::Base
   end
 
   def relate_to_device(device_id)
-    verified!
     device = Device.find_by(device_id: device_id)
     device.update_column(:member_id, self.id) if device
   end
