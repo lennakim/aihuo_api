@@ -5,3 +5,5 @@ json.avatar member.avatar
 json.level member.level
 json.score_total member.score_total
 json.verified member.verified
+json.receive_message_notification member.receive_message_notification
+json.receive_reply_notification member.receive_reply_notification
