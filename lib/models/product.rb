@@ -87,7 +87,7 @@ class Product < ActiveRecord::Base
   end
 
   def detail_link
-    "http://image.yepcolor.com/hdfk_aihuo/" + self[:detail_link]
+    "http://image.yepcolor.com/product_detail/" + self[:detail_link]
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
