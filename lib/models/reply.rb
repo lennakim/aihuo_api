@@ -16,6 +16,7 @@ class Reply < ActiveRecord::Base
     :message => "请勿重复发言"
   # callbacks .................................................................
   # scopes ....................................................................
+  default_scope { order("created_at DESC") }
   scope :to_me, ->(device_id) {
     topics = Topic.where(device_id: device_id).pluck(:id)
     replies = Reply.where(device_id: device_id).pluck(:id)
