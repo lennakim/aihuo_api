@@ -15,6 +15,7 @@ class Reply < ActiveRecord::Base
     :scope => [:replyable_id, :replyable_type, :device_id],
     :message => "请勿重复发言"
   # callbacks .................................................................
+  after_create :send_notice_msg
   # scopes ....................................................................
   default_scope { order("created_at DESC") }
   scope :to_me, ->(device_id) {
@@ -31,4 +32,13 @@ class Reply < ActiveRecord::Base
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
+  private
+
+  # 有新回复给用户发送消息
+  def send_notice_msg
+    if self.replyable.member.try(:receive_reply_notification?)
+      device_id = self.replyable.device_id
+      Notification.send_reply_message_msg(device_id)
+    end
+  end
 end
