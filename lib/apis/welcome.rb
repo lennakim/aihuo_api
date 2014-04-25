@@ -13,19 +13,19 @@ class Welcome < Grape::API
       {id: "0085e5f094b65336a0ca52f683b49480", type: 'Product', name: '8合1罐装24只装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/240_240/03.png'}
     ]
     @categories = [
-      {id: 101, name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/01.png'},
-      {id: 101, name: "女用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/02.png'},
-      {id: 101, name: "更多情趣", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/03.png'},
-      {id: 101, name: "最近有点烦", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/04.png'},
-      {id: 101, name: "高潮迭起", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/05.png'},
-      {id: 101, name: "日常战备", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/06.png'}
+      {id: "", type: 'Tag', title: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/01.png'},
+      {id: "", type: 'Tag', title: "女用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/02.png'},
+      {id: "", type: 'Tag', title: "更多情趣", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/03.png'},
+      {id: "", type: 'Tag', title: "最近有点烦", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/04.png'},
+      {id: "", type: 'Tag', title: "高潮迭起", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/05.png'},
+      {id: "", type: 'Tag', title: "日常战备", image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/fenlei/06.png'}
     ]
     @sections = [
       {
         name: "热销区",
         objects: [
-          {id: "", type: 'Tag', title: '新品特价', image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/01/01-zqf_3504.png'},
-          {id: "9988950389e86e671d09343c5975e88b", type: 'Product', title: '硅胶隐形文胸', image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/01/01.png'},
+          {id: "", type: 'Tag', title: '新品特价', image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/01/01.png'},
+          {id: "9988950389e86e671d09343c5975e88b", type: 'Product', title: '硅胶隐形文胸', image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/01/01-zqf_3504.png'},
           {id: "53302f048a6cdc0a89b4fdc3f1d5608a", type: 'Product', title: 'selebritee性感开档连裤袜', image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/01/02-sq_3830.png'},
           {id: "66d9165b20475b299359b6a73de1c384", type: 'Product', title: '日本JOKER延时喷剂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/01/03-sq_2462.png'},
           {id: "91c9772665b17a9a85efb9ec92699643", type: 'Product', title: '开档露乳短裙8821粉色', image: 'http://blsm-public.oss.aliyuncs.com/images/20140423/01/04-sq_3865.png'},
@@ -56,10 +56,10 @@ class Welcome < Grape::API
       }
     ]
     @brands = [
-      [1, "杜蕾斯", "http://blsm-public.oss.aliyuncs.com/images/20140423/pinpai/du'lei'si.png"],
-      [2, "名流", "http://blsm-public.oss.aliyuncs.com/images/20140423/pinpai/mign'liu.png"],
-      [3, "诺兰", "http://blsm-public.oss.aliyuncs.com/images/20140423/pinpai/nuo'lan.png"],
-      [4, "尚牌", "http://blsm-public.oss.aliyuncs.com/images/20140423/pinpai/shang'pai.png"]
+      {id: nil, type: 'Tag', title: '杜蕾斯', image: "http://blsm-public.oss.aliyuncs.com/images/20140423/pinpai/du'lei'si.png"},
+      {id: nil, type: 'Tag', title: '名流', image: "http://blsm-public.oss.aliyuncs.com/images/20140423/pinpai/mign'liu.png"},
+      {id: nil, type: 'Tag', title: '诺兰', image: "http://blsm-public.oss.aliyuncs.com/images/20140423/pinpai/nuo'lan.png"},
+      {id: nil, type: 'Tag', title: '尚牌', image: "http://blsm-public.oss.aliyuncs.com/images/20140423/pinpai/shang'pai.png"}
     ]
     # cache(key: [:v2, :home, @banners.last], expires_in: 2.days) do
     #   @banners

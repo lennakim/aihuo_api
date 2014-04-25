@@ -25,8 +25,4 @@ end
 
 json.categories @categories
 
-json.brands @brands do |brand|
-  json.id brand[0]
-  json.name brand[1]
-  json.image brand[2]
-end
+json.brands @brands
