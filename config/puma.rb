@@ -29,5 +29,13 @@ stdout_redirect File.join(log_path, 'puma.out.log'), File.join(log_path, 'puma.e
 # Bind the server.
 bind "unix:///var/run/api.aihuo360.com.sock"
 
+# Thread safety
+# https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server
+on_worker_boot do
+  ActiveSupport.on_load(:active_record) do
+    ActiveRecord::Base.establish_connection
+  end
+end
+
 preload_app! #utilizing copy-on-write
 activate_control_app
