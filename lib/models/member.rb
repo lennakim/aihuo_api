@@ -2,6 +2,7 @@ class Member < ActiveRecord::Base
   # extends ...................................................................
   encrypted_id key: 'uwGeTjFYo9z9NpoN'
   # includes ..................................................................
+  include CoinRule
   # mount_uploader :avatar, AvatarUploader
   # relationships .............................................................
   has_one :device, -> { order('updated_at DESC') }, class_name: "Device"
@@ -63,6 +64,7 @@ class Member < ActiveRecord::Base
   def verified!
     self.password = captcha
     self.verified = true
+    increase
     save
   end
 
