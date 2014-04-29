@@ -8,9 +8,9 @@ class Welcome < Grape::API
     @banners = @application.articles.banner
     # @tags = Tag.where(id: Tag::CATEGORIES)
     @submenus = [
-      {id: "", type: 'Tag', name: '新品特价', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
-      {id: "", type: 'Tag', name: '0元购', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-2.png'},
-      {id: "", type: 'Tag', name: '激情爱全套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
+      {id: "", type: 'Tag', title: '新品特价', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
+      {id: "", type: 'Tag', title: '0元购', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-2.png'},
+      {id: "", type: 'Tag', title: '激情爱全套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
     ]
     @categories = [
       {id: "", type: 'Tag', title: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-01.png'},
