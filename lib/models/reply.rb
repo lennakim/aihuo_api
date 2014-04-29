@@ -17,7 +17,7 @@ class Reply < ActiveRecord::Base
   # callbacks .................................................................
   after_create :send_notice_msg
   # scopes ....................................................................
-  default_scope { order("created_at DESC") }
+  # default_scope { order("created_at DESC") }
   scope :to_me, ->(device_id) {
     topics = Topic.where(device_id: device_id).pluck(:id)
     replies = Reply.where(device_id: device_id).pluck(:id)
