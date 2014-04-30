@@ -54,6 +54,24 @@ class PrivateMessages < Grape::API
       end
     end
 
+    desc "Listing private message for the user."
+    params do
+      requires :member_id, type: String, desc: "Member ID."
+      requires :password, type: String, desc: "Member Password."
+      requires :friend_id, type: String, desc: "Friend ID."
+      optional :page, type: Integer, desc: "Page number."
+      optional :per_page, type: Integer, default: 10, desc: "Per page value."
+    end
+    get ':history', jbuilder: 'private_messages/messages' do
+      if authenticate?
+        member_id = EncryptedId.decrypt(Member.encrypted_id_key, params[:member_id])
+        friend_id = EncryptedId.decrypt(Member.encrypted_id_key, params[:friend_id])
+        @private_messages = paginate(PrivateMessage.unscoped.history(member_id, friend_id))
+      else
+        error! "Access Denied", 401
+      end
+    end
+
     desc "Create a private message."
     params do
       requires :sign, type: String, desc: "Sign value"

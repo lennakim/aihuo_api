@@ -14,6 +14,13 @@ class PrivateMessage < ActiveRecord::Base
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }
   scope :by_receiver, ->(member_id) { where(receiver_id: member_id) }
+  scope :history, ->(member_id, friend_id) {
+    condition = [
+        "(receiver_id = ? AND sender_id = ?)",
+        "(receiver_id = ? AND sender_id = ?)"
+      ].join(" OR ")
+    where(condition, member_id, friend_id, friend_id, member_id)
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   delegate :device_id, to: :receiver, allow_nil: true
   # class methods .............................................................
