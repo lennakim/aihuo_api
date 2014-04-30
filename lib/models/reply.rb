@@ -15,6 +15,7 @@ class Reply < ActiveRecord::Base
     :scope => [:replyable_id, :replyable_type, :device_id],
     :message => "请勿重复发言"
   # callbacks .................................................................
+  after_create :set_topic_id
   after_create :send_notice_msg
   # scopes ....................................................................
   # default_scope { order("created_at DESC") }
@@ -40,5 +41,9 @@ class Reply < ActiveRecord::Base
       device_id = self.replyable.device_id
       Notification.send_reply_message_msg(device_id)
     end
+  end
+
+  def set_topic_id
+    update_column(:topic_id, replyable_id) if replyable_type == "Topic"
   end
 end
