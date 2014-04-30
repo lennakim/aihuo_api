@@ -57,9 +57,9 @@ class Nodes < Grape::API
         get "/", jbuilder: 'topics/topics' do
           topics = case params[:filter]
           when :best
-            Topic.excellent
+            @node.topics.excellent
           when :checking
-            Topic.checking
+            @node.topics.checking
           when :hot
             @node.topics.popular
           when :new
