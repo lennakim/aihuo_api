@@ -18,7 +18,7 @@ class Topic < ActiveRecord::Base
   default_scope { where(approved: true).order("created_at DESC") }
   scope :by_device, ->(device_id) { where(device_id: device_id) }
   scope :popular, -> { where("replies_count >= 50") }
-  scope :lasted, -> { where(best: false).where("replies_count < 50") }
+  scope :lasted, -> { where(best: false) }
   scope :excellent, -> { where(best: true) }
   scope :checking, -> { where(approved: false).order("created_at DESC") }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
