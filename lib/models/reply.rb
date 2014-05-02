@@ -22,7 +22,11 @@ class Reply < ActiveRecord::Base
   scope :to_me, ->(device_id) {
     topics = Topic.where(device_id: device_id).pluck(:id)
     replies = Reply.where(device_id: device_id).pluck(:id)
-    where("(replyable_id in (?) AND replyable_type = 'Topic') OR (replyable_id in (?) AND replyable_type = 'Reply')", topics, replies).order("created_at DESC")
+    condition = [
+      "(replyable_id in (?) AND replyable_type = 'Topic')",
+      "(replyable_id in (?) AND replyable_type = 'Reply')"
+    ].join(" OR ")
+    where(condition, topics, replies ).order("created_at DESC")
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
@@ -37,13 +41,14 @@ class Reply < ActiveRecord::Base
 
   # 有新回复给用户发送消息
   def send_notice_msg
-    if self.replyable.member.try(:receive_reply_notification?)
+    if replyable_type == "Topic" && self.replyable.member.try(:receive_reply_notification?)
       device_id = self.replyable.device_id
       Notification.send_reply_message_msg(device_id)
     end
   end
 
   def set_topic_id
-    update_column(:topic_id, replyable_id) if replyable_type == "Topic"
+    topic_id = replyable_type == "Topic" ? replyable_id : replyable.topic_id
+    update_column(:topic_id, topic_id)
   end
 end
