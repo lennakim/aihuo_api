@@ -8,19 +8,17 @@ module CoinRule
 
   private
 
-  def increase
+  def increase(coin = 5)
     case self # means case self.class
     when Member
-      # 绑定手机号增加15金币
-      self.update_column(:coin_total, coin_total + 15)
+      self.update_column(:coin_total, coin_total + coin)
     end
   end
 
-  def reduce
+  def reduce(coin = 5)
     case self # means case self.class
     when PrivateMessage
-      # 发送一条小纸条扣5金币
-      self.sender.update_column(:coin_total, self.sender.coin_total - 5)
+      self.sender.update_column(:coin_total, self.sender.coin_total - coin)
     end
   end
 

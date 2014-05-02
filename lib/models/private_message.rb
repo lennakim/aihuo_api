@@ -9,7 +9,14 @@ class PrivateMessage < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   after_create :send_notice_msg
-  after_create :reduce
+
+  def after_create(record)
+    # record.credit_card_number = encrypt(record.credit_card_number)
+    if PrivateMessage.find_by(sender_id: record.receiver_id, receiver_id: record.sender_id).count.zero?
+      # 发送一条小纸条扣5金币
+      reduce(5)
+    end
+  end
   # scopes ....................................................................
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }

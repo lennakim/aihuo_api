@@ -64,7 +64,8 @@ class Member < ActiveRecord::Base
   def verified!
     self.password = captcha
     self.verified = true
-    increase
+    # 绑定手机号增加15金币
+    increase(15)
     save
   end
 
