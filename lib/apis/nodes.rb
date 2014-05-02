@@ -65,7 +65,7 @@ class Nodes < Grape::API
           when :new
             @node.topics.lasted
           when :mine
-            @node.topics.by_device(params[:device_id])
+            @node.topics.unscoped.by_device(params[:device_id])
           when :all
             @node.topics
           end
