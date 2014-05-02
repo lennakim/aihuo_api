@@ -35,6 +35,10 @@ class Reply < ActiveRecord::Base
     member = Member.find(member_id) if member_id
     self.member = member if member && member.authenticate?(password)
   end
+
+  def topic_id
+    replyable_type == "Topic" ? self[:topic_id] : replyable.topic_id
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
@@ -48,7 +52,6 @@ class Reply < ActiveRecord::Base
   end
 
   def set_topic_id
-    topic_id = replyable_type == "Topic" ? replyable_id : replyable.topic_id
-    update_column(:topic_id, topic_id)
+    update_column(:topic_id, replyable_id) if replyable_type == "Topic"
   end
 end
