@@ -88,7 +88,9 @@ class Members < Grape::API
       put "/", jbuilder: 'members/member' do
         @member = Member.find(params[:id])
         if sign_approval? && @member.authenticate?(params[:password])
-          @member.update_attributes(member_params)
+          unless @member.update_attributes(member_params)
+            error!(@member.errors.full_messages.join, 500)
+          end
         else
           error! "Access Denied", 401
         end
