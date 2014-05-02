@@ -13,12 +13,12 @@ class Welcome < Grape::API
       {id: "", type: 'Tag', title: '激情爱全套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
     ]
     @categories = [
-      {id: "", type: 'Tag', title: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-01.png'},
-      {id: "", type: 'Tag', title: "女用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-02.png'},
-      {id: "", type: 'Tag', title: "更多情趣", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-03.png'},
-      {id: "", type: 'Tag', title: "最近有点烦", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-04.png'},
-      {id: "", type: 'Tag', title: "高潮迭起", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-05.png'},
-      {id: "", type: 'Tag', title: "日常战备", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-06.png'}
+      {id: "", type: 'Tag', title: '男士专区', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-01.png'},
+      {id: "", type: 'Tag', title: '女士专区', name: "女用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-02.png'},
+      {id: "", type: 'Tag', title: '性感服饰', name: "更多情趣", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-03.png'},
+      {id: "", type: 'Tag', title: '助情助兴', name: "最近有点烦", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-04.png'},
+      {id: "", type: 'Tag', title: '夫妻情侣', name: "高潮迭起", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-05.png'},
+      {id: "", type: 'Tag', title: '套套润滑', name: "日常战备", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-06.png'}
     ]
     @sections = [
       {
