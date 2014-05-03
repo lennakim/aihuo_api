@@ -55,6 +55,7 @@ class Member < ActiveRecord::Base
     )
     message = "手机验证码:#{captcha}【首趣商城】"
     # ChinaSMS.to phone, message
+    return self
   end
 
   def validate_captcha?(phone, captcha)
