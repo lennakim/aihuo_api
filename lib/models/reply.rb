@@ -3,6 +3,7 @@ class Reply < ActiveRecord::Base
   encrypted_id key: 'vfKYGu3kbQ3skEWr'
   # includes ..................................................................
   include ForumValidations
+  include HarmoniousFormatter
   # relationships .............................................................
   belongs_to :replyable, polymorphic: true
   belongs_to :topic, foreign_key: 'replyable_id', counter_cache: true, touch: true

@@ -6,6 +6,7 @@ class Topic < ActiveRecord::Base
   include EncryptedIdFinder
   include ForumValidations
   include Voting
+  include HarmoniousFormatter
   # relationships .............................................................
   belongs_to :node, :counter_cache => true
   belongs_to :member
