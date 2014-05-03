@@ -9,14 +9,7 @@ class PrivateMessage < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   after_create :send_notice_msg
-
-  def after_create(record)
-    # record.credit_card_number = encrypt(record.credit_card_number)
-    if PrivateMessage.find_by(sender_id: record.receiver_id, receiver_id: record.sender_id).count.zero?
-      # 发送一条小纸条扣5金币
-      reduce(5)
-    end
-  end
+  after_create :reduce_coin
   # scopes ....................................................................
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }
@@ -32,6 +25,10 @@ class PrivateMessage < ActiveRecord::Base
   delegate :device_id, to: :receiver, allow_nil: true
   # class methods .............................................................
   # public instance methods ...................................................
+  def friendly_to_receiver?
+    !PrivateMessage.where(sender_id: receiver_id, receiver_id: sender_id).count.zero?
+  end
+
   def opened!
     update_column(:opened, true)
   end
@@ -44,6 +41,13 @@ class PrivateMessage < ActiveRecord::Base
     # 用户拒收通知
     if receiver.receive_message_notification?
       Notification.send_private_message_msg(device_id)
+    end
+  end
+
+  def reduce_coin
+    unless self.friendly_to_receiver?
+      # 陌生的两个人首次发送一条小纸条扣5金币
+      reduce(5)
     end
   end
 end
