@@ -12,15 +12,15 @@ class Topics < Grape::API
     get "/", jbuilder: 'topics/topics' do
       topics = case params[:filter]
       when :best
-        Topic.excellent
+        Topic.approve.dexcellent
       when :checking
         Topic.checking
       when :hot
-        Topic.popular
+        Topic.approve.popular
       when :new
-        Topic.lasted
+        Topic.approve.lasted
       when :mine
-        Topic.unscoped.by_device(params[:device_id])
+        Topic.by_device(params[:device_id])
       end
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
@@ -31,7 +31,7 @@ class Topics < Grape::API
     route_param :id do
 
       before do
-        @topic = Topic.unscoped.find_by_encrypted_id(params[:id])
+        @topic = Topic.find_by_encrypted_id(params[:id])
       end
 
       desc "Return a topic."

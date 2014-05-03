@@ -15,7 +15,8 @@ class Topic < ActiveRecord::Base
   # callbacks .................................................................
   after_initialize :set_approved_status
   # scopes ....................................................................
-  default_scope { where(approved: true).order("created_at DESC") }
+  default_scope { order("created_at DESC") }
+  scope :approved, -> { where(approved: true) }
   scope :by_device, ->(device_id) { where(device_id: device_id) }
   scope :popular, -> { where("replies_count >= 50") }
   scope :lasted, -> { where(best: false) }
