@@ -57,13 +57,13 @@ class Nodes < Grape::API
         get "/", jbuilder: 'topics/topics' do
           topics = case params[:filter]
           when :best
-            @node.topics.approve.excellent
+            @node.topics.approved.excellent
           when :checking
             @node.topics.checking
           when :hot
-            @node.topics.approve.popular
+            @node.topics.approved.popular
           when :new
-            @node.topics.approve.lasted
+            @node.topics.approved.lasted
           when :mine
             @node.topics.by_device(params[:device_id])
           when :all

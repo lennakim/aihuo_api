@@ -12,13 +12,13 @@ class Topics < Grape::API
     get "/", jbuilder: 'topics/topics' do
       topics = case params[:filter]
       when :best
-        Topic.approve.dexcellent
+        Topic.approved.dexcellent
       when :checking
         Topic.checking
       when :hot
-        Topic.approve.popular
+        Topic.approved.popular
       when :new
-        Topic.approve.lasted
+        Topic.approved.lasted
       when :mine
         Topic.by_device(params[:device_id])
       end
