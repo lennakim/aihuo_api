@@ -44,9 +44,10 @@ class PrivateMessage < ActiveRecord::Base
     end
   end
 
+  # 陌生的两个人首次发送一条小纸条扣5金币
+  # 接收者回复纸条不扣金币，发送者再次发送仍然扣金币
   def reduce_coin
     unless self.friendly_to_receiver?
-      # 陌生的两个人首次发送一条小纸条扣5金币
       reduce(5)
     end
   end
