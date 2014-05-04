@@ -21,8 +21,8 @@ class Topic < ActiveRecord::Base
   scope :by_device, ->(device_id) { where(device_id: device_id) }
   scope :popular, -> { where("replies_count >= 50") }
   scope :lasted, -> { where(best: false) }
-  scope :excellent, -> { where(best: true) }
-  scope :checking, -> { where(approved: false).order("created_at DESC") }
+  scope :excellent, -> { where(best: true).reorder("top DESC, created_at DESC") }
+  scope :checking, -> { where(approved: false) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
   # public instance methods ...................................................
