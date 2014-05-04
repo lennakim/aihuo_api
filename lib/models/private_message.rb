@@ -21,12 +21,15 @@ class PrivateMessage < ActiveRecord::Base
       ].join(" OR ")
     where(condition, member_id, friend_id, friend_id, member_id)
   }
+  scope :friendly, ->(me, friend) {
+    where(sender_id: friend, receiver_id: me)
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   delegate :device_id, to: :receiver, allow_nil: true
   # class methods .............................................................
   # public instance methods ...................................................
   def friendly_to_receiver?
-    !PrivateMessage.where(sender_id: receiver_id, receiver_id: sender_id).count.zero?
+    !PrivateMessage.friendly(sender_id, receiver_id).count.zero?
   end
 
   def opened!
@@ -47,8 +50,6 @@ class PrivateMessage < ActiveRecord::Base
   # 陌生的两个人首次发送一条小纸条扣5金币
   # 接收者回复纸条不扣金币，发送者再次发送仍然扣金币
   def reduce_coin
-    unless self.friendly_to_receiver?
-      reduce(5)
-    end
+    reduce(5) unless self.friendly_to_receiver?
   end
 end
