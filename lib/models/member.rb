@@ -12,10 +12,7 @@ class Member < ActiveRecord::Base
   # validations ...............................................................
   validates :nickname, presence: true, uniqueness: true, length: 2..16
   # callbacks .................................................................
-  def after_create
-    # 注册就送5金币
-    increase(5)
-  end
+  after_create :increase_coin
   # scopes ....................................................................
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   delegate :device_id, to: :device, allow_nil: true
@@ -100,5 +97,10 @@ class Member < ActiveRecord::Base
 
   def generate_salt
     self.salt = SecureRandom.hex
+  end
+
+  # 注册就送5金币
+  def increase_coin
+    increase(5)
   end
 end
