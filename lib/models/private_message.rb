@@ -9,14 +9,7 @@ class PrivateMessage < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   after_create :send_notice_msg
-
-  def after_create(record)
-    # record.credit_card_number = encrypt(record.credit_card_number)
-    if PrivateMessage.find_by(sender_id: record.receiver_id, receiver_id: record.sender_id).count.zero?
-      # 发送一条小纸条扣5金币
-      reduce(5)
-    end
-  end
+  after_create :reduce_coin
   # scopes ....................................................................
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }
@@ -28,10 +21,17 @@ class PrivateMessage < ActiveRecord::Base
       ].join(" OR ")
     where(condition, member_id, friend_id, friend_id, member_id)
   }
+  scope :friendly, ->(me, friend) {
+    where(sender_id: friend, receiver_id: me)
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   delegate :device_id, to: :receiver, allow_nil: true
   # class methods .............................................................
   # public instance methods ...................................................
+  def friendly_to_receiver?
+    !PrivateMessage.friendly(sender_id, receiver_id).count.zero?
+  end
+
   def opened!
     update_column(:opened, true)
   end
@@ -45,5 +45,11 @@ class PrivateMessage < ActiveRecord::Base
     if receiver.receive_message_notification?
       Notification.send_private_message_msg(device_id)
     end
+  end
+
+  # 陌生的两个人首次发送一条小纸条扣5金币
+  # 接收者回复纸条不扣金币，发送者再次发送仍然扣金币
+  def reduce_coin
+    reduce(5) unless self.friendly_to_receiver?
   end
 end
