@@ -36,6 +36,11 @@ class Members < Grape::API
       requires :id, type: String, desc: "Member id."
     end
     route_param :id do
+      desc "Get member detail"
+      get "/", jbuilder: 'members/member' do
+        @member = Member.find(params[:id])
+      end
+
       desc "Send captcha"
       params do
         requires :sign, type: String, desc: "Sign value"
