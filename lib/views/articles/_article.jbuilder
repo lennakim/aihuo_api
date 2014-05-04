@@ -1,6 +1,7 @@
 json.id article.to_param
 if article.background
   json.image do
+    json.default article.carrierwave_background(nil, :url)
     json.iphone article.carrierwave_background(:iphone, :url)
   end
 end
