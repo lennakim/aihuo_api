@@ -62,7 +62,7 @@ class PrivateMessages < Grape::API
       optional :page, type: Integer, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
-    get ':history', jbuilder: 'private_messages/messages' do
+    get '/history', jbuilder: 'private_messages/messages' do
       if authenticate?
         member_id = EncryptedId.decrypt(Member.encrypted_id_key, params[:member_id])
         friend_id = EncryptedId.decrypt(Member.encrypted_id_key, params[:friend_id])
