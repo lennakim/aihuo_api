@@ -38,7 +38,7 @@ class Member < ActiveRecord::Base
 
   def can_send_captcha?
     # 对于验证过手机号的用户，暂时不再允许验证
-    return false if verified
+    return false if verified?
     # 第一次创建的用户，发送验证码时间是空
     return true if captcha_updated_at.blank?
     # 上次发送时间在2分钟之前，并且当天发送次数在3次以内
@@ -56,7 +56,6 @@ class Member < ActiveRecord::Base
     )
     message = "手机验证码:#{captcha}【首趣商城】"
     ChinaSMS.to phone, message
-    # return self
   end
 
   def validate_captcha?(phone, captcha)
