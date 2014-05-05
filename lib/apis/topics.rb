@@ -20,7 +20,7 @@ class Topics < Grape::API
       when :new
         Topic.approved.lasted
       when :mine
-        Topic.by_device(params[:device_id])
+        Topic.with_deleted.by_device(params[:device_id])
       end
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
