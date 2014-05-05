@@ -21,7 +21,7 @@ class Orders < Grape::API
     end
 
     def validate_remote_host
-      unless request.env["REMOTE_HOST"] == "paybank.sinaapp.com"
+      unless request.env["HTTP_SAEAPPNAME"] == "paybank"
         error!({error: "unknown host"}, 500)
       end
     end
