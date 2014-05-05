@@ -55,8 +55,8 @@ class Member < ActiveRecord::Base
       password: Setting.find_by_name(:sms_pwd).value
     )
     message = "手机验证码:#{captcha}【首趣商城】"
-    # ChinaSMS.to phone, message
-    return self
+    ChinaSMS.to phone, message
+    # return self
   end
 
   def validate_captcha?(phone, captcha)
