@@ -4,6 +4,7 @@ class Order < ActiveRecord::Base
   encrypted_id key: 'bYqILlFMZn3xd8Cy'
   # includes ..................................................................
   include EncryptedIdFinder
+  include MergePendingOrder
   # relationships .............................................................
   belongs_to :express, foreign_key: "shippingorder_id"
   has_many :line_items
@@ -19,7 +20,7 @@ class Order < ActiveRecord::Base
   # callbacks .................................................................
   before_destroy :logging_action
   before_create :compose_ship_address
-  after_create :merge_pending_orders
+  # after_create :merge_pending_orders
   after_create :calculate_item_total
   # after_create :send_confirm_sms
   after_create :register_device
@@ -73,6 +74,14 @@ class Order < ActiveRecord::Base
     number.strip if number
   end
 
+  # 满就包邮
+  def calculate_shipping_charge
+    if pay_type == 0 && item_total >= 149 || pay_type == 1 && item_total >= 199
+      update_column(:shipping_charge, 0)
+    end
+  end
+
+  # 优惠劵逻辑
   def calculate_with_coupon(coupon)
     if item_total > coupon.additional_condition && can_use_coupon?(coupon)
       case coupon.category
@@ -104,6 +113,7 @@ class Order < ActiveRecord::Base
     calculate_with_coupon(coupon)
   end
 
+  # 利用优惠劵重新计算订单的产品价格和运费
   def calculate_total_by_coupons(coupon_ids)
     coupon_ids.each { |coupon_id| calculate_total_by_coupon(coupon_id, false) }
   end
@@ -145,29 +155,6 @@ class Order < ActiveRecord::Base
     (n * 100).round / 100.0
   end
 
-  def merge_pending_orders
-    orders = Order.newly.where(device_id: device_id).
-      where(application_id: application_id).
-      where.not(id: id)
-
-    return if orders && orders.size.zero?
-
-    orders.each do |order|
-      order.line_items.each { |item| self.line_items << item }
-      order.coupons.each { |coupon| self.coupons << coupon }
-    end
-
-    # 汇总已经支付的订单金额
-    orders_payment_total = orders.inject(self.payment_total) { |sum, o| sum + o.payment_total }
-    self.update_column(:payment_total, orders_payment_total)
-    update_payment_state
-
-    coupon_ids = coupons.collect(&:to_param)
-    calculate_total_by_coupons(coupon_ids)
-
-    orders.destroy_all
-  end
-
   def compose_ship_address
     self.address =
       "#{shipping_province} #{shipping_city} #{shipping_district} #{shipping_address}"
@@ -177,22 +164,18 @@ class Order < ActiveRecord::Base
     orderlogs.logging_action(:delete, device_id)
   end
 
-  # for update order on api and back end.
-  def calculate_item_total
-    item_total = line_items.inject(0){ |sum, item| sum + item.sale_price * item.quantity }
-    update({item_total: item_total})
-  end
-
   # send sms if create order successful.
   def send_confirm_sms
     ShortMessage.send_confirm_sms(self)
   end
 
+  # 创建订单后删除购物车
   def destroy_cart
     carts = Cart.where(device_id: device_id, application_id: application_id)
     carts.destroy_all if carts
   end
 
+  # 创建订单前确认设备存在
   def register_device
     Device.where(device_id: device_id).first_or_create! if device_id.present?
   end

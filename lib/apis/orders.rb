@@ -64,6 +64,8 @@ class Orders < Grape::API
         @order = Order.newly.build(order_params)
         if @order.save
           @order.calculate_total_by_coupon(params[:coupon])
+          @order.merge_pending_orders
+          @order = @order.find_original_order # 合并订单后本订单删除，返回原始订单
         else
           status 500
         end
