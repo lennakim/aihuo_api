@@ -8,6 +8,7 @@ class PrivateMessage < ActiveRecord::Base
   belongs_to :receiver, class_name: "Member", foreign_key: "receiver_id"
   # validations ...............................................................
   # callbacks .................................................................
+  before_create :coin_must_enough
   after_create :send_notice_msg
   after_create :reduce_coin
   # scopes ....................................................................
@@ -50,6 +51,12 @@ class PrivateMessage < ActiveRecord::Base
   # 陌生的两个人首次发送一条小纸条扣5金币
   # 接收者回复纸条不扣金币，发送者再次发送仍然扣金币
   def reduce_coin
-    reduce(5) unless self.friendly_to_receiver?
+    reduce(5) unless friendly_to_receiver?
+  end
+
+  # 发送小纸条前验证用户余额
+  def coin_must_enough
+    error_msg = "发送失败，余额不足"
+    errors.add(:member_id, error_msg) if sender.coin_total < 5
   end
 end
