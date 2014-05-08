@@ -11,7 +11,7 @@ require 'mina/rvm'    # for rvm support. (http://rvm.io)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :domain, 'api.aihuo360.com'
+set :domain, '115.29.164.196'
 set :deploy_to, '/var/www/api.aihuo360.com'
 set :repository, 'git@bitbucket.org:Xiaopuzhu/adultshop_new.git'
 set :branch, 'master'
@@ -101,6 +101,10 @@ end
 
 task :cat_err_log => :environment do
   queue "tail -n 200 #{app_path}/log/puma.err.log"
+end
+
+task :clean_cache => :environment do
+  # TODO: need some code make the task works
 end
 
 # For help in making your deploy script, see the Mina documentation:
