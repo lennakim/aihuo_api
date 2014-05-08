@@ -16,13 +16,17 @@ class Nodes < Grape::API
       requires :id, type: String, desc: "Node ID."
     end
     route_param :id do
+
+      before do
+        @node = Node.find(params[:id])
+      end
+
       desc "Return roles, also to check a device is node manager or not."
       params do
         requires :device_id, type: String, desc: "Device ID."
       end
       get :check_role do
-        node = Node.find(params[:id])
-        role = node.manager_list.include?(params[:device_id]) ? "node_manager" : "user"
+        role = @node.manager_list.include?(params[:device_id]) ? "node_manager" : "user"
         { role: role }
       end
 
@@ -33,9 +37,8 @@ class Nodes < Grape::API
         requires :object_type, type: Symbol, values: [:topic, :reply], default: :topic, desc: "Object Type."
       end
       post :block_user do
-        node = Node.find(params[:id])
         obj = eval(params[:object_type].to_s.capitalize).find(params[:object_id])
-        response = node.block_user(params[:device_id], obj.device_id)
+        response = @node.block_user(params[:device_id], obj.device_id)
         if response
           status 201
         else
@@ -46,22 +49,25 @@ class Nodes < Grape::API
 
       resources 'topics' do
         params do
-          optional :filter, type: Symbol, values: [:hot, :new, :mine, :all], default: :all, desc: "Filtering topics."
+          optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine, :all], default: :all, desc: "Filtering topics."
           requires :device_id, type: String, desc: "Device ID."
           optional :page, type: Integer, default: 1, desc: "Page number."
           optional :per_page, type: Integer, default: 10, desc: "Per page value."
         end
         get "/", jbuilder: 'topics/topics' do
-          node = Node.find(params[:id])
           topics = case params[:filter]
+          when :best
+            @node.topics.approved.excellent
+          when :checking
+            @node.topics.checking
           when :hot
-            node.topics.popular
+            @node.topics.approved.popular
           when :new
-            node.topics.lasted
+            @node.topics.approved.lasted
           when :mine
-            node.topics.by_device(params[:device_id])
-          else :all
-            node.topics
+            @node.topics.with_deleted.by_device(params[:device_id])
+          when :all
+            @node.topics
           end
           @topics = paginate(topics.order("top DESC, updated_at DESC"))
         end
@@ -72,15 +78,24 @@ class Nodes < Grape::API
           requires :nickname, type: String, desc: "User nickname."
           requires :device_id, type: String, desc: "Deivce ID."
           requires :sign, type: String, desc: "sign value."
+          optional :member, type: Hash do
+            requires :id, type: String, desc: "Member ID."
+            requires :password, type: String, desc: "Member Password."
+          end
         end
         post "/", jbuilder: 'topics/topic' do
           if sign_approval?
-            node = Node.find(params[:id])
-            @topic = node.topics.new({
+            @topic = @node.topics.new({
                        body: params[:body],
                        nickname: params[:nickname],
                        device_id: params[:device_id]
                      })
+            if params[:member]
+              @topic.relate_to_member_with_authenticate(
+                params[:member][:id],
+                params[:member][:password]
+              )
+            end
             status 422 unless @topic.save
           else
             error! "Access Denied", 401

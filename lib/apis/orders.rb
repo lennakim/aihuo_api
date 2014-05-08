@@ -21,7 +21,7 @@ class Orders < Grape::API
     end
 
     def validate_remote_host
-      unless request.env["REMOTE_HOST"] == "paybank.sinaapp.com"
+      unless request.env["HTTP_SAEAPPNAME"] == "paybank"
         error!({error: "unknown host"}, 500)
       end
     end
@@ -52,6 +52,7 @@ class Orders < Grape::API
         optional :shipping_district, type: String, desc: "区"
         optional :shipping_address, type: String, desc: "详细地址"
         requires :shipping_charge, type: Integer, desc: "运费"
+        requires :pay_type, type: Integer, values: [0, 1], default: 1, desc: "支付方法"
         optional :comment, type: String, desc: "买家留言"
         optional :device_id, type: String, desc: "Device ID"
         optional :application_id, type: Integer, desc: "Application ID"
@@ -63,6 +64,8 @@ class Orders < Grape::API
         @order = Order.newly.build(order_params)
         if @order.save
           @order.calculate_total_by_coupon(params[:coupon])
+          @order.merge_pending_orders
+          @order = @order.find_original_order # 合并订单后本订单删除，返回原始订单
         else
           status 500
         end
