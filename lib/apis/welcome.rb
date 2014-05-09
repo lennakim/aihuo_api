@@ -101,23 +101,23 @@ class Welcome < Grape::API
         {
           name: "新品区",
           objects: [
-            {id: "6bf3a8fb35a00dc171dbe679f07e09d5", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/huodong-2.png'},
-            {id: "eac09ca04140a8a4edbe5f0f62488c46", type: 'Product', title: '阻复环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/2-06.png'},
-            {id: "4e0d1282868113aed2ebfe4341a61d85", type: 'Product', title: '免提飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/2-07.png'},
-            {id: "25ac52b0efdafca460d8f5aa7231f1a5", type: 'Product', title: '精油润滑液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-08.png'},
-            {id: "940e3a4f2b406a1c93e1f0425d5d52da", type: 'Product', title: '开裆丁字裤', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-09.png'},
-            {id: "881ddca05b03e73877b5d327ab04e5a1", type: 'Product', title: '震动飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-10.png'}
+            {id: "6bf3a8fb35a00dc171dbe679f07e09d5", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-2.png'},
+            {id: "eac09ca04140a8a4edbe5f0f62488c46", type: 'Product', title: '阻复环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-06.png'},
+            {id: "4e0d1282868113aed2ebfe4341a61d85", type: 'Product', title: '免提飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-07.png'},
+            {id: "25ac52b0efdafca460d8f5aa7231f1a5", type: 'Product', title: '精油润滑液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/02-08.png'},
+            {id: "940e3a4f2b406a1c93e1f0425d5d52da", type: 'Product', title: '开裆丁字裤', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/02-09.png'},
+            {id: "881ddca05b03e73877b5d327ab04e5a1", type: 'Product', title: '震动飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/02-10.png'}
           ]
         },
         {
           name: "主题馆",
           objects: [
-            {id: "c4bbc60722c33e4cac4b9209b3635430", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/huodong-3.jpg'},
-            {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '学生服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-11.png'},
-            {id: "9cfafcd46346ae14ef0b42539db6c062", type: 'Product', title: '女士制服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-12.png'},
-            {id: "9ea1d60328ae4a08627fe3de9a38514e", type: 'Product', title: '性感蕾丝', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-13.png'},
-            {id: "f5e933eb6af093b9aa6ece2281406a69", type: 'Product', title: 'SM女王装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-14.png'},
-            {id: "7163f18ab7de9a11d20085e20ee338fc", type: 'Product', title: '蕾丝网纱', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-15.png'}
+            {id: "c4bbc60722c33e4cac4b9209b3635430", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-3.jpg'},
+            {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '学生服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/02-11.png'},
+            {id: "9cfafcd46346ae14ef0b42539db6c062", type: 'Product', title: '女士制服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/02-12.png'},
+            {id: "9ea1d60328ae4a08627fe3de9a38514e", type: 'Product', title: '性感蕾丝', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/02-13.png'},
+            {id: "f5e933eb6af093b9aa6ece2281406a69", type: 'Product', title: 'SM女王装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/02-14.png'},
+            {id: "7163f18ab7de9a11d20085e20ee338fc", type: 'Product', title: '蕾丝网纱', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/02-15.png'}
           ]
         }
       ]
