@@ -34,6 +34,9 @@ gem 'china_sms'
 #supports CORS
 gem 'rack-cors'
 
+# Ruby Web Server
+gem 'puma'
+
 group :development do
   # Use mina for deployment
   # https://github.com/nadarei/mina
@@ -58,9 +61,3 @@ group :development, :test do
   # gem 'api_taster', '0.6.0'
   gem 'pry'
 end
-
-group :production do
-  # Ruby Web Server
-  gem 'puma'
-end
-
