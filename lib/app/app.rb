@@ -19,6 +19,9 @@ module ShouQuShop
     def call(env)
       # api
       response = ShouQuShop::API.call(env)
+      # http://stackoverflow.com/questions/17303546/activerecord-leaks-connections-when-using-in-rack-middleware
+      ActiveRecord::Base.clear_active_connections! # fixes the connection leak
+      response
     end
   end
 end

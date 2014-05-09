@@ -13,7 +13,7 @@ require 'boot'
 Bundler.require :default, ENV['RACK_ENV']
 
 # 建立数据库连接
-environment =  ENV['RACK_ENV']
+environment = ENV['RACK_ENV']
 dbconfig = YAML.load(ERB.new(File.read('config/database.yml')).result)[environment]
 ActiveRecord::Base.establish_connection(dbconfig)
 # ActiveRecord::Base.logger = Logger.new(STDERR)
