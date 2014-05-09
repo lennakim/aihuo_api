@@ -1,17 +1,36 @@
 class Welcome < Grape::API
+  helpers do
+    def date_param
+      date = request.headers["Registerdate"] || params[:register_date]
+      date.to_date if date
+    end
+
+    # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购宝典
+    def hide_gift_products?
+      date_param.blank? || date_param < 2.days.ago(Date.today)
+    end
+  end
 
   params do
-    optional :date, type: Integer, desc: "Device created date."
+    optional :register_date, type: String, desc: "Date looks like '20130401'."
   end
   get :home, jbuilder: 'welcome/home' do
     current_application
     @banners = @application.articles.banner
     # @tags = Tag.where(id: Tag::CATEGORIES)
-    @submenus = [
-      {id: "", type: 'Tag', title: '新品特价', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
-      {id: "", type: 'Tag', title: '0元购', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-2.png'},
-      {id: "", type: 'Tag', title: '激情爱全套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
-    ]
+    if hide_gift_products?
+      @submenus = [
+        {id: "", type: 'Tag', title: '新品特价', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
+        {id: "", type: 'Tag', title: '新品特价', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
+        {id: "", type: 'Tag', title: '激情爱全套', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
+      ]
+    else
+      @submenus = [
+        {id: "", type: 'Tag', title: '新品特价', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
+        {id: "", type: 'Tag', title: '0元购', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-2.png'},
+        {id: "", type: 'Tag', title: '激情爱全套', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
+      ]
+    end
     @categories = [
       {id: "", type: 'Tag', title: '男士专区', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-01.png'},
       {id: "", type: 'Tag', title: '女士专区', name: "女用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-02.png'},
