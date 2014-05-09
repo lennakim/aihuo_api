@@ -22,43 +22,43 @@ class Welcome < Grape::API
     when :healthy
       @banners = @application.articles.healthy.limit(2)
       @submenus = [
-        {id: "", type: 'Tag', title: '新品特价', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
-        {id: "", type: 'Tag', title: '新品特价', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
-        {id: "", type: 'Tag', title: '激情爱全套', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
+        {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-01.png'},
+        {id: "", type: 'Tag', title: '诺兰妞妞', name: "趣友推荐", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-02.png'},
+        {id: "", type: 'Tag', title: '火爆套套', name: "激情爱全套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-03.png'}
       ]
       @categories = []
       @sections = [
         {
           name: "热销区",
           objects: [
-            {id: "", type: 'Tag', title: '新品特价', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/huodong-01.png'},
-            {id: "4e0d1282868113aed2ebfe4341a61d85", type: 'Product', title: '免提飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-01.png'},
-            {id: "2ade7cbb1f300ada6eb197b23f79eb49", type: 'Product', title: '延时喷剂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-02.png'},
-            {id: "90a290d805341b81a0493af54b2a1e6e", type: 'Product', title: 'G点跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-03.png'},
-            {id: "f1dfc05cd2028142a7dbe8a00eb8d353", type: 'Product', title: 'jokerO环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-04.png'},
-            {id: "de90921e6090ce02aca4835906703b84", type: 'Product', title: '花语转珠棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-05.png'}
+            {id: "", type: 'Tag', title: '火爆热销', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/huodingyi-1.png'},
+            {id: "eac09ca04140a8a4edbe5f0f62488c46", type: 'Product', title: '阻复环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-01.png'},
+            {id: "8b40966990e68df56d07c0d0047b7e3f", type: 'Product', title: '震动跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-02.png'},
+            {id: "5a35dc7f93a32a255aec912682d9d810", type: 'Product', title: '调情香氛', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-03.png'},
+            {id: "ec46e4d35f6ccdf7994777f85cb928d6", type: 'Product', title: '本草堂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-04.png'},
+            {id: "2ade7cbb1f300ada6eb197b23f79eb49", type: 'Product', title: '延时喷剂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-05.png'}
           ]
         },
         {
           name: "新品区",
           objects: [
-            {id: "4a2b31e0ac84a2441dc009d12b6f08ee", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/huodong-02.png'},
-            {id: "2fbdd85ffba11935d0df4e6ca0c5cb8f", type: 'Product', title: '唯美AV棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-06.png'},
-            {id: "f96ff6f6035d482f6df52a2c844590a6", type: 'Product', title: '高潮缩阴', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-07.png'},
-            {id: "4fa540b3fadff80e5d9f9bf27874b2f6", type: 'Product', title: 'MP3跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-08.png'},
-            {id: "cffb921886b1ebbec8f27f49834144bb", type: 'Product', title: '高潮按摩棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-09.png'},
-            {id: "a19dab79f46393a75711193d98854390", type: 'Product', title: '缩阴高潮', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-10.png'}
+            {id: "41aa3fac21a9f0c681878d8c337c3d1b", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/huodong-2.png'},
+            {id: "25ac52b0efdafca460d8f5aa7231f1a5", type: 'Product', title: '精油润滑液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-06.png'},
+            {id: "7e831a6f3afc17101e5bfc4baf86a92f", type: 'Product', title: '延时湿巾', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-07.png'},
+            {id: "1a338177155b847cf46bd6dd884f38cf", type: 'Product', title: '舔食润滑液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/02-08.png'},
+            {id: "4919fd3797a1501de84cce0a0eda3c9c", type: 'Product', title: '幻彩跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/02-09.png'},
+            {id: "66d9165b20475b299359b6a73de1c384", type: 'Product', title: '男性延时', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/02-10.png'}
           ]
         },
         {
           name: "主题馆",
           objects: [
-            {id: "a59997020868a40e1252db47a47fa6c5", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/huodong-03.png'},
-            {id: "26b0dbc00cd4fa4d920ffe5fcc5cab7f", type: 'Product', title: '深V露乳', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-11.png'},
-            {id: "9cfafcd46346ae14ef0b42539db6c062", type: 'Product', title: '诱惑套装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-12.png'},
-            {id: "7163f18ab7de9a11d20085e20ee338fc", type: 'Product', title: '露乳诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-13.png'},
-            {id: "f9a19ed8c65f3523397074492bc82e23", type: 'Product', title: '制服学生', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-14.png'},
-            {id: "4d3e3d92d7a291d82845e125fd796331", type: 'Product', title: '军官制服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-15.png'}
+            {id: "", type: 'Tag', title: '日常战备', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/huodong-3.jpg'},
+            {id: "afd3988ca620a9c5d2e8cf90b8b40b16", type: 'Product', title: '糖果安全套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/02-11.png'},
+            {id: "030e288ce9f3cab3858a479ec7c0355d", type: 'Product', title: '加倍润滑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/02-12.png'},
+            {id: "3931f4abe7c946249eba777e981f2f1e", type: 'Product', title: '薄如羽翼', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/02-13.png'},
+            {id: "cff809c998e8b2f83482105da60877ff", type: 'Product', title: '活力螺纹', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/02-14.png'},
+            {id: "37c809b674331025f4e7186cd4f8a298", type: 'Product', title: '延时持久', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/02-15.png'}
           ]
         }
       ]
@@ -68,63 +68,62 @@ class Welcome < Grape::API
       # @tags = Tag.where(id: Tag::CATEGORIES)
       if hide_gift_products?
         @submenus = [
-          {id: "", type: 'Tag', title: '新品特价', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
-          {id: "", type: 'Tag', title: '新品特价', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
-          {id: "", type: 'Tag', title: '激情爱全套', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
+          {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-01.png'},
+          {id: "", type: 'Tag', title: '火爆套套', name: "激情爱全套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
         ]
       else
         @submenus = [
-          {id: "", type: 'Tag', title: '新品特价', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-1.png'},
-          {id: "", type: 'Tag', title: '0元购', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-2.png'},
-          {id: "", type: 'Tag', title: '激情爱全套', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/1/01-3.png'}
+          {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-01.png'},
+          {id: "", type: 'Tag', title: '0元购', name: "0元购", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-02.png'},
+          {id: "", type: 'Tag', title: '火爆套套', name: "激情爱全套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
         ]
       end
       @categories = [
-        {id: "", type: 'Tag', title: '男士专区', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-01.png'},
-        {id: "", type: 'Tag', title: '女士专区', name: "女用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-02.png'},
-        {id: "", type: 'Tag', title: '性感服饰', name: "更多情趣", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-03.png'},
-        {id: "", type: 'Tag', title: '助情助兴', name: "最近有点烦", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-04.png'},
-        {id: "", type: 'Tag', title: '夫妻情侣', name: "高潮迭起", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-05.png'},
-        {id: "", type: 'Tag', title: '套套润滑', name: "日常战备", image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/3/fenlei-06.png'}
+        {id: "", type: 'Tag', title: '男士专区', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-01.png'},
+        {id: "", type: 'Tag', title: '女士专区', name: "女用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-02.png'},
+        {id: "", type: 'Tag', title: '性感服饰', name: "更多情趣", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-03.png'},
+        {id: "", type: 'Tag', title: '助情助兴', name: "最近有点烦", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-04.png'},
+        {id: "", type: 'Tag', title: '夫妻情侣', name: "高潮迭起", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-05.png'},
+        {id: "", type: 'Tag', title: '套套润滑', name: "日常战备", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-06.png'}
       ]
       @sections = [
         {
           name: "热销区",
           objects: [
-            {id: "", type: 'Tag', title: '新品特价', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/huodong-01.png'},
-            {id: "4e0d1282868113aed2ebfe4341a61d85", type: 'Product', title: '免提飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-01.png'},
-            {id: "2ade7cbb1f300ada6eb197b23f79eb49", type: 'Product', title: '延时喷剂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-02.png'},
-            {id: "90a290d805341b81a0493af54b2a1e6e", type: 'Product', title: 'G点跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-03.png'},
-            {id: "f1dfc05cd2028142a7dbe8a00eb8d353", type: 'Product', title: 'jokerO环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-04.png'},
-            {id: "de90921e6090ce02aca4835906703b84", type: 'Product', title: '花语转珠棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-1/02-05.png'}
+            {id: "", type: 'Tag', title: '本月热卖', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodingyi-1.png'},
+            {id: "25c79602f6b190489ea54efbc66e6846", type: 'Product', title: '蕾丝诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-01.png'},
+            {id: "4919fd3797a1501de84cce0a0eda3c9c", type: 'Product', title: '幻彩跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-02.png'},
+            {id: "5a35dc7f93a32a255aec912682d9d810", type: 'Product', title: '调情香氛', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-03.png'},
+            {id: "7e831a6f3afc17101e5bfc4baf86a92f", type: 'Product', title: '延时湿巾', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-04.png'},
+            {id: "ec46e4d35f6ccdf7994777f85cb928d6", type: 'Product', title: '延时喷剂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-05.png'}
           ]
         },
         {
           name: "新品区",
           objects: [
-            {id: "4a2b31e0ac84a2441dc009d12b6f08ee", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/huodong-02.png'},
-            {id: "2fbdd85ffba11935d0df4e6ca0c5cb8f", type: 'Product', title: '唯美AV棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-06.png'},
-            {id: "f96ff6f6035d482f6df52a2c844590a6", type: 'Product', title: '高潮缩阴', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-07.png'},
-            {id: "4fa540b3fadff80e5d9f9bf27874b2f6", type: 'Product', title: 'MP3跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-08.png'},
-            {id: "cffb921886b1ebbec8f27f49834144bb", type: 'Product', title: '高潮按摩棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-09.png'},
-            {id: "a19dab79f46393a75711193d98854390", type: 'Product', title: '缩阴高潮', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-2/02-10.png'}
+            {id: "6bf3a8fb35a00dc171dbe679f07e09d5", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/huodong-2.png'},
+            {id: "eac09ca04140a8a4edbe5f0f62488c46", type: 'Product', title: '阻复环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/2-06.png'},
+            {id: "4e0d1282868113aed2ebfe4341a61d85", type: 'Product', title: '免提飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/2-07.png'},
+            {id: "25ac52b0efdafca460d8f5aa7231f1a5", type: 'Product', title: '精油润滑液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-08.png'},
+            {id: "940e3a4f2b406a1c93e1f0425d5d52da", type: 'Product', title: '开裆丁字裤', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-09.png'},
+            {id: "881ddca05b03e73877b5d327ab04e5a1", type: 'Product', title: '震动飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-10.png'}
           ]
         },
         {
           name: "主题馆",
           objects: [
-            {id: "a59997020868a40e1252db47a47fa6c5", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/huodong-03.png'},
-            {id: "26b0dbc00cd4fa4d920ffe5fcc5cab7f", type: 'Product', title: '深V露乳', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-11.png'},
-            {id: "9cfafcd46346ae14ef0b42539db6c062", type: 'Product', title: '诱惑套装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-12.png'},
-            {id: "7163f18ab7de9a11d20085e20ee338fc", type: 'Product', title: '露乳诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-13.png'},
-            {id: "f9a19ed8c65f3523397074492bc82e23", type: 'Product', title: '制服学生', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-14.png'},
-            {id: "4d3e3d92d7a291d82845e125fd796331", type: 'Product', title: '军官制服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/2/02-3/02-15.png'}
+            {id: "c4bbc60722c33e4cac4b9209b3635430", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/huodong-3.jpg'},
+            {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '学生服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-11.png'},
+            {id: "9cfafcd46346ae14ef0b42539db6c062", type: 'Product', title: '女士制服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-12.png'},
+            {id: "9ea1d60328ae4a08627fe3de9a38514e", type: 'Product', title: '性感蕾丝', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-13.png'},
+            {id: "f5e933eb6af093b9aa6ece2281406a69", type: 'Product', title: 'SM女王装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-14.png'},
+            {id: "7163f18ab7de9a11d20085e20ee338fc", type: 'Product', title: '蕾丝网纱', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/name/2/02-15.png'}
           ]
         }
       ]
       @brands = [
         {id: nil, type: 'Tag', title: '杜蕾斯', image: "http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/4/pinpai-01.png"},
-        {id: nil, type: 'Tag', title: '诺兰', image: "http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/4/pinpai-02.png"},
+        {id: nil, type: 'Tag', title: '诺兰', image: "http://blsm-public.oss.aliyuncs.com/images/20140509/home/4/pinpai-02.jpg"},
         {id: nil, type: 'Tag', title: '名流', image: "http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/4/pinpai-03.png"},
         {id: nil, type: 'Tag', title: '尚牌', image: "http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/4/pinpai-04.png"}
       ]
