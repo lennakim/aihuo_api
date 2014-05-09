@@ -54,7 +54,7 @@ on_worker_boot do
   ActiveRecord::Base.connection_pool.disconnect!
 
   ActiveSupport.on_load(:active_record) do
-    config = YAML.load(ERB.new(File.read('config/database.yml')).result)[environment]
+    config = YAML.load(ERB.new(File.read('config/database.yml')).result)[ENV['RACK_ENV']]
     config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
     config['pool']              = ENV['DB_POOL']      || ENV['MAX_THREADS'] || 5
     ActiveRecord::Base.establish_connection(config)
