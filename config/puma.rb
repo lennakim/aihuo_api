@@ -50,29 +50,16 @@ bind "unix:///var/run/api.aihuo360.com.sock"
 # Thread safety
 # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server
 # https://devcenter.heroku.com/articles/concurrency-and-database-connections#connection-pool
-# on_worker_boot do
-#   ActiveRecord::Base.connection_pool.disconnect!
-
-#   ActiveSupport.on_load(:active_record) do
-#     config = Rails.application.config.database_configuration[Rails.env]
-#     config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
-#     config['pool']              = ENV['DB_POOL'] || 5
-#     ActiveRecord::Base.establish_connection
-#   end
-# end
-
 on_worker_boot do
-  # worker specific setup
+  ActiveRecord::Base.connection_pool.disconnect!
+
   ActiveSupport.on_load(:active_record) do
-    ActiveRecord::Base.establish_connection
+    config = YAML.load(ERB.new(File.read('config/database.yml')).result)[environment]
+    config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
+    config['pool']              = ENV['DB_POOL']      || ENV['MAX_THREADS'] || 5
+    ActiveRecord::Base.establish_connection(config)
   end
 end
-
-# require "active_record"
-# cwd = File.dirname(__FILE__)+"/.."
-# ActiveRecord::Base.connection.disconnect! rescue ActiveRecord::ConnectionNotEstablished
-# ActiveRecord::Base.establish_connection(ENV["DATABASE_URL"] || YAML.load_file("#{cwd}/config/database.yml")[ENV["RACK_ENV"]])
-# ActiveRecord::Base.verify_active_connections!
 
 preload_app! #utilizing copy-on-write
 activate_control_app
