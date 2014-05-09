@@ -61,6 +61,13 @@ bind "unix:///var/run/api.aihuo360.com.sock"
 #   end
 # end
 
+on_worker_boot do
+  # worker specific setup
+  ActiveSupport.on_load(:active_record) do
+    ActiveRecord::Base.establish_connection
+  end
+end
+
 # require "active_record"
 # cwd = File.dirname(__FILE__)+"/.."
 # ActiveRecord::Base.connection.disconnect! rescue ActiveRecord::ConnectionNotEstablished
