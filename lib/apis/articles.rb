@@ -10,12 +10,20 @@ class Articles < Grape::API
 
     desc "Listing articles."
     params do
+      optional :filter, type: Symbol, values: [:healthy, :all], default: :all, desc: "Filtering for blacklist."
       optional :register_date, type: String, desc: "Date looks like '20130401'."
       optional :page, type: Integer, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'articles/articles' do
-      @articles = paginate(Article.available.search(date_param, Date.today))
+      articles =
+        case params[:filter]
+        when :healthy
+          Article.available.healthy
+        when :all
+          Article.available.search(date_param, Date.today)
+        end
+      @articles = paginate(articles)
     end
 
     desc "Return an article."
