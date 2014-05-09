@@ -1,15 +1,33 @@
-require 'puma'
 #!/usr/bin/env puma
+require 'puma'
+
+# http://demo.gitlab.com/gitlab/gitlabhq/blob/master/config/puma.rb.example
+# Start Puma with next command:
+# bundle exec puma
 
 # Set the environment in which the rack's app will run.
-environment 'production'
+#
+# The default is “development”.
+#
+# environment = 'production'
+ENV["RACK_ENV"] = 'production'
+
+# ENV["BUNDLER_GEMFILE"] = "/var/www/api.aihuo360.com/Gemfile"
+# ENV["BUNDLE_GEMFILE"] = "/var/www/api.aihuo360.com/Gemfile"
+# https://github.com/puma/puma/issues/300
+# SINATRA_ROOT = "/Users/victor/Work/Projects/aihuo_api"
+# ENV["BUNDLE_GEMFILE"] = File.join(SINATRA_ROOT, 'current', "Gemfile")
+
 
 # Daemonize the server into the background. Highly suggest that
-# this be combined with `pidfile` and `stdout_redirect`.
+# this be combined with “pidfile” and “stdout_redirect”.
+#
+# The default is “false”.
+#
 daemonize true
 
 workers 2
-threads 8, 32
+threads 0, 32
 
 wd = File.expand_path('../../', __FILE__)
 tmp_path = File.join(wd, 'tmp')
@@ -31,11 +49,23 @@ bind "unix:///var/run/api.aihuo360.com.sock"
 
 # Thread safety
 # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server
-on_worker_boot do
-  ActiveSupport.on_load(:active_record) do
-    ActiveRecord::Base.establish_connection
-  end
-end
+# https://devcenter.heroku.com/articles/concurrency-and-database-connections#connection-pool
+# on_worker_boot do
+#   ActiveRecord::Base.connection_pool.disconnect!
+
+#   ActiveSupport.on_load(:active_record) do
+#     config = Rails.application.config.database_configuration[Rails.env]
+#     config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
+#     config['pool']              = ENV['DB_POOL'] || 5
+#     ActiveRecord::Base.establish_connection
+#   end
+# end
+
+# require "active_record"
+# cwd = File.dirname(__FILE__)+"/.."
+# ActiveRecord::Base.connection.disconnect! rescue ActiveRecord::ConnectionNotEstablished
+# ActiveRecord::Base.establish_connection(ENV["DATABASE_URL"] || YAML.load_file("#{cwd}/config/database.yml")[ENV["RACK_ENV"]])
+# ActiveRecord::Base.verify_active_connections!
 
 preload_app! #utilizing copy-on-write
 activate_control_app

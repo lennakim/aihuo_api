@@ -68,6 +68,7 @@ task :deploy => :environment do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
+    # invoke :'bundle:install --binstubs'
     # invoke :'rails:db_migrate'
     # invoke :'rails:assets_precompile'
 
@@ -80,7 +81,8 @@ end
 
 desc 'Starts the application'
 task :start => :environment do
-  queue "cd #{app_path} ; bundle exec puma -C config/puma.rb -d"
+  # queue "cd #{app_path} ; bundle exec puma -C config/puma.rb -e production -d"
+  queue "cd #{app_path} ; bundle exec puma"
 end
 
 desc 'Stop the application'
