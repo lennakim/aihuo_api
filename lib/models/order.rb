@@ -126,7 +126,6 @@ class Order < ActiveRecord::Base
   def calculate_payment_total
     update_attributes!({payment_total: payments_total})
     update_payment_state
-    orderlogs.logging_action(:order_pay, amount)
   end
 
   # Updates the +payment_state+ attribute according to the following logic:
@@ -154,6 +153,7 @@ class Order < ActiveRecord::Base
   def process_payment(transaction_no, amount)
     payment = self.payments.where(transaction_no: transaction_no).first_or_create
     payment.process(amount)
+    orderlogs.logging_action(:order_pay, amount)
     calculate_payment_total
   end
 
