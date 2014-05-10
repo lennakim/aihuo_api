@@ -91,7 +91,7 @@ class Welcome < Grape::API
         {
           name: "热销区",
           objects: [
-            {id: "", type: 'Tag', title: '本月热卖', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodingyi-1.png'},
+            {id: "", type: 'Tag', title: '本月热卖', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-1.png'},
             {id: "25c79602f6b190489ea54efbc66e6846", type: 'Product', title: '蕾丝诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-01.png'},
             {id: "4919fd3797a1501de84cce0a0eda3c9c", type: 'Product', title: '幻彩跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-02.png'},
             {id: "5a35dc7f93a32a255aec912682d9d810", type: 'Product', title: '调情香氛', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-03.png'},
@@ -113,7 +113,7 @@ class Welcome < Grape::API
         {
           name: "新婚初夜装",
           objects: [
-            {id: "c4bbc60722c33e4cac4b9209b3635430", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-3.jpg'},
+            {id: "c4bbc60722c33e4cac4b9209b3635430", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-3.png'},
             {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '学生服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-11.png'},
             {id: "36aa18383c2ceda166a23ae054b01fd9", type: 'Product', title: '性感精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-12.png'},
             {id: "9ea1d60328ae4a08627fe3de9a38514e", type: 'Product', title: '性感蕾丝', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-13.png'},
