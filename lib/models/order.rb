@@ -11,6 +11,7 @@ class Order < ActiveRecord::Base
   has_many :comments
   has_many :orderlogs
   has_many :short_messages
+  has_many :payments
   has_and_belongs_to_many :coupons
   # validations ...............................................................
   validates :device_id, presence: true
@@ -27,7 +28,7 @@ class Order < ActiveRecord::Base
   after_create :destroy_cart
   # scopes ....................................................................
   default_scope { order("id DESC") }
-  scope :by_filter, ->(filter) { filter == :rated ? with_comments : self }
+  scope :by_filter, ->(filter) { filter == :rated ? with_comments : all }
   scope :with_comments, -> { joins(:comments) }
   scope :newly, -> { where(state: "订单已下，等待确认") }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
@@ -118,9 +119,12 @@ class Order < ActiveRecord::Base
     coupon_ids.each { |coupon_id| calculate_total_by_coupon(coupon_id, false) }
   end
 
-  def update_payment(amount)
-    self.payment_total += amount
-    save!
+  def payments_total
+    payments.inject(0) { |sum, payment| sum + payment.amount }
+  end
+
+  def calculate_payment_total
+    update_attributes!({payment_total: payments_total})
     update_payment_state
     orderlogs.logging_action(:order_pay, amount)
   end
@@ -145,6 +149,12 @@ class Order < ActiveRecord::Base
         'paid'
       end
     update_column(:payment_state, payment_state)
+  end
+
+  def process_payment(transaction_no, amount)
+    payment = self.payments.where(transaction_no: transaction_no).first_or_create
+    payment.process(amount)
+    calculate_payment_total
   end
 
   # protected instance methods ................................................
