@@ -7,8 +7,8 @@ class PrivateMessage < ActiveRecord::Base
   belongs_to :sender, class_name: "Member", foreign_key: "sender_id"
   belongs_to :receiver, class_name: "Member", foreign_key: "receiver_id"
   # validations ...............................................................
+  validate :coin_must_enough
   # callbacks .................................................................
-  before_create :coin_must_enough
   after_create :send_notice_msg
   after_create :reduce_coin
   # scopes ....................................................................
