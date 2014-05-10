@@ -115,7 +115,7 @@ class Welcome < Grape::API
           objects: [
             {id: "c4bbc60722c33e4cac4b9209b3635430", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-3.png'},
             {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '学生服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-11.png'},
-            {id: "36aa18383c2ceda166a23ae054b01fd9", type: 'Product', title: '性感精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-12.png'},
+            {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '性感精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-12.png'},
             {id: "9ea1d60328ae4a08627fe3de9a38514e", type: 'Product', title: '性感蕾丝', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-13.png'},
             {id: "f5e933eb6af093b9aa6ece2281406a69", type: 'Product', title: 'SM女王装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-14.png'},
             {id: "7163f18ab7de9a11d20085e20ee338fc", type: 'Product', title: '蕾丝网纱', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-15.png'}
@@ -124,7 +124,7 @@ class Welcome < Grape::API
       ]
       @brands = [
         {id: nil, type: 'Tag', title: '杜蕾斯', image: "http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/4/pinpai-01.png"},
-        {id: nil, type: 'Tag', title: '诺兰', image: "http://blsm-public.oss.aliyuncs.com/images/20140509/home/4/pinpai-02.jpg"},
+        {id: nil, type: 'Tag', title: '诺兰', image: "http://blsm-public.oss.aliyuncs.com/images/20140509/home/4/pinpai-02.png"},
         {id: nil, type: 'Tag', title: '名流', image: "http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/4/pinpai-03.png"},
         {id: nil, type: 'Tag', title: '尚牌', image: "http://blsm-public.oss.aliyuncs.com/images/20140428/v2home/4/pinpai-04.png"}
       ]
