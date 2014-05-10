@@ -106,7 +106,9 @@ task :cat_err_log => :environment do
 end
 
 task :clean_cache => :environment do
-  # TODO: need some code make the task works
+  queue! 'echo "Clean Cache:"'
+  queue! "echo 'rm -rf #{app_path}/tmp/cache/*'"
+  queue! "rm -rf #{app_path}/tmp/cache/*"
 end
 
 # For help in making your deploy script, see the Mina documentation:
