@@ -24,7 +24,7 @@ class Welcome < Grape::API
       @submenus = [
         {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-01.png'},
         {id: "", type: 'Tag', title: '诺兰妞妞', name: "趣友推荐", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-02.png'},
-        {id: "", type: 'Tag', title: '火爆套套', name: "激情爱全套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-03.png'}
+        {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-03.png'}
       ]
       @categories = []
       @sections = [
@@ -69,13 +69,14 @@ class Welcome < Grape::API
       if hide_gift_products?
         @submenus = [
           {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-01.png'},
-          {id: "", type: 'Tag', title: '火爆套套', name: "激情爱全套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
+          {id: "", type: 'Tag', title: '100件抢完算', name: "100件抢完算", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-02.png'},
+          {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
         ]
       else
         @submenus = [
           {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-01.png'},
-          {id: "", type: 'Tag', title: '0元购', name: "0元购", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-02.png'},
-          {id: "", type: 'Tag', title: '火爆套套', name: "激情爱全套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
+          {id: "", type: 'Tag', title: '100件抢完算', name: "100件抢完算", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-02.png'},
+          {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
         ]
       end
       @categories = [
