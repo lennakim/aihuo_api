@@ -99,7 +99,7 @@ class Welcome < Grape::API
           ]
         },
         {
-          name: "新品区",
+          name: "五月大促",
           objects: [
             {id: "6bf3a8fb35a00dc171dbe679f07e09d5", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-2.png'},
             {id: "eac09ca04140a8a4edbe5f0f62488c46", type: 'Product', title: '阻复环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-06.png'},
@@ -110,7 +110,7 @@ class Welcome < Grape::API
           ]
         },
         {
-          name: "主题馆",
+          name: "新婚初夜装",
           objects: [
             {id: "c4bbc60722c33e4cac4b9209b3635430", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-3.jpg'},
             {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '学生服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-11.png'},

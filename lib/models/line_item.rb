@@ -3,8 +3,10 @@ class LineItem < ActiveRecord::Base
   acts_as_paranoid
   # includes ..................................................................
   # relationships .............................................................
-  belongs_to :order
-  belongs_to :product
+  belongs_to :order, :touch => true
+  belongs_to :cart, :touch => true
+  # 'with_deleted' option added by acts_as_paranoid gem.
+  belongs_to :product, :with_deleted => true
   belongs_to :product_prop
   # validations ...............................................................
   validates :product_id, presence: true, numericality: true
