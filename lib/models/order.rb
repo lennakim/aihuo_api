@@ -156,7 +156,7 @@ class Order < ActiveRecord::Base
   end
 
   def process_payment(transaction_no, amount)
-    orderlogs.logging_action(:order_pay, amount) if payment_need_logging?
+    orderlogs.logging_action(:order_pay, amount) if payment_need_logging?(transaction_no)
     payment = self.payments.where(transaction_no: transaction_no).first_or_create
     payment.process(amount)
     calculate_payment_total
