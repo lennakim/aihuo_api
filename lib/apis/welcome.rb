@@ -91,7 +91,7 @@ class Welcome < Grape::API
         {
           name: "热销区",
           objects: [
-            {id: "", type: 'Tag', title: '本月热卖', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-1.png'},
+            {id: "", type: 'Tag', title: '热销专区', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-1.png'},
             {id: "25c79602f6b190489ea54efbc66e6846", type: 'Product', title: '蕾丝诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-01.png'},
             {id: "4919fd3797a1501de84cce0a0eda3c9c", type: 'Product', title: '幻彩跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-02.png'},
             {id: "5a35dc7f93a32a255aec912682d9d810", type: 'Product', title: '调情香氛', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-03.png'},
