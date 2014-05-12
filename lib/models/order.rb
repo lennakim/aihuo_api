@@ -150,10 +150,15 @@ class Order < ActiveRecord::Base
     update_column(:payment_state, payment_state)
   end
 
+
+  def payment_need_logging?(transaction_no)
+    self.payments.where(transaction_no: transaction_no).blank?
+  end
+
   def process_payment(transaction_no, amount)
+    orderlogs.logging_action(:order_pay, amount) if payment_need_logging?
     payment = self.payments.where(transaction_no: transaction_no).first_or_create
     payment.process(amount)
-    orderlogs.logging_action(:order_pay, amount)
     calculate_payment_total
   end
 
