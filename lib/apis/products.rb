@@ -12,6 +12,7 @@ class Products < Grape::API
       elsif params[:tag]
         tag = Tag.find_by(name: params[:tag])
         tag = tag.self_and_descendants.collect(&:name) if tag
+        tag = tag[0] if tag.size == 1 # 如果 tag 数组只有一个元素
         tag || params[:tag]
       # 传递的是一组产品ID
       elsif params[:id]
