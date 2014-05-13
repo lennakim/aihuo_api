@@ -20,7 +20,7 @@ class Welcome < Grape::API
 
     case params[:filter]
     when :healthy
-      @banners = @application.articles.healthy.limit(2)
+      @banners = Article.healthy.limit(2)
       @submenus = [
         {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-01.png'},
         {id: "", type: 'Tag', title: '诺兰妞妞', name: "趣友推荐", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-02.png'},
