@@ -23,7 +23,7 @@ class Order < ActiveRecord::Base
   before_create :compose_ship_address
   # after_create :merge_pending_orders
   after_create :calculate_item_total
-  # after_create :send_confirm_sms
+  after_create :send_confirm_sms
   after_create :register_device
   after_create :destroy_cart
   # scopes ....................................................................
