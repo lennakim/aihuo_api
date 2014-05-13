@@ -22,8 +22,8 @@ class Welcome < Grape::API
     when :healthy
       @banners = Article.healthy.limit(2)
       @submenus = [
-        {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-01.png'},
-        {id: "", type: 'Tag', title: '诺兰妞妞', name: "趣友推荐", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-02.png'},
+        {id: "", type: 'Tag', title: '最新产品', name: "最新产品", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-01.png'},
+        {id: "", type: 'Tag', title: '趣友推荐', name: "趣友推荐", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-02.png'},
         {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-03.png'}
       ]
       @categories = []
