@@ -70,7 +70,8 @@ class Welcome < Grape::API
         if hide_gift_products?
           # FIXME:
           # @application.articles.banner_without_gifts not works, don't know why
-          Article.banner_without_gifts.where(application_id: @application.id)
+          # Article.banner_without_gifts.where(application_id: @application.id)
+          Article.banner_without_gifts
         else
           @application.articles.banner
         end
