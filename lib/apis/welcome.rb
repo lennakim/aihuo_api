@@ -14,7 +14,7 @@ class Welcome < Grape::API
   params do
     optional :register_date, type: String, desc: "Date looks like '20130401'."
     optional :filter, type: Symbol, values: [:healthy, :all], default: :all, desc: "Filtering for blacklist."
-    optional :ref, type: Symbol, desc: ""
+    optional :ref, type: String, desc: ""
 
   end
   get :home, jbuilder: 'welcome/home' do
