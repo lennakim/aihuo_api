@@ -66,16 +66,15 @@ class Welcome < Grape::API
       ]
       @brands = []
     when :all
-      # @banners =
-      #   if hide_gift_products?
-      #     # FIXME:
-      #     # @application.articles.banner_without_gifts not works, don't know why
-      #     # Article.banner_without_gifts.where(application_id: @application.id)
-      #     Article.banner_without_gifts
-      #   else
-      #     @application.articles.banner
-      #   end
-      @banners = @application.articles.banner
+      @banners =
+        if hide_gift_products?
+          # FIXME:
+          # @application.articles.banner_without_gifts not works, don't know why
+          # Article.banner_without_gifts.where(application_id: @application.id)
+          @application.articles.banner_without_gifts
+        else
+          @application.articles.banner
+        end
       # @tags = Tag.where(id: Tag::CATEGORIES)
       if params[:ref] && params[:ref] == "360"
         @submenus = [
