@@ -66,7 +66,13 @@ class Welcome < Grape::API
       ]
       @brands = []
     when :all
-      @banners = @application.articles.banner
+      @banners =
+        if hide_gift_products?
+          gifts_ids = self.gifts.pluck(:id)
+          @application.articles.banner_without_gifts
+        else
+          @application.articles.banner
+        end
       # @tags = Tag.where(id: Tag::CATEGORIES)
       if params[:ref] && params[:ref] == "360"
         @submenus = [
@@ -75,19 +81,11 @@ class Welcome < Grape::API
           {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
         ]
       else
-        if hide_gift_products?
-          @submenus = [
-            {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-01.png'},
-            {id: "", type: 'Tag', title: '100件抢完算', name: "100件抢完算", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-02.png'},
-            {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
-          ]
-        else
-          @submenus = [
-            {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-01.png'},
-            {id: "", type: 'Tag', title: '100件抢完算', name: "100件抢完算", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-02.png'},
-            {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
-          ]
-        end
+        @submenus = [
+          {id: "", type: 'Tag', title: '最新产品', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-01.png'},
+          {id: "", type: 'Tag', title: '100件抢完算', name: "100件抢完算", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-02.png'},
+          {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
+        ]
       end
       @categories = [
         {id: "", type: 'Tag', title: '男士专区', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-01.png'},
