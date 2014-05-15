@@ -68,7 +68,6 @@ class Welcome < Grape::API
     when :all
       @banners =
         if hide_gift_products?
-          gifts_ids = self.gifts.pluck(:id)
           @application.articles.banner_without_gifts
         else
           @application.articles.banner
