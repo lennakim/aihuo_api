@@ -28,6 +28,10 @@ class Article < ActiveRecord::Base
       where(:banner => false).where.not(id: gifts_ids)
     end
   }
+  scope :banner_without_gifts, -> {
+    gifts_ids = self.gifts.pluck(:id)
+    banner.where.not(id: gifts_ids)
+  }
   scope :healthy, -> { tagged_with("配合扫黄", any: true) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
