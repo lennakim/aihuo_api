@@ -24,13 +24,13 @@ class Article < ActiveRecord::Base
   scope :search, ->(date, today) {
     # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购宝典
     if date.blank? || date && today && date < 2.days.ago(today)
-      gifts_ids = self.gifts.pluck(:id)
+      gifts_ids = Article.gifts.pluck(:id)
       where(:banner => false).where.not(id: gifts_ids)
     end
   }
   scope :banner_without_gifts, -> {
-    gifts_ids = self.gifts.pluck(:id)
-    banner.where.not(id: gifts_ids)
+    gifts_ids = Article.gifts.pluck(:id)
+    where(:banner => true).where.not(id: gifts_ids)
   }
   scope :healthy, -> { tagged_with("配合扫黄", any: true) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
