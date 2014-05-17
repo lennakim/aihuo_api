@@ -71,7 +71,7 @@ class Welcome < Grape::API
           # FIXME:
           # @application.articles.banner_without_gifts not works, don't know why
           # Article.banner_without_gifts.where(application_id: @application.id)
-          @application.articles.banner_without_gifts
+          @application.articles.banner.without_gifts
         else
           @application.articles.banner
         end
