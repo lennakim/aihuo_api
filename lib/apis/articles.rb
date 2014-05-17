@@ -27,7 +27,7 @@ class Articles < Grape::API
         when :all
           Article.available.search(date_param, Date.today)
         end
-      if hide_gift_products
+      if hide_gift_products?
         @articles = paginate(articles.without_gifts)
       else
         @articles = paginate(articles)
