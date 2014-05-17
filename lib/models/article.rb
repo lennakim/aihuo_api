@@ -28,9 +28,9 @@ class Article < ActiveRecord::Base
       where(:banner => false).where.not(id: gifts_ids)
     end
   }
-  scope :banner_without_gifts, -> {
+  scope :without_gifts, -> {
     gifts_ids = Article.gifts.pluck(:id)
-    where(:banner => true).where.not(id: gifts_ids)
+    where.not(id: gifts_ids)
   }
   scope :healthy, -> { tagged_with("配合扫黄", any: true) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............

@@ -4,6 +4,10 @@ class Articles < Grape::API
       date = request.headers["Registerdate"] || params[:register_date]
       date.to_date if date
     end
+
+    def hide_gift_products?
+      date_param.blank? || date_param < 2.days.ago(Date.today)
+    end
   end
 
   resources 'articles' do
@@ -23,7 +27,11 @@ class Articles < Grape::API
         when :all
           Article.available.search(date_param, Date.today)
         end
-      @articles = paginate(articles)
+      if hide_gift_products
+        @articles = paginate(articles.without_gifts)
+      else
+        @articles = paginate(articles)
+      end
     end
 
     desc "Return an article."
