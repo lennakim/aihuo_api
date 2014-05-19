@@ -128,7 +128,7 @@ class Welcome < Grape::API
             {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '性感精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-12.png'},
             {id: "9ea1d60328ae4a08627fe3de9a38514e", type: 'Product', title: '性感蕾丝', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-13.png'},
             {id: "f5e933eb6af093b9aa6ece2281406a69", type: 'Product', title: 'SM女王装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-14.png'},
-            {id: "7163f18ab7de9a11d20085e20ee338fc", type: 'Product', title: '蕾丝网纱', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-15.png'}
+            {id: "9d058d5196aeddb315e24ef1bde6fbfd", type: 'Product', title: '性感诱惑露乳装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-15.png'}
           ]
         }
       ]
