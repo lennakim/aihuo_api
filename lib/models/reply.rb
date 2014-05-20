@@ -58,7 +58,9 @@ class Reply < ActiveRecord::Base
   end
 
   def update_topic_status
-    topic.replied_at = Time.now
-    topic.save
+    if replyable_type == 'Topic'
+      topic.replied_at = Time.now
+      topic.save
+    end
   end
 end
