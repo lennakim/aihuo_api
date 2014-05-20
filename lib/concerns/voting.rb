@@ -11,10 +11,10 @@ module Voting
   end
 
   def liked
-    update_attributes(:likes_count => add_liked)
+    update_column(:likes_count, add_liked)
   end
 
   def disliked
-    update_attributes(:unlikes_count => add_disliked)
+    update_column(:unlikes_count, add_disliked)
   end
 end
