@@ -162,6 +162,13 @@ class Order < ActiveRecord::Base
     calculate_payment_total
   end
 
+  def message
+    if item_total == 0
+      "您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。"
+    elsif line_items.inject(0){|sum, item| sum + (item.sale_price == 0 ? item.quantity : 0)} > 1
+      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。"
+    end
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
   private

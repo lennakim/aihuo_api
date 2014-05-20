@@ -1,4 +1,5 @@
 json.number order.number
+json.zero_msg order.message if order.message.present?
 json.id order.to_param
 json.pay_type order.pay_type
 json.total order.total
