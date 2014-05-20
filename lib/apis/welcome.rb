@@ -34,22 +34,22 @@ class Welcome < Grape::API
           name: "热销区",
           objects: [
             {id: "", type: 'Tag', title: '火爆热销', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/huodingyi-1.png'},
-            {id: "eac09ca04140a8a4edbe5f0f62488c46", type: 'Product', title: '阻复环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-01.png'},
-            {id: "8b40966990e68df56d07c0d0047b7e3f", type: 'Product', title: '震动跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-02.png'},
-            {id: "5a35dc7f93a32a255aec912682d9d810", type: 'Product', title: '调情香氛', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-03.png'},
-            {id: "ec46e4d35f6ccdf7994777f85cb928d6", type: 'Product', title: '本草堂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-04.png'},
-            {id: "2ade7cbb1f300ada6eb197b23f79eb49", type: 'Product', title: '延时喷剂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-05.png'}
+            {id: "b0fb128360d9eb2171819a741f7d0eda", type: 'Product', title: '360随身WIFI', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-01.png'},
+            {id: "d83c8ea92c4790886bf52bc99bd225b1", type: 'Product', title: '冰希黎香水', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-02.png'},
+            {id: "737b636c96a09d2d9afad194489f46ff", type: 'Product', title: '短袖睡衣', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-03.png'},
+            {id: "1e999e791e9d22690834f36f1b8424c9", type: 'Product', title: '压床娃娃', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-04.png'},
+            {id: "5a35dc7f93a32a255aec912682d9d810", type: 'Product', title: '调情香氛', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-05.png'}
           ]
         },
         {
           name: "新品区",
           objects: [
             {id: "41aa3fac21a9f0c681878d8c337c3d1b", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/huodong-2.png'},
-            {id: "25ac52b0efdafca460d8f5aa7231f1a5", type: 'Product', title: '精油润滑液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-06.png'},
-            {id: "7e831a6f3afc17101e5bfc4baf86a92f", type: 'Product', title: '延时湿巾', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-07.png'},
+            {id: "97bf5112af787c1ede0ae5286aaeef59", type: 'Product', title: '头戴耳机', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-06.png'},
+            {id: "2ae1e396ac0844323c08a0839c5e123a", type: 'Product', title: '丹姿水密码', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-07.png'},
             {id: "1a338177155b847cf46bd6dd884f38cf", type: 'Product', title: '舔食润滑液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-08.png'},
-            {id: "4919fd3797a1501de84cce0a0eda3c9c", type: 'Product', title: '幻彩跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-09.png'},
-            {id: "66d9165b20475b299359b6a73de1c384", type: 'Product', title: '男性延时', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-10.png'}
+            {id: "77fe08c4207a11fee2aa05cc6baa89c4", type: 'Product', title: '金鱼树脂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-09.png'},
+            {id: "38f213dc99a2e4aa1e03b78e498d412a", type: 'Product', title: '笔筒高档', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-10.png'}
           ]
         },
         {
@@ -57,10 +57,10 @@ class Welcome < Grape::API
           objects: [
             {id: "", type: 'Tag', title: '日常战备', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/huodong-3.jpg'},
             {id: "afd3988ca620a9c5d2e8cf90b8b40b16", type: 'Product', title: '糖果安全套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-11.png'},
-            {id: "030e288ce9f3cab3858a479ec7c0355d", type: 'Product', title: '加倍润滑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-12.png'},
+            {id: "cff809c998e8b2f83482105da60877ff", type: 'Product', title: '活力螺纹', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-12.png'},
             {id: "3931f4abe7c946249eba777e981f2f1e", type: 'Product', title: '薄如羽翼', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-13.png'},
-            {id: "cff809c998e8b2f83482105da60877ff", type: 'Product', title: '活力螺纹', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-14.png'},
-            {id: "37c809b674331025f4e7186cd4f8a298", type: 'Product', title: '延时持久', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-15.png'}
+            {id: "facc69582169e4d0359a60963b02d646", type: 'Product', title: '精品文胸', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-14.png'},
+            {id: "5b3aed411b575776f855a1dc5aefb7fd", type: 'Product', title: '私处洗液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/2/2-15.png'}
           ]
         }
       ]
