@@ -19,3 +19,4 @@ log
 .rvmrc
 routes.rb
 tags
+.keep
