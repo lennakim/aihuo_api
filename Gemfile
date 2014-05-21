@@ -34,6 +34,9 @@ gem 'china_sms'
 #supports CORS
 gem 'rack-cors'
 
+# https://github.com/sickill/racksh
+gem "racksh"
+
 group :development do
   # Use mina for deployment
   # https://github.com/nadarei/mina
@@ -42,8 +45,6 @@ group :development do
   # https://github.com/bbatsov/rubocop
   gem 'rubocop', '~> 0.18.1'
   gem "rake"
-  # https://github.com/sickill/racksh
-  gem "racksh"
   # reloading rack development server / forking version of rackup
   # Start your app by running 'shotgun'
   gem 'shotgun'
