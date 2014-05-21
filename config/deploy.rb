@@ -112,9 +112,9 @@ task :clean_cache => :environment do
 end
 
 desc 'run racksh'
-task :racksh => :environment do
+task :console => :environment do
   # queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid stop"
-  queue "cd #{app_path} ; RACK_ENV=production bundle exec racksh"
+  queue "cd #{app_path} ; bundle exec racksh"
 end
 
 
