@@ -111,6 +111,13 @@ task :clean_cache => :environment do
   queue! "rm -rf #{app_path}/tmp/cache/*"
 end
 
+desc 'run racksh'
+task :racksh => :environment do
+  # queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid stop"
+  queue "cd #{app_path} ; RACK_ENV=production bundle exec racksh"
+end
+
+
 # For help in making your deploy script, see the Mina documentation:
 #
 #  - http://nadarei.co/mina
