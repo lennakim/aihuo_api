@@ -48,14 +48,9 @@ class Member < ActiveRecord::Base
   def send_captcha
     return if !can_send_captcha?
     generate_captcha
-
-    ChinaSMS.use(
-      :emay,
-      username: Setting.find_by_name(:sms_key).value,
-      password: Setting.find_by_name(:sms_pwd).value
-    )
     message = "手机验证码:#{captcha}【首趣商城】"
-    ChinaSMS.to phone, message
+
+    ShortMessage.send_sms_from_emay(phone, message)
   end
 
   def validate_captcha?(phone, captcha)
