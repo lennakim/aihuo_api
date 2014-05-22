@@ -23,7 +23,6 @@ class Order < ActiveRecord::Base
   before_create :compose_ship_address
   # after_create :merge_pending_orders
   after_create :calculate_item_total
-  after_create :send_confirm_sms
   after_create :register_device
   after_create :destroy_cart
   # scopes ....................................................................
@@ -184,11 +183,6 @@ class Order < ActiveRecord::Base
 
   def logging_action
     orderlogs.logging_action(:delete, device_id)
-  end
-
-  # send sms if create order successful.
-  def send_confirm_sms
-    ShortMessage.send_confirm_sms(self)
   end
 
   # 创建订单后删除购物车
