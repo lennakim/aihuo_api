@@ -103,9 +103,9 @@ class Welcome < Grape::API
           objects: [
             {id: "", type: 'Tag', title: '热销专区', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-1.png'},
             {id: "25c79602f6b190489ea54efbc66e6846", type: 'Product', title: '蕾丝诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-01.png'},
-            {id: "6037bc1bb92639060d5e6e0ec967fea2", type: 'Product', title: '振动按摩棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-02.png'},
+            {id: "8b40966990e68df56d07c0d0047b7e3f", type: 'Product', title: '金属震动跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-02.png'},
             {id: "5a35dc7f93a32a255aec912682d9d810", type: 'Product', title: '调情香氛', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-03.png'},
-            {id: "7e831a6f3afc17101e5bfc4baf86a92f", type: 'Product', title: '延时湿巾', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-04.png'},
+            {id: "0e513496a5db5ec67afbf71e4a70ace4", type: 'Product', title: '延时湿巾', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-04.png'},
             {id: "ec46e4d35f6ccdf7994777f85cb928d6", type: 'Product', title: '延时喷剂', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-05.png'}
           ]
         },
@@ -113,8 +113,8 @@ class Welcome < Grape::API
           name: "五月大促",
           objects: [
             {id: "6bf3a8fb35a00dc171dbe679f07e09d5", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-2.png'},
-            {id: "eac09ca04140a8a4edbe5f0f62488c46", type: 'Product', title: '阻复环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-06.png'},
-            {id: "4e0d1282868113aed2ebfe4341a61d85", type: 'Product', title: '免提飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-07.png'},
+            {id: "3902be61aaaf4823066ad7470c9dc62e", type: 'Product', title: '延时膏', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-06.png'},
+            {id: "ee228024aa64b06c3eff06f7851d1281", type: 'Product', title: '动漫名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-07.png'},
             {id: "37f367e45ee368c6859154504a6afa71", type: 'Product', title: '人体润滑液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-08.png'},
             {id: "940e3a4f2b406a1c93e1f0425d5d52da", type: 'Product', title: '开裆丁字裤', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-09.png'},
             {id: "881ddca05b03e73877b5d327ab04e5a1", type: 'Product', title: '震动飞机杯', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-10.png'}
@@ -126,9 +126,9 @@ class Welcome < Grape::API
             {id: "", type: 'Tag', title: '新婚初夜装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-3.png'},
             {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '学生服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-11.png'},
             {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '性感精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-12.png'},
-            {id: "9ea1d60328ae4a08627fe3de9a38514e", type: 'Product', title: '性感蕾丝', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-13.png'},
+            {id: "6ce7577f3ee4805d46f5daee7c6b4b7c", type: 'Product', title: '紧身包臀短裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-13.png'},
             {id: "f5e933eb6af093b9aa6ece2281406a69", type: 'Product', title: 'SM女王装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-14.png'},
-            {id: "9d058d5196aeddb315e24ef1bde6fbfd", type: 'Product', title: '性感诱惑露乳装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-15.png'}
+            {id: "96eb1568ea3bb8a2413dadcf3736c557", type: 'Product', title: '性感蕾丝睡裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-15.png'}
           ]
         }
       ]
