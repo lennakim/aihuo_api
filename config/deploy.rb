@@ -87,14 +87,12 @@ end
 
 desc 'Stop the application'
 task :stop => :environment do
-  # queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid stop"
-  queue "cd #{app_path} ; bundle exec pumactl -S #{app_path}/tmp/sockets/puma.state stop"
+  queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid stop"
 end
 
 desc 'Restart the application'
 task :restart => :environment do
-  # queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid restart"
-  queue "cd #{app_path} ; bundle exec pumactl -S #{app_path}/tmp/sockets/puma.state restart"
+  queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid restart"
 end
 
 task :cat_server_log => :environment do
@@ -113,7 +111,6 @@ end
 
 desc 'run racksh'
 task :console => :environment do
-  # queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid stop"
   queue "cd #{app_path} ; bundle exec racksh"
 end
 
