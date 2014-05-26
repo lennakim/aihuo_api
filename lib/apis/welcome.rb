@@ -125,8 +125,8 @@ class Welcome < Grape::API
           objects: [
             {id: "", type: 'Tag', title: '新婚初夜装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-3.png'},
             {id: "e621ba44ac2090174c03428d6ca8cf75", type: 'Product', title: '夜店短裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-11.png'},
-            {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '性感精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-12.png'},
-            {id: "a5521bcf1ad2b49e07f569f47d151859", type: 'Product', title: '高端无缝连体', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-13.png'},
+            {id: "a5521bcf1ad2b49e07f569f47d151859", type: 'Product', title: '高端无缝连体', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-12.png'},
+            {id: "6ce7577f3ee4805d46f5daee7c6b4b7c", type: 'Product', title: '紧身包臀短裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-13.png'},
             {id: "efd72bf7387bf19b4707c7936f63a875", type: 'Product', title: '豹纹T裤', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-14.png'},
             {id: "ed137f76e0b1424661cb66f9c743a9f1", type: 'Product', title: '高贵红裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-15.png'}
           ]

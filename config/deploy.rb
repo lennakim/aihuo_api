@@ -92,7 +92,9 @@ end
 
 desc 'Restart the application'
 task :restart => :environment do
-  queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid restart"
+  invoke :stop
+  invoke :start
+  # queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid restart"
 end
 
 task :cat_server_log => :environment do
