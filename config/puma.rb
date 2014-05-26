@@ -26,8 +26,8 @@ ENV["RACK_ENV"] = 'production'
 #
 daemonize true
 
-workers 2
-threads 0, 20
+workers 4
+threads 8, 36
 
 wd = File.expand_path('../../', __FILE__)
 tmp_path = File.join(wd, 'tmp')
