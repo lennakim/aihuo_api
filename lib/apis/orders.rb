@@ -100,7 +100,7 @@ class Orders < Grape::API
         optional :api_key, type: String, desc: "Application API Key"
         requires :sign, type: String, desc: "Sign value"
         group :order, type: Hash do
-          requires :name, type: String, desc: "姓名"
+          optional :name, type: String, desc: "姓名"
           requires :phone, type: String, desc: "电话"
           optional :shipping_province, type: String, desc: "省"
           optional :shipping_city, type: String, desc: "市"
