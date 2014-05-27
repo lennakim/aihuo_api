@@ -11,10 +11,12 @@ require 'mina/rvm'    # for rvm support. (http://rvm.io)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :domain, '115.29.164.196'
+# set :domain, '115.29.164.196' # production
+set :domain, '115.29.4.146' # staging
 set :deploy_to, '/var/www/api.aihuo360.com'
 set :repository, 'git@bitbucket.org:Xiaopuzhu/adultshop_new.git'
-set :branch, 'master'
+# set :branch, 'master'
+set :branch, 'develop'
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
@@ -73,7 +75,6 @@ task :deploy => :environment do
     # invoke :'rails:assets_precompile'
 
     to :launch do
-      # queue "touch #{deploy_to}/tmp/restart.txt"
       invoke :restart
     end
   end
@@ -82,7 +83,8 @@ end
 desc 'Starts the application'
 task :start => :environment do
   # queue "cd #{app_path} ; bundle exec puma -C config/puma.rb -e production -d"
-  queue "cd #{app_path} ; bundle exec puma"
+  # queue "cd #{app_path} ; bundle exec puma"
+  queue "cd #{app_path} ; bundle exec pumactl -F config/puma.rb start"
 end
 
 desc 'Stop the application'
@@ -92,9 +94,9 @@ end
 
 desc 'Restart the application'
 task :restart => :environment do
+  # queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid restart"
   invoke :stop
   invoke :start
-  # queue "cd #{app_path} ; bundle exec pumactl -P #{app_path}/tmp/pids/puma.pid restart"
 end
 
 task :cat_server_log => :environment do
