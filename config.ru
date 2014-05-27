@@ -44,7 +44,7 @@ use Rack::ETag
 use ActiveRecord::ConnectionAdapters::ConnectionManagement
 
 require 'newrelic_rpm'
-NewRelic::Agent.manual_start
+# NewRelic::Agent.manual_start
 
 # run ShouQuShop::API
 run ShouQuShop::App.instance
