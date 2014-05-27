@@ -30,8 +30,8 @@ if ENV['RACK_ENV'] == "development"
   use Rack::CommonLogger, Logger.new('log/development.log')
 
   # puts "Loading NewRelic in developer mode ..."
-  # require 'new_relic/rack/developer_mode'
-  # use NewRelic::Rack::DeveloperMode
+  require 'new_relic/rack/developer_mode'
+  use NewRelic::Rack::DeveloperMode
 else
   use Rack::CommonLogger, Logger.new('log/production.log')
 end
