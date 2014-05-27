@@ -95,6 +95,28 @@ class Orders < Grape::API
         status 202 if @order.destroy
       end
 
+      desc "Update an order address info"
+      params do
+        optional :api_key, type: String, desc: "Application API Key"
+        requires :sign, type: String, desc: "Sign value"
+        group :order, type: Hash do
+          requires :name, type: String, desc: "姓名"
+          requires :phone, type: String, desc: "电话"
+          optional :shipping_province, type: String, desc: "省"
+          optional :shipping_city, type: String, desc: "市"
+          optional :shipping_district, type: String, desc: "区"
+          optional :shipping_address, type: String, desc: "详细地址"
+        end
+      end
+      put "/update_address", jbuilder: 'orders/order' do
+        if sign_approval?
+          @order = Order.newly.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
+          @order.update(params[:order])
+        else
+          error! "Access Denied", 401
+        end
+      end
+
       desc "Update an order payments state(for sae php server)."
       params do
         requires :amount, type: String, regexp: /^\d+(?:\.\d{0,2})?$/, desc: "Payment amount."
