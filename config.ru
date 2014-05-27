@@ -43,6 +43,7 @@ use Rack::ETag
 # http://snippets.aktagon.com/snippets/621-puma-sinatra-activerecord-and-could-not-obtain-a-database-connection-
 use ActiveRecord::ConnectionAdapters::ConnectionManagement
 
+require 'newrelic_rpm'
 NewRelic::Agent.manual_start
 
 # run ShouQuShop::API
