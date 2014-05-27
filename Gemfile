@@ -18,7 +18,7 @@ gem 'grape-jbuilder'
 gem 'grape-kaminari'
 gem 'grape-shaman_cache', '0.2.0'
 gem 'newrelic_rpm', '3.8.1.221'
-# gem 'newrelic-grape'
+gem 'newrelic-grape'
 gem 'acts-as-taggable-on', '~> 2.4.1'
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
