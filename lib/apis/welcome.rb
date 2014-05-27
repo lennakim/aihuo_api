@@ -116,7 +116,7 @@ class Welcome < Grape::API
             {id: "861bbbf0a98eb142ee29f82e254eec28", type: 'Product', title: '自慰可乐蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-06.png'},
             {id: "ee228024aa64b06c3eff06f7851d1281", type: 'Product', title: '动漫名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-07.png'},
             {id: "90a290d805341b81a0493af54b2a1e6e", type: 'Product', title: 'G点跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-08.png'},
-            {id: "d05f20bbcc754cb48653992bd3559e48", type: 'Product', title: '0频振动棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-09.png'},
+            {id: "d05f20bbcc754cb48653992bd3559e48", type: 'Product', title: '10频振动棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-09.png'},
             {id: "1a338177155b847cf46bd6dd884f38cf", type: 'Product', title: '情趣舔舔液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-10.png'}
           ]
         },
