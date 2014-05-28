@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 # An opinionated micro-framework for creating REST-like APIs in Ruby.
 # https://github.com/intridea/grape
 gem 'grape', "0.7.0"
-
 gem "rack", "~> 1.5.0"
 gem 'mysql2'
 gem 'activerecord', '4.0.2'
@@ -17,9 +16,8 @@ gem 'grape-jbuilder'
 # gem 'kaminari', :require => 'kaminari/grape'
 gem 'grape-kaminari'
 gem 'grape-shaman_cache', '0.2.0'
-gem 'newrelic-grape'
-
-gem 'acts-as-taggable-on', '~> 2.4.1'
+gem 'newrelic-grape', :git => 'https://github.com/flyerhzm/newrelic-grape.git'
+gem 'acts-as-taggable-on', :git => 'https://github.com/wjp2013/acts-as-taggable-on.git', :branch => '2-4-stable'
 # https://github.com/pencil/encrypted_id
 gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
@@ -47,7 +45,7 @@ group :development do
   gem "rake"
   # reloading rack development server / forking version of rackup
   # Start your app by running 'shotgun'
-  gem 'shotgun'
+  # gem 'shotgun'
 end
 
 group :test do

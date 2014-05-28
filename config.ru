@@ -29,7 +29,7 @@ if ENV['RACK_ENV'] == "development"
   use Rack::ShowExceptions
   use Rack::CommonLogger, Logger.new('log/development.log')
 
-  # puts "Loading NewRelic in developer mode ..."
+  puts "Loading NewRelic in developer mode ..."
   require 'new_relic/rack/developer_mode'
   use NewRelic::Rack::DeveloperMode
 else

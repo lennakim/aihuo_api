@@ -3,9 +3,9 @@
 # Ruby, Java, .NET, PHP, and Python applications with deep visibility and low overhead.
 # For more information, visit www.newrelic.com.
 #
-# Generated January 03, 2014
+# Generated May 28, 2014
 #
-# This configuration file is custom generated for BlueStorm
+# This configuration file is custom generated for BlueStorm Tech
 
 
 # Here are the settings that are common to all environments
@@ -42,7 +42,7 @@ common: &default_settings
   #       - Ajax Service
   #       - All Services
   #
-  app_name: API V2
+  app_name: My Application
 
   # When "true", the agent collects performance data about your
   # application and reports this data to the New Relic service at
