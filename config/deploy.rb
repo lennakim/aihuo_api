@@ -20,7 +20,7 @@ set :branch, 'master'
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
-set :shared_paths, ['config/database.yml', 'log', 'tmp']
+set :shared_paths, ['config/database.yml', 'config/newrelic.yml', 'log', 'tmp']
 
 # Optional settings:
 set :user, 'root'    # Username in the server to SSH to.
@@ -60,6 +60,9 @@ task :setup => :environment do
 
   queue! %[touch "#{deploy_to}/shared/config/database.yml"]
   queue  %[echo "-----> Be sure to edit 'shared/config/database.yml'."]
+
+  queue! %[touch "#{deploy_to}/shared/config/newrelic.yml"]
+  queue  %[echo "-----> Be sure to edit 'shared/config/newrelic.yml'."]
 end
 
 desc "Deploys the current version to the server."
@@ -75,8 +78,8 @@ task :deploy => :environment do
     # invoke :'rails:assets_precompile'
 
     to :launch do
-      # invoke :restart
-      invoke :start
+      invoke :restart
+      # invoke :start
     end
   end
 end
