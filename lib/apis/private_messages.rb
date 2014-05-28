@@ -87,7 +87,7 @@ class PrivateMessages < Grape::API
     post "/", jbuilder: 'private_messages/message' do
       if sign_approval? && authenticate?
         @private_message = PrivateMessage.new(private_message_params)
-        error!(@private_message.errors.full_messages.join, 500) unless @private_message.save
+        error!(@private_message.errors.values.join, 500) unless @private_message.save
       else
         error! "Access Denied", 401
       end

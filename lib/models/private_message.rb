@@ -56,7 +56,7 @@ class PrivateMessage < ActiveRecord::Base
 
   # 发送小纸条前验证用户余额
   def coin_must_enough
-    error_msg = "发送失败，余额不足"
+    error_msg = "发送失败，金币不足"
     errors.add(:member_id, error_msg) if sender.coin_total < 5
   end
 end
