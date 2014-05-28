@@ -11,12 +11,12 @@ require 'mina/rvm'    # for rvm support. (http://rvm.io)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-# set :domain, '115.29.164.196' # production
-set :domain, '115.29.4.146' # staging
+set :domain, '115.29.164.196' # production
+# set :domain, '115.29.4.146' # staging
 set :deploy_to, '/var/www/api.aihuo360.com'
 set :repository, 'git@bitbucket.org:Xiaopuzhu/adultshop_new.git'
-# set :branch, 'master'
-set :branch, 'feature/NewRelic'
+set :branch, 'master'
+# set :branch, 'feature/NewRelic'
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.

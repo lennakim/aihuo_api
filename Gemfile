@@ -45,7 +45,7 @@ group :development do
   gem "rake"
   # reloading rack development server / forking version of rackup
   # Start your app by running 'shotgun'
-  # gem 'shotgun'
+  gem 'shotgun'
 end
 
 group :test do
