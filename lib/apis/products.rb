@@ -11,8 +11,10 @@ class Products < Grape::API
       # 传递的是一个 tag 或者搜索关键词
       elsif params[:tag]
         tag = Tag.find_by(name: params[:tag])
-        tag = tag.self_and_descendants.collect(&:name) if tag
-        tag = tag[0] if tag.size == 1 # 如果 tag 数组只有一个元素
+        if tag
+          tag = tag.self_and_descendants.collect(&:name)
+          tag = tag[0] if tag.size == 1 # 如果 tag 数组只有一个元素
+        end
         tag || params[:tag]
       # 传递的是一组产品ID
       elsif params[:id]
@@ -71,6 +73,9 @@ class Products < Grape::API
       get :trades, jbuilder: 'trades/trades' do
         product = Product.find(params[:id])
         @trades = paginate(product.orders.by_filter(params[:filter]).distinct.order("created_at DESC"))
+        cache(key: [:v2, :product, @trades], expires_in: 2.days) do
+          @trades
+        end
       end
     end
 
