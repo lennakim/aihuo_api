@@ -19,6 +19,9 @@ ActiveRecord::Base.establish_connection(dbconfig)
 # ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger = Logger.new('log/database.log')
 ActiveSupport::LogSubscriber.colorize_logging = false
+if environment == 'production'
+  ActiveRecord::Base.logger.level = Logger::INFO
+end
 
 # 初始化时加载所有 initializers 文件夹内的文件
 Dir[File.expand_path('../initializers/*.rb', __FILE__)].each { |f| require f }
