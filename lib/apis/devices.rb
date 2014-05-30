@@ -5,6 +5,8 @@ class Devices < Grape::API
     end
 
     def device_params
+      current_device
+      params[:device].delete("channel_id") if @device.channel_id.present?
       declared(params, include_missing: false)[:device]
     end
   end
