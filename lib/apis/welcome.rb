@@ -110,9 +110,9 @@ class Welcome < Grape::API
           ]
         },
         {
-          name: "五月大促",
+          name: "精品汇",
           objects: [
-            {id: "6bf3a8fb35a00dc171dbe679f07e09d5", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-2.png'},
+            {id: "ef7c1cd19f87017abf7f39b9c92c545c", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/huodong-2.png'},
             {id: "861bbbf0a98eb142ee29f82e254eec28", type: 'Product', title: '自慰可乐蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-06.png'},
             {id: "ee228024aa64b06c3eff06f7851d1281", type: 'Product', title: '动漫名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-07.png'},
             {id: "90a290d805341b81a0493af54b2a1e6e", type: 'Product', title: 'G点跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-08.png'},
@@ -124,9 +124,9 @@ class Welcome < Grape::API
           name: "新婚初夜装",
           objects: [
             {id: "", type: 'Tag', title: '新婚初夜装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-3.png'},
-            {id: "e621ba44ac2090174c03428d6ca8cf75", type: 'Product', title: '夜店短裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-11.png'},
-            {id: "a5521bcf1ad2b49e07f569f47d151859", type: 'Product', title: '高端无缝连体', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-12.png'},
-            {id: "6ce7577f3ee4805d46f5daee7c6b4b7c", type: 'Product', title: '紧身包臀短裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-13.png'},
+            {id: "f97cf00abc13c595f567fe2d2d945f63", type: 'Product', title: '性感吊带', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/2-11.png'},
+            {id: "79c4cbc23fd55979f844904b8e7f5e12", type: 'Product', title: '蕾丝吊带', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/2-12.png'},
+            {id: "a1552a24353c5bed92a6f6b988193c97", type: 'Product', title: '性感长筒袜', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/2-13.png'},
             {id: "efd72bf7387bf19b4707c7936f63a875", type: 'Product', title: '豹纹T裤', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-14.png'},
             {id: "ed137f76e0b1424661cb66f9c743a9f1", type: 'Product', title: '高贵红裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-15.png'}
           ]
