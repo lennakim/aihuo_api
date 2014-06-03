@@ -114,7 +114,7 @@ class Welcome < Grape::API
           objects: [
             {id: "ef7c1cd19f87017abf7f39b9c92c545c", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/huodong-2.png'},
             {id: "c140db5556eabea468a2a2ac4a9f9100", type: 'Product', title: '缩阴按摩器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-06.png'},
-            {id: "5c63fd0f84693868b93daf1700769c51", type: 'Product', title: '朵芬五跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/home/2/2-07.png'},
+            {id: "5c63fd0f84693868b93daf1700769c51", type: 'Product', title: '朵芬五跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-07.png'},
             {id: "a88349b5b42bdafd74f6fdcf97df5f31", type: 'Product', title: '黑魂名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-08.png'},
             {id: "9105e2f3bec747c232ed52d7b3d266b0", type: 'Product', title: '锁精震动环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-09.png'},
             {id: "6037bc1bb92639060d5e6e0ec967fea2", type: 'Product', title: 'G点探花', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-10.png'}
