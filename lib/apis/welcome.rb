@@ -102,22 +102,22 @@ class Welcome < Grape::API
           name: "热销区",
           objects: [
             {id: "", type: 'Tag', title: '热销专区', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-1.png'},
-            {id: "05056c721cbc525e24cfb8ca987002cd", type: 'Product', title: '私处造型师', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-01.png'},
-            {id: "a2a294a08d7ceecb2e4824fc601b9c4e", type: 'Product', title: '手指套组合', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-02.png'},
-            {id: "1bf29f6407884dc6d919123261a8b677", type: 'Product', title: '振动延时环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-03.png'},
-            {id: "577bd6d7be2331e2f9a6027bb924a5db", type: 'Product', title: '门上激情', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-04.png'},
-            {id: "259a1d6fd7c15d070b0cdfff052baee1", type: 'Product', title: '菊花最爱', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-05.png'}
+            {id: "7ab47ac9f2256030ff52f17f25f23fe8", type: 'Product', title: '露露名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-01.png'},
+            {id: "8c41638d5086aac446df111fe21e184e", type: 'Product', title: '指蝶精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-02.png'},
+            {id: "f1dfc05cd2028142a7dbe8a00eb8d353", type: 'Product', title: 'joker O环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-03.png'},
+            {id: "a794afef0a95b6a6c8a90ed4c99ea1ba", type: 'Product', title: '甜心奶瓶', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-04.png'},
+            {id: "f9f72abc253bd1579682b84839982e31", type: 'Product', title: '延时锻炼器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-05.png'}
           ]
         },
         {
           name: "精品汇",
           objects: [
             {id: "ef7c1cd19f87017abf7f39b9c92c545c", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/huodong-2.png'},
-            {id: "861bbbf0a98eb142ee29f82e254eec28", type: 'Product', title: '自慰可乐蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-06.png'},
-            {id: "ee228024aa64b06c3eff06f7851d1281", type: 'Product', title: '动漫名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/2-07.png'},
-            {id: "90a290d805341b81a0493af54b2a1e6e", type: 'Product', title: 'G点跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-08.png'},
-            {id: "d05f20bbcc754cb48653992bd3559e48", type: 'Product', title: '10频振动棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-09.png'},
-            {id: "1a338177155b847cf46bd6dd884f38cf", type: 'Product', title: '情趣舔舔液', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-10.png'}
+            {id: "c140db5556eabea468a2a2ac4a9f9100", type: 'Product', title: '缩阴按摩器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-06.png'},
+            {id: "5c63fd0f84693868b93daf1700769c51", type: 'Product', title: '朵芬五跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/home/2/2-07.png'},
+            {id: "a88349b5b42bdafd74f6fdcf97df5f31", type: 'Product', title: '黑魂名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-08.png'},
+            {id: "9105e2f3bec747c232ed52d7b3d266b0", type: 'Product', title: '锁精震动环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-09.png'},
+            {id: "6037bc1bb92639060d5e6e0ec967fea2", type: 'Product', title: 'G点探花', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-10.png'}
           ]
         },
         {
@@ -128,7 +128,7 @@ class Welcome < Grape::API
             {id: "79c4cbc23fd55979f844904b8e7f5e12", type: 'Product', title: '蕾丝吊带', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/2-12.png'},
             {id: "a1552a24353c5bed92a6f6b988193c97", type: 'Product', title: '性感长筒袜', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/2-13.png'},
             {id: "efd72bf7387bf19b4707c7936f63a875", type: 'Product', title: '豹纹T裤', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-14.png'},
-            {id: "ed137f76e0b1424661cb66f9c743a9f1", type: 'Product', title: '高贵红裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-15.png'}
+            {id: "4d3e3d92d7a291d82845e125fd796331", type: 'Product', title: '女警察制服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-15.png'}
           ]
         }
       ]
