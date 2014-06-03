@@ -70,14 +70,14 @@ class Product < ActiveRecord::Base
 
   # 市场价（原价）显示SKU市场价的最高值
   def market_price
-    product_props.order("original_price DESC").first.original_price
+    product_props.reorder("original_price DESC").first.original_price
   rescue
     'No SKU'
   end
 
   # 零售价（现价）显示SKU零售价的最低值
   def retail_price
-    product_props.order("sale_price").first.sale_price
+    product_props.first.sale_price
   rescue
     'No SKU'
   end
