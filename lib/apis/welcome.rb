@@ -105,7 +105,7 @@ class Welcome < Grape::API
             {id: "7ab47ac9f2256030ff52f17f25f23fe8", type: 'Product', title: '露露名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-01.png'},
             {id: "8c41638d5086aac446df111fe21e184e", type: 'Product', title: '指蝶精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-02.png'},
             {id: "f1dfc05cd2028142a7dbe8a00eb8d353", type: 'Product', title: 'joker O环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-03.png'},
-            {id: "a794afef0a95b6a6c8a90ed4c99ea1ba", type: 'Product', title: '甜心奶瓶', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-04.png'},
+            {id: "2f69ab1db00db6e978732055365f3831", type: 'Product', title: '甜心奶瓶', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-04.png'},
             {id: "f9f72abc253bd1579682b84839982e31", type: 'Product', title: '延时锻炼器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-05.png'}
           ]
         },
