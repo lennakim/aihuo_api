@@ -72,8 +72,9 @@ class Products < Grape::API
       end
       get :trades, jbuilder: 'trades/trades' do
         product = Product.find(params[:id])
-        cache(key: [:v2, :product, product, params[:page], params[:per_page]], expires_in: 1.days) do
-          @trades = paginate(product.orders.by_filter(params[:filter]).distinct.order("created_at DESC"))
+        @trades = paginate(product.orders.by_filter(params[:filter]).distinct.order("created_at DESC"))
+        cache(key: [:v2, :product, @trades], expires_in: 1.days) do
+          @trades
         end
       end
     end
