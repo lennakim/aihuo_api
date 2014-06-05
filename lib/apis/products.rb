@@ -58,9 +58,8 @@ class Products < Grape::API
     route_param :id do
       desc "Return a product."
       get "/", jbuilder: 'products/product' do
-        @product = Product.find(params[:id])
-        cache(key: [:v2, :product, @product], expires_in: 2.days) do
-          @product
+        cache(key: [:v2, :product, params[:id]], expires_in: 2.days) do
+          @product = Product.find(params[:id])
         end
       end
 
@@ -71,10 +70,9 @@ class Products < Grape::API
         optional :per_page, type: Integer, default: 10, desc: "Per page value."
       end
       get :trades, jbuilder: 'trades/trades' do
-        product = Product.find(params[:id])
-        @trades = paginate(product.orders.by_filter(params[:filter]).distinct.order("created_at DESC"))
-        cache(key: [:v2, :product, @trades], expires_in: 1.days) do
-          @trades
+        cache(key: [:v2, :product, params[:id], :trades, params[:page], params[:per_page]], expires_in: 1.days) do
+          product = Product.find(params[:id])
+          @trades = paginate(product.orders.by_filter(params[:filter]).distinct.order("created_at DESC"))
         end
       end
     end

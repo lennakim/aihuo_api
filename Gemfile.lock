@@ -78,7 +78,7 @@ GEM
     grape-kaminari (0.1.1)
       grape
       kaminari
-    grape-shaman_cache (0.2.0)
+    grape-shaman_cache (0.3.0)
       activesupport
       grape (>= 0.6.1)
       grape-jbuilder (= 0.2.0)
@@ -159,7 +159,7 @@ DEPENDENCIES
   grape (= 0.7.0)
   grape-jbuilder
   grape-kaminari
-  grape-shaman_cache (= 0.2.0)
+  grape-shaman_cache (= 0.3.0)
   mina
   minitest
   mysql2

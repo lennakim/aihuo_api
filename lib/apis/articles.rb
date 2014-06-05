@@ -39,9 +39,8 @@ class Articles < Grape::API
       requires :id, type: String, desc: "Article ID."
     end
     get ':id', jbuilder: 'articles/article' do
-      @article = Article.find(params[:id])
-      cache(key: [:v2, :article, @article], expires_in: 2.days) do
-        @article
+      cache(key: [:v2, :article, params[:id]], expires_in: 5.days) do
+        @article = Article.find(params[:id])
       end
     end
   end
