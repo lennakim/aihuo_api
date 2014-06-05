@@ -20,11 +20,12 @@ class Topic < ActiveRecord::Base
   scope :approved, -> { where(approved: true) }
   scope :by_device, ->(device_id) { where(device_id: device_id) }
   scope :popular, -> { where("replies_count >= 50") }
-  scope :lasted, -> {
-    select('`topics`.*', '(`topics`.replies_count <= 50) AS front')
-      .where(best: false).where("replies_count <= 50")
-      .reorder("top DESC, front DESC, updated_at DESC")
-  }
+  # scope :lasted, -> {
+  #   select('`topics`.*', '(`topics`.replies_count <= 50) AS front')
+  #     .where(best: false).where("replies_count <= 50")
+  #     .reorder("top DESC, front DESC, updated_at DESC")
+  # }
+  scope :lasted, -> { where(best: false).reorder("top DESC, replied_at DESC") }
   scope :excellent, -> { where(best: true).reorder("top DESC, updated_at DESC") }
   scope :checking, -> { where(approved: false) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............

@@ -59,8 +59,7 @@ class Reply < ActiveRecord::Base
 
   def update_topic_status
     if replyable_type == 'Topic'
-      topic.replied_at = Time.now
-      topic.save
+      topic.update_column(:replied_at, Time.now) if topic.replies_count <= 50
     end
   end
 end
