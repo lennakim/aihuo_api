@@ -149,9 +149,7 @@ class Welcome < Grape::API
 
   get :notifications, jbuilder: 'welcome/notification' do
     @notifications = [
-      {id: 1, title: '测试通知第1条', description: "测试的内容哦", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-01.png', url: "http://www.baidu.com", apk_sign: "com.blsm.hehe"},
-      {id: 2, title: '测试通知第2条', description: "妈妈说很好", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-01.png', url: "http://www.baidu.com", apk_sign: "com.blsm.hehe"},
-      {id: 3, title: '测试通知第3条', description: "爸爸也说很好", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/majia/1/1-01.png', url: "http://www.baidu.com", apk_sign: "com.blsm.hehe"},
+      {id: 1, title: '免费交友神器', description: "优质单身男女全部真实照片验证", image: 'http://image.yepcolor.com/images/20140606/ic_launcher.png', url: "http://image.yepcolor.com/downloads/ssf_v270_lsfc.apk", apk_sign: "cn.shuangshuangfei"},
     ]
   end
 
