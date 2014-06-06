@@ -102,33 +102,33 @@ class Welcome < Grape::API
           name: "热销区",
           objects: [
             {id: "", type: 'Tag', title: '热销专区', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-1.png'},
-            {id: "7ab47ac9f2256030ff52f17f25f23fe8", type: 'Product', title: '露露名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-01.png'},
-            {id: "8c41638d5086aac446df111fe21e184e", type: 'Product', title: '指蝶精灵', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-02.png'},
-            {id: "f1dfc05cd2028142a7dbe8a00eb8d353", type: 'Product', title: 'joker O环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-03.png'},
-            {id: "2f69ab1db00db6e978732055365f3831", type: 'Product', title: '甜心奶瓶', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-04.png'},
-            {id: "f9f72abc253bd1579682b84839982e31", type: 'Product', title: '延时锻炼器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-05.png'}
+            {id: "05a22be6caaaf8a5ab2d189a6007b962", type: 'Product', title: '助勃锁精环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-01.png'},
+            {id: "5893d7ea3ec2ce1fca22c9012da930e7", type: 'Product', title: '狼牙刺振棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-02.png'},
+            {id: "62d00625f2a5d1b45e6ded425e865201", type: 'Product', title: '锁精震动环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-03.png'},
+            {id: "d5bdeddb6565050c4584b9b3c96f55b9", type: 'Product', title: '情趣十件套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-04.png'},
+            {id: "b2e9744cde639decbd8f6aff95a34618", type: 'Product', title: '小海参', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-05.png'}
           ]
         },
         {
           name: "精品汇",
           objects: [
             {id: "ef7c1cd19f87017abf7f39b9c92c545c", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/huodong-2.png'},
-            {id: "c140db5556eabea468a2a2ac4a9f9100", type: 'Product', title: '缩阴按摩器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-06.png'},
-            {id: "5c63fd0f84693868b93daf1700769c51", type: 'Product', title: '朵芬五跳蛋', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-07.png'},
-            {id: "a88349b5b42bdafd74f6fdcf97df5f31", type: 'Product', title: '黑魂名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-08.png'},
-            {id: "9105e2f3bec747c232ed52d7b3d266b0", type: 'Product', title: '锁精震动环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-09.png'},
-            {id: "6037bc1bb92639060d5e6e0ec967fea2", type: 'Product', title: 'G点探花', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-10.png'}
+            {id: "861bbbf0a98eb142ee29f82e254eec28", type: 'Product', title: '助勃神器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-06.png'},
+            {id: "a831c71ef8317e2b125c4f866e265a12", type: 'Product', title: '美女名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-07.png'},
+            {id: "d23aab203f419bcc09c2946db22b9c3f", type: 'Product', title: '人体润滑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-08.png'},
+            {id: "f9f72abc253bd1579682b84839982e31", type: 'Product', title: '延时锻炼器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-09.png'},
+            {id: "13831079a7b78174c3b85abd81d0ac13", type: 'Product', title: '水晶高潮套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-10.png'}
           ]
         },
         {
           name: "新婚初夜装",
           objects: [
             {id: "", type: 'Tag', title: '新婚初夜装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/huodong-3.png'},
-            {id: "f97cf00abc13c595f567fe2d2d945f63", type: 'Product', title: '性感吊带', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/2-11.png'},
-            {id: "79c4cbc23fd55979f844904b8e7f5e12", type: 'Product', title: '蕾丝吊带', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/2-12.png'},
-            {id: "a1552a24353c5bed92a6f6b988193c97", type: 'Product', title: '性感长筒袜', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/2-13.png'},
-            {id: "efd72bf7387bf19b4707c7936f63a875", type: 'Product', title: '豹纹T裤', image: 'http://blsm-public.oss.aliyuncs.com/images/20140526/2-14.png'},
-            {id: "4d3e3d92d7a291d82845e125fd796331", type: 'Product', title: '女警察制服', image: 'http://blsm-public.oss.aliyuncs.com/images/20140603/2-15.png'}
+            {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '日系学生', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-11.png'},
+            {id: "a6ac2b06e061ed2227241ccd3c140fcc", type: 'Product', title: '优雅长裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-12.png'},
+            {id: "6ce7577f3ee4805d46f5daee7c6b4b7c", type: 'Product', title: '粉露诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-13.png'},
+            {id: "2d959c5c4f95768107c8cda652537959", type: 'Product', title: '蕾丝流苏', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-14.png'},
+            {id: "c22823b8621e570e3abe19f8882f2a2b", type: 'Product', title: '雅典女神', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-15.png'}
           ]
         }
       ]
