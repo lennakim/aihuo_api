@@ -84,9 +84,6 @@ class Orders < Grape::API
       desc "Return an order."
       get "/", jbuilder: 'orders/order' do
         @order = Order.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
-        cache(key: [:v2, :order, @order], expires_in: 2.days) do
-          @order
-        end
       end
 
       desc "Delete an order."
