@@ -22,7 +22,7 @@ class Order < ActiveRecord::Base
   # callbacks .................................................................
   before_destroy :logging_action
   before_create :compose_ship_address
-  # after_create :merge_pending_orders
+  # after_create :merge_pending_orders # this method called in controller
   after_create :calculate_item_total
   after_create :register_device
   after_create :destroy_cart
@@ -150,19 +150,18 @@ class Order < ActiveRecord::Base
     update_column(:payment_state, payment_state)
   end
 
-
-  def payment_need_logging?(transaction_no)
+  def transaction_need_process?(transaction_no)
     self.payments.where(transaction_no: transaction_no).blank?
   end
 
   def process_payment(transaction_no, amount)
-    orderlogs.logging_action(:order_pay, amount) if payment_need_logging?(transaction_no)
+    orderlogs.logging_action(:order_pay, amount)
     payment = self.payments.where(transaction_no: transaction_no).first_or_create
     payment.process(amount)
     calculate_payment_total
   end
 
-  # 订单内含0元购返回的效益逻辑:
+  # 订单内含0元购返回的消息逻辑:
   #
   # 在线支付(先付款后发货) pay_type 0
   #   一个0元购
@@ -190,6 +189,10 @@ class Order < ActiveRecord::Base
         "0元购商品只能包含一件哦，稍候客服会协助您修改订单。"
       end
     end
+  end
+
+  def send_confirm_sms(type)
+    ShortMessage.send_confirm_sms(self, type)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
