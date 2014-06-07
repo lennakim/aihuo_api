@@ -8,6 +8,7 @@ class Order < ActiveRecord::Base
   # relationships .............................................................
   belongs_to :express, foreign_key: "shippingorder_id"
   has_many :line_items
+  has_many :gift_items, -> { where(sale_price: 0) }, class_name: "LineItem"
   has_many :comments
   has_many :orderlogs
   has_many :short_messages
@@ -161,11 +162,33 @@ class Order < ActiveRecord::Base
     calculate_payment_total
   end
 
+  # 订单内含0元购返回的效益逻辑:
+  #
+  # 在线支付(先付款后发货) pay_type 0
+  #   一个0元购
+  #     订单总价0元 =>
+  #     订单总价多元 =>
+  #   多个0元购
+  #     订单总价0元 => 0元购商品只能包含一件哦，稍候客服会协助您修改订单。
+  #     订单总价多元 => 0元购商品只能包含一件哦，稍候客服会协助您修改订单。
+  #
+  # 货到付款 pay_type 1
+  #   一个0元购
+  #     订单总价0元 => 您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。
+  #     订单总价多元 =>
+  #   多个0元购
+  #     订单总价0元 => 您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。
+  #     订单总价多元 => 0元购商品只能包含一件哦，稍候客服会协助您修改订单。
   def message
-    if item_total == 0
-      "您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。"
-    elsif line_items.inject(0){|sum, item| sum + (item.sale_price == 0 ? item.quantity : 0)} > 1
-      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。"
+    case pay_type
+    when 0
+      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。" if gift_items.count(:sale_price) > 1
+    when 1
+      if item_total == 0
+        "您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。"
+      elsif gift_items.count(:sale_price) > 1
+        "0元购商品只能包含一件哦，稍候客服会协助您修改订单。"
+      end
     end
   end
   # protected instance methods ................................................
