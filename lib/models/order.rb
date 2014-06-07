@@ -182,11 +182,11 @@ class Order < ActiveRecord::Base
   def message
     case pay_type
     when 0
-      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。" if gift_items.count(:sale_price) > 1
+      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。" if gift_items.sum(:quantity) > 1
     when 1
       if item_total == 0
         "您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。"
-      elsif gift_items.count(:sale_price) > 1
+      elsif gift_items.sum(:quantity) > 1
         "0元购商品只能包含一件哦，稍候客服会协助您修改订单。"
       end
     end
