@@ -127,7 +127,7 @@ class Orders < Grape::API
           @order = Order.unpaid.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
           if @order.transaction_need_process?(params[:transaction_no])
             @order.process_payment(params[:transaction_no], format_amount)
-            # @order.send_confirm_sms(:update)
+            @order.send_confirm_sms(:update)
           end
         rescue Exception => e
           error!({

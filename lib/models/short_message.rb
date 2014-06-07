@@ -14,13 +14,18 @@ class ShortMessage < ActiveRecord::Base
     device_id = order.device_id
     # 每个设备每天只能发送5条SMS
     if self.can_send_sms_to_device?(device_id)
-      # content = confirm_msg(order, msg_type)
       content = confirm_msg(order, type)
-      order.short_messages.create({ device_id: device_id, phone: order.phone, content: content })
-      order.orderlogs.logging_action(:send_confirm_sms, content)
+      if content.present?
+        order.short_messages.create({ device_id: device_id, phone: order.phone, content: content })
+        order.orderlogs.logging_action(:send_confirm_sms, content)
+      end
     else
       order.orderlogs.logging_action(:send_confirm_sms_error, order.id)
     end
+  end
+
+  def self.make_as_sended
+    update_all(sended: true)
   end
 
   def self.can_send_sms_to_device?(device_id)
@@ -60,12 +65,11 @@ class ShortMessage < ActiveRecord::Base
   #
   # 更新订单
   #   刚才生成的短信已发送 => 修改 message 并根据下列条件发送短信(未实现)
-  #   刚才生成的短信未发送 => 修改 message 删除原来短信并根据下列条件发送短信(未实现)
+  #   刚才生成的短信未发送 => 修改 message 删除原来短信并根据下列条件发送短信(未实现修改 message)
   #   条件：
-  #     没有填写地址，没有填写收货人 => 不发送短信
-  #     没有填写地址，有收货人 => 不发送短信
+  #     没有填写地址，没有填写收货人 => 您的物品加运费共XX元，保密包装。回复您的具体地址(省市区县街道)和姓名立刻发货。【订单确认】
+  #     没有填写地址，有收货人 => 您的物品加运费共XX元，保密包装。回复您的具体地址(省市区县街道)立刻发货。【订单确认】
   #     有地址，有收货人(不考虑支付状态) => 您的物品加运费共XX元，保密包装。回复数字1立刻发货，2-4天送达。有疑问请联系:4007065868【订单确认】
-  #
   #
   # type may be :create, :update or :merge
   def self.confirm_msg(order, type)
@@ -75,6 +79,7 @@ class ShortMessage < ActiveRecord::Base
         "您的物品加运费共#{order.total}元，您已经支付成功#{order.payment_total}元。正在为您安排发货，保密包装。"
       end
     when 1
+      order.short_messages.make_as_sended if type == :update
       prepend_text = type == :merge ? "订单已合并，" : ""
       if order.shipping_address.blank? && order.name.blank?
         "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道)和姓名立刻发货。【订单确认】"
