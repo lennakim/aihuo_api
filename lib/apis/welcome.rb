@@ -128,7 +128,7 @@ class Welcome < Grape::API
             {id: "a6ac2b06e061ed2227241ccd3c140fcc", type: 'Product', title: '优雅长裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-12.png'},
             {id: "6ce7577f3ee4805d46f5daee7c6b4b7c", type: 'Product', title: '粉露诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-13.png'},
             {id: "2d959c5c4f95768107c8cda652537959", type: 'Product', title: '蕾丝流苏', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-14.png'},
-            {id: "c22823b8621e570e3abe19f8882f2a2b", type: 'Product', title: '雅典女神', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-15.png'}
+            {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '粉嫩套装', image: 'http://image.yepcolor.com/images/20140609/2-15.png'}
           ]
         }
       ]
