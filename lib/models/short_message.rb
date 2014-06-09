@@ -75,7 +75,7 @@ class ShortMessage < ActiveRecord::Base
   def self.confirm_msg(order, type)
     case order.pay_type
     when 0
-      if payment_total != 0
+      if order.payment_total != 0
         "您的物品加运费共#{order.total}元，您已经支付成功#{order.payment_total}元。正在为您安排发货，保密包装。"
       end
     when 1
