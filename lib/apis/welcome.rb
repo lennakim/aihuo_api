@@ -150,6 +150,7 @@ class Welcome < Grape::API
   get :notifications, jbuilder: 'welcome/notification' do
     @notifications = [
       {id: 1, title: '免费交友神器', description: "优质单身男女全部真实照片验证", image: 'http://image.yepcolor.com/images/20140606/ic_launcher.png', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense01.jpg', url: "http://image.yepcolor.com/downloads/ssf_v270_lsfc.apk", apk_sign: "cn.shuangshuangfei"},
+      {id: 2, title: 'HOT男人', description: "最养眼美女一键保存", image: 'http://blsm-public.oss.aliyuncs.com/images/20140610/ic_launcher02.png', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense02.jpg', url: "http://blsm-public.oss.aliyuncs.com/downloads/110130565_v2.6.1.apk", apk_sign: "com.yoka.hotman"}
     ]
   end
 
