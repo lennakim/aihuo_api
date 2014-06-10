@@ -127,8 +127,8 @@ class Welcome < Grape::API
             {id: "723f8033092b3252751675f3929a42fc", type: 'Product', title: '丝质连身袜', image: 'http://image.yepcolor.com/images/20140610/2-11.png'},
             {id: "5d8bb66b7bbe8854f432c90e38d777df", type: 'Product', title: '深V睡裙', image: 'http://image.yepcolor.com/images/20140610/2-12.png'},
             {id: "e621ba44ac2090174c03428d6ca8cf75", type: 'Product', title: '网眼性感短裙', image: 'http://image.yepcolor.com/images/20140610/2-13.png'},
-            {id: "fd81557b2890c0da84386a60185b6750", type: 'Product', title: '包臀彩裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-14.png'},
-            {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '粉嫩套装', image: 'http://image.yepcolor.com/images/20140610/2-14.png'}
+            {id: "fd81557b2890c0da84386a60185b6750", type: 'Product', title: '包臀彩裙', image: 'http://image.yepcolor.com/images/20140610/2-14.png'},
+            {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '粉嫩套装', image: 'http://image.yepcolor.com/images/20140609/2-15.png'}
           ]
         }
       ]
@@ -150,6 +150,7 @@ class Welcome < Grape::API
   get :notifications, jbuilder: 'welcome/notification' do
     @notifications = [
       {id: 1, title: '免费交友神器', description: "优质单身男女全部真实照片验证", image: 'http://image.yepcolor.com/images/20140606/ic_launcher.png', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense01.jpg', url: "http://image.yepcolor.com/downloads/ssf_v270_lsfc.apk", apk_sign: "cn.shuangshuangfei"},
+      {id: 2, title: 'HOT男人', description: "最养眼美女一键保存", image: 'http://blsm-public.oss.aliyuncs.com/images/20140610/ic_launcher02.png', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense02.jpg', url: "http://blsm-public.oss.aliyuncs.com/downloads/110130565_v2.6.1.apk", apk_sign: "com.yoka.hotman"}
     ]
   end
 
