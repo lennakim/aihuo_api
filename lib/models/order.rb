@@ -8,6 +8,7 @@ class Order < ActiveRecord::Base
   # relationships .............................................................
   belongs_to :express, foreign_key: "shippingorder_id"
   has_many :line_items
+  has_many :gift_items, -> { where(sale_price: 0) }, class_name: "LineItem"
   has_many :comments
   has_many :orderlogs
   has_many :short_messages
@@ -21,7 +22,7 @@ class Order < ActiveRecord::Base
   # callbacks .................................................................
   before_destroy :logging_action
   before_create :compose_ship_address
-  # after_create :merge_pending_orders
+  # after_create :merge_pending_orders # this method called in controller
   after_create :calculate_item_total
   after_create :register_device
   after_create :destroy_cart
@@ -149,24 +150,49 @@ class Order < ActiveRecord::Base
     update_column(:payment_state, payment_state)
   end
 
-
-  def payment_need_logging?(transaction_no)
+  def transaction_need_process?(transaction_no)
     self.payments.where(transaction_no: transaction_no).blank?
   end
 
   def process_payment(transaction_no, amount)
-    orderlogs.logging_action(:order_pay, amount) if payment_need_logging?(transaction_no)
+    orderlogs.logging_action(:order_pay, amount)
     payment = self.payments.where(transaction_no: transaction_no).first_or_create
     payment.process(amount)
     calculate_payment_total
   end
 
+  # 订单内含0元购返回的消息逻辑:
+  #
+  # 在线支付(先付款后发货) pay_type 0
+  #   一个0元购
+  #     订单总价0元 =>
+  #     订单总价多元 =>
+  #   多个0元购
+  #     订单总价0元 => 0元购商品只能包含一件哦，稍候客服会协助您修改订单。
+  #     订单总价多元 => 0元购商品只能包含一件哦，稍候客服会协助您修改订单。
+  #
+  # 货到付款 pay_type 1
+  #   一个0元购
+  #     订单总价0元 => 您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。
+  #     订单总价多元 =>
+  #   多个0元购
+  #     订单总价0元 => 您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。
+  #     订单总价多元 => 0元购商品只能包含一件哦，稍候客服会协助您修改订单。
   def message
-    if item_total == 0
-      "您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。"
-    elsif line_items.inject(0){|sum, item| sum + (item.sale_price == 0 ? item.quantity : 0)} > 1
-      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。"
+    case pay_type
+    when 0
+      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。" if gift_items.sum(:quantity) > 1
+    when 1
+      if item_total == 0
+        "您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。"
+      elsif gift_items.sum(:quantity) > 1
+        "0元购商品只能包含一件哦，稍候客服会协助您修改订单。"
+      end
     end
+  end
+
+  def send_confirm_sms(type)
+    ShortMessage.send_confirm_sms(self, type)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

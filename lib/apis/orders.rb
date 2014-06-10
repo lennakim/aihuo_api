@@ -65,8 +65,10 @@ class Orders < Grape::API
         if @order.save
           @order.calculate_total_by_coupon(params[:coupon])
           @order.merge_pending_orders
+          original_order_id = @order.id # 记录目前订单ID
           @order = @order.find_original_order # 合并订单后本订单删除，返回原始订单
-          ShortMessage.send_confirm_sms(@order)
+          type = original_order_id == @order.id ? :create : :merge # 如果ID不同证明是合并订单
+          @order.send_confirm_sms(type)
           @order
         else
           status 500
@@ -84,9 +86,6 @@ class Orders < Grape::API
       desc "Return an order."
       get "/", jbuilder: 'orders/order' do
         @order = Order.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
-        cache(key: [:v2, :order, @order], expires_in: 2.days) do
-          @order
-        end
       end
 
       desc "Delete an order."
@@ -126,7 +125,10 @@ class Orders < Grape::API
         validate_remote_host
         begin
           @order = Order.unpaid.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
-          @order.process_payment(params[:transaction_no], format_amount)
+          if @order.transaction_need_process?(params[:transaction_no])
+            @order.process_payment(params[:transaction_no], format_amount)
+            @order.send_confirm_sms(:update)
+          end
         rescue Exception => e
           error!({
             error: "unexpected error",

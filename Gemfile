@@ -15,7 +15,7 @@ gem 'activerecord', '4.0.2'
 gem 'grape-jbuilder'
 # gem 'kaminari', :require => 'kaminari/grape'
 gem 'grape-kaminari'
-gem 'grape-shaman_cache', '0.2.0'
+gem 'grape-shaman_cache', '0.3.0'
 gem 'newrelic-grape', :git => 'https://github.com/flyerhzm/newrelic-grape.git'
 gem 'acts-as-taggable-on', :git => 'https://github.com/wjp2013/acts-as-taggable-on.git', :branch => '2-4-stable'
 # https://github.com/pencil/encrypted_id
