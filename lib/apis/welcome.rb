@@ -102,33 +102,33 @@ class Welcome < Grape::API
           name: "热销区",
           objects: [
             {id: "", type: 'Tag', title: '热销专区', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-1.png'},
-            {id: "05a22be6caaaf8a5ab2d189a6007b962", type: 'Product', title: '助勃锁精环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-01.png'},
-            {id: "5893d7ea3ec2ce1fca22c9012da930e7", type: 'Product', title: '狼牙刺振棒', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-02.png'},
-            {id: "62d00625f2a5d1b45e6ded425e865201", type: 'Product', title: '锁精震动环', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-03.png'},
-            {id: "d5bdeddb6565050c4584b9b3c96f55b9", type: 'Product', title: '情趣十件套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-04.png'},
-            {id: "b2e9744cde639decbd8f6aff95a34618", type: 'Product', title: '小海参', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-05.png'}
+            {id: "88d14edc0b6532f37c19f822496f4f64", type: 'Product', title: '助勃神器', image: 'http://image.yepcolor.com/images/20140610/2-01.png'},
+            {id: "25ac52b0efdafca460d8f5aa7231f1a5", type: 'Product', title: '精油润滑', image: 'http://image.yepcolor.com/images/20140610/2-02.png'},
+            {id: "63652aaa582b2f6bdccb27bd968e28bc", type: 'Product', title: '名器02品格', image: 'http://image.yepcolor.com/images/20140610/2-03.png'},
+            {id: "bebb1231b375ed7cb9cb5147804aa102", type: 'Product', title: '双震蝴蝶', image: 'http://image.yepcolor.com/images/20140610/2-04.png'},
+            {id: "259a1d6fd7c15d070b0cdfff052baee1", type: 'Product', title: '后庭拉珠', image: 'http://image.yepcolor.com/images/20140610/2-05.png'}
           ]
         },
         {
           name: "精品汇",
           objects: [
             {id: "ef7c1cd19f87017abf7f39b9c92c545c", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/huodong-2.png'},
-            {id: "861bbbf0a98eb142ee29f82e254eec28", type: 'Product', title: '助勃神器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-06.png'},
-            {id: "a831c71ef8317e2b125c4f866e265a12", type: 'Product', title: '美女名器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-07.png'},
-            {id: "d23aab203f419bcc09c2946db22b9c3f", type: 'Product', title: '人体润滑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-08.png'},
-            {id: "f9f72abc253bd1579682b84839982e31", type: 'Product', title: '延时锻炼器', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-09.png'},
-            {id: "13831079a7b78174c3b85abd81d0ac13", type: 'Product', title: '水晶高潮套', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-10.png'}
+            {id: "ec46e4d35f6ccdf7994777f85cb928d6", type: 'Product', title: '延时喷剂', image: 'http://image.yepcolor.com/images/20140610/2-06.png'},
+            {id: "710463cb63bb4353d581cc2c69e4692a", type: 'Product', title: '可爱小萝莉', image: 'http://image.yepcolor.com/images/20140610/2-07.png'},
+            {id: "167db349d4b629d674cee3335362fd79", type: 'Product', title: '双穴飞机杯', image: 'http://image.yepcolor.com/images/20140610/2-08.png'},
+            {id: "48927f91cb5ae2feb2f3d4fe49fd9b4e", type: 'Product', title: '珍珠套环', image: 'http://image.yepcolor.com/images/20140610/2-09.png'},
+            {id: "7ab47ac9f2256030ff52f17f25f23fe8", type: 'Product', title: '露露名器', image: 'http://image.yepcolor.com/images/20140610/2-10.png'}
           ]
         },
         {
           name: "新婚初夜装",
           objects: [
-            {id: "", type: 'Tag', title: '新婚初夜装', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/huodong-3.png'},
-            {id: "e71107667db60e03889ecab3c137bfcf", type: 'Product', title: '日系学生', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-11.png'},
-            {id: "a6ac2b06e061ed2227241ccd3c140fcc", type: 'Product', title: '优雅长裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-12.png'},
-            {id: "6ce7577f3ee4805d46f5daee7c6b4b7c", type: 'Product', title: '粉露诱惑', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-13.png'},
-            {id: "2d959c5c4f95768107c8cda652537959", type: 'Product', title: '蕾丝流苏', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-14.png'},
-            {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '粉嫩套装', image: 'http://image.yepcolor.com/images/20140609/2-15.png'}
+            {id: "", type: 'Tag', title: '新婚初夜装', image: 'http://image.yepcolor.com/images/20140610/huodong-3.png'},
+            {id: "723f8033092b3252751675f3929a42fc", type: 'Product', title: '丝质连身袜', image: 'http://image.yepcolor.com/images/20140610/2-11.png'},
+            {id: "5d8bb66b7bbe8854f432c90e38d777df", type: 'Product', title: '深V睡裙', image: 'http://image.yepcolor.com/images/20140610/2-12.png'},
+            {id: "e621ba44ac2090174c03428d6ca8cf75", type: 'Product', title: '网眼性感短裙', image: 'http://image.yepcolor.com/images/20140610/2-13.png'},
+            {id: "fd81557b2890c0da84386a60185b6750", type: 'Product', title: '包臀彩裙', image: 'http://blsm-public.oss.aliyuncs.com/images/20140606/2-14.png'},
+            {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '粉嫩套装', image: 'http://image.yepcolor.com/images/20140610/2-14.png'}
           ]
         }
       ]
