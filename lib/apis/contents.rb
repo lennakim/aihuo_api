@@ -32,7 +32,20 @@ class Contents < Grape::API
           @content
         end
       end
+
+      desc "Like a content."
+      put :like, jbuilder: 'contents/content' do
+        @content.liked
+        status 202
+      end
+
+      desc "Repost a content"
+      put :forward, jbuilder: 'contents/content' do
+        @content.forward
+        status 202
+      end
     end
+
 
   end
 end
