@@ -17,6 +17,7 @@ if reply.member
     json.partial! "members/member", member: reply.member
   end
 end
+
 unless reply.replies.size.zero?
   json.replies reply.replies do |reply|
     json.partial! "replies/reply", reply: reply
