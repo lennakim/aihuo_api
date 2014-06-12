@@ -7,6 +7,7 @@ class Reply < ActiveRecord::Base
   # relationships .............................................................
   belongs_to :replyable, polymorphic: true
   belongs_to :topic, foreign_key: 'replyable_id', counter_cache: true, touch: true
+  belongs_to :content, foreign_key: 'replyable_id', counter_cache: true, touch: true
   belongs_to :member
   has_many :replies, as: :replyable
   delegate :node, to: :topic, allow_nil: true
