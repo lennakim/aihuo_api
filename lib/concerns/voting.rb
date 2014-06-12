@@ -10,11 +10,19 @@ module Voting
     unlikes_count + 1
   end
 
+  def add_forward
+    forward_count + 1
+  end
+
   def liked
     update_column(:likes_count, add_liked)
   end
 
   def disliked
     update_column(:unlikes_count, add_disliked)
+  end
+
+  def forward
+    update_column(:forward_count, add_forward)
   end
 end
