@@ -83,61 +83,15 @@ class Welcome < Grape::API
           {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
         ]
       else
-        @submenus = [
-          {id: "", type: 'Tag', title: '新品特价', name: "新品特价", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-01.png'},
-          {id: "", type: 'Tag', title: '100件抢完算', name: "100件抢完算", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-02.png'},
-          {id: "", type: 'Tag', title: '火爆套套', name: "火爆套套", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/1/1-03.png'}
-        ]
+        @submenus = HomeContent.submenus
       end
-      @categories = [
-        {id: "", type: 'Tag', title: '男士专区', name: "男用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-01.png'},
-        {id: "", type: 'Tag', title: '女士专区', name: "女用", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-02.png'},
-        {id: "", type: 'Tag', title: '性感服饰', name: "更多情趣", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-03.png'},
-        {id: "", type: 'Tag', title: '助情助兴', name: "最近有点烦", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-04.png'},
-        {id: "", type: 'Tag', title: '夫妻情侣', name: "高潮迭起", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-05.png'},
-        {id: "", type: 'Tag', title: '套套润滑', name: "日常战备", image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/3/fenlei-06.png'}
-      ]
+      @categories = HomeContent.categories
       @sections = [
-        {
-          name: "热销区",
-          objects: [
-            {id: "", type: 'Tag', title: '热销专区', image: 'http://blsm-public.oss.aliyuncs.com/images/20140509/home/2/huodong-1.png'},
-            {id: "88d14edc0b6532f37c19f822496f4f64", type: 'Product', title: '助勃神器', image: 'http://image.yepcolor.com/images/20140610/2-01.png'},
-            {id: "25ac52b0efdafca460d8f5aa7231f1a5", type: 'Product', title: '精油润滑', image: 'http://image.yepcolor.com/images/20140610/2-02.png'},
-            {id: "63652aaa582b2f6bdccb27bd968e28bc", type: 'Product', title: '名器02品格', image: 'http://image.yepcolor.com/images/20140610/2-03.png'},
-            {id: "bebb1231b375ed7cb9cb5147804aa102", type: 'Product', title: '双震蝴蝶', image: 'http://image.yepcolor.com/images/20140610/2-04.png'},
-            {id: "259a1d6fd7c15d070b0cdfff052baee1", type: 'Product', title: '后庭拉珠', image: 'http://image.yepcolor.com/images/20140610/2-05.png'}
-          ]
-        },
-        {
-          name: "精品汇",
-          objects: [
-            {id: "ef7c1cd19f87017abf7f39b9c92c545c", type: 'Article', title: '', image: 'http://blsm-public.oss.aliyuncs.com/images/20140530/huodong-2.png'},
-            {id: "ec46e4d35f6ccdf7994777f85cb928d6", type: 'Product', title: '延时喷剂', image: 'http://image.yepcolor.com/images/20140610/2-06.png'},
-            {id: "710463cb63bb4353d581cc2c69e4692a", type: 'Product', title: '可爱小萝莉', image: 'http://image.yepcolor.com/images/20140610/2-07.png'},
-            {id: "167db349d4b629d674cee3335362fd79", type: 'Product', title: '双穴飞机杯', image: 'http://image.yepcolor.com/images/20140610/2-08.png'},
-            {id: "48927f91cb5ae2feb2f3d4fe49fd9b4e", type: 'Product', title: '珍珠套环', image: 'http://image.yepcolor.com/images/20140610/2-09.png'},
-            {id: "7ab47ac9f2256030ff52f17f25f23fe8", type: 'Product', title: '露露名器', image: 'http://image.yepcolor.com/images/20140610/2-10.png'}
-          ]
-        },
-        {
-          name: "新婚初夜装",
-          objects: [
-            {id: "", type: 'Tag', title: '新婚初夜装', image: 'http://image.yepcolor.com/images/20140610/huodong-3.png'},
-            {id: "723f8033092b3252751675f3929a42fc", type: 'Product', title: '丝质连身袜', image: 'http://image.yepcolor.com/images/20140610/2-11.png'},
-            {id: "5d8bb66b7bbe8854f432c90e38d777df", type: 'Product', title: '深V睡裙', image: 'http://image.yepcolor.com/images/20140610/2-12.png'},
-            {id: "e621ba44ac2090174c03428d6ca8cf75", type: 'Product', title: '网眼性感短裙', image: 'http://image.yepcolor.com/images/20140610/2-13.png'},
-            {id: "fd81557b2890c0da84386a60185b6750", type: 'Product', title: '包臀彩裙', image: 'http://image.yepcolor.com/images/20140610/2-14.png'},
-            {id: "f4c00fc8db0da67cf0e1f93ac4c81462", type: 'Product', title: '粉嫩套装', image: 'http://image.yepcolor.com/images/20140609/2-15.png'}
-          ]
-        }
+        HomeContent.sections(1),
+        HomeContent.sections(2),
+        HomeContent.sections(3)
       ]
-      @brands = [
-        {id: nil, type: 'Tag', title: '杜蕾斯', image: "http://blsm-public.oss.aliyuncs.com/images/20140509/home/4/pingpai-01.png"},
-        {id: nil, type: 'Tag', title: '诺兰', image: "http://blsm-public.oss.aliyuncs.com/images/20140509/home/4/pingpai-02.png"},
-        {id: nil, type: 'Tag', title: '名流', image: "http://blsm-public.oss.aliyuncs.com/images/20140509/home/4/pingpai-03.png"},
-        {id: nil, type: 'Tag', title: '尚牌', image: "http://blsm-public.oss.aliyuncs.com/images/20140509/home/4/pingpai-04.png"}
-      ]
+      @brands = HomeContent.brands
     end
 
 
