@@ -1,35 +1,15 @@
-class HomeContent < ActiveRecord::Base
+class Homepage < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
-  include CarrierWave
   # relationships .............................................................
-  belongs_to :homepage, foreign_key: :page_id
+  has_many :contents, class_name: "HomeContent", foreign_key: :page_id
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
-  default_scope { order("position") }
-  scope :submenus, -> { where(block: 0).limit(3) }
-  scope :sections, ->(num) { where(block: num) }
-  scope :categories, -> { where(block: 4)}
-  scope :brands, -> { where(block: 5)}
+  default_scope { where(activity: true) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
-  alias_attribute :type, :typename
   # class methods .............................................................
   # public instance methods ...................................................
-  def id
-    case typename
-    when "Product"
-      EncryptedId.encrypt(Product.encrypted_id_key, self[:id])
-    when "Article"
-      EncryptedId.encrypt(Article.encrypted_id_key, self[:id])
-    else
-      nil
-    end
-  end
-
-  def image
-    store_host + "/images/homepages/#{page_id}/#{self[:image]}" if self[:image]
-  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
