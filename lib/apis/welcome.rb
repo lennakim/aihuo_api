@@ -46,7 +46,7 @@ class Welcome < Grape::API
         end
       # @tags = Tag.where(id: Tag::CATEGORIES)
       if params[:ref] && params[:ref] == "360"
-        @submenus = page_for_360.contents
+        @submenus = page_for_360.contents.submenus
       else
         @submenus = page_for_authority.contents.submenus
       end
