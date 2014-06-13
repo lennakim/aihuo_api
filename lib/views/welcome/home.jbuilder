@@ -11,19 +11,13 @@ json.banners @banners do |article|
   end
 end
 
-json.submenus @submenus
+json.submenus @submenus, :id, :type, :title, :name, :image
 
 json.sections @sections do |section|
-  json.name section[:name]
-  json.objects section[:objects]
+  json.name section[0].name
+  json.objects section[1..6], :id, :type, :title, :image
 end
 
-# json.categories @categories do |tag|
-#   json.id tag.id
-#   json.name tag.name
-#   json.image tag.carrierwave_image(:thumb, :url) if tag.image
-# end
+json.categories @categories, :id, :type, :title, :name, :image
 
-json.categories @categories
-
-json.brands @brands
+json.brands @brands, :id, :type, :title, :image

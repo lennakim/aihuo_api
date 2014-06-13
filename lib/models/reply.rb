@@ -7,6 +7,7 @@ class Reply < ActiveRecord::Base
   # relationships .............................................................
   belongs_to :replyable, polymorphic: true
   belongs_to :topic, foreign_key: 'replyable_id', counter_cache: true, touch: true
+  belongs_to :content, foreign_key: 'replyable_id', counter_cache: true, touch: true
   belongs_to :member
   has_many :replies, as: :replyable
   delegate :node, to: :topic, allow_nil: true
@@ -39,7 +40,14 @@ class Reply < ActiveRecord::Base
   end
 
   def topic_id
-    replyable_type == "Topic" ? self[:topic_id] : replyable.topic_id
+    case replyable_type
+    when "Topic"
+      self[:topic_id]
+    when "Reply"
+      replyable.topic_id
+    else # means 'Content' and so on...
+      nil
+    end
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
