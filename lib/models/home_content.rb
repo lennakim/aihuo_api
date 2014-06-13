@@ -19,9 +19,9 @@ class HomeContent < ActiveRecord::Base
   def id
     case typename
     when "Product"
-      EncryptedId.encrypt(Product.encrypted_id_key, self[:id])
+      EncryptedId.encrypt(Product.encrypted_id_key, self[:typeid])
     when "Article"
-      EncryptedId.encrypt(Article.encrypted_id_key, self[:id])
+      EncryptedId.encrypt(Article.encrypted_id_key, self[:typeid])
     else
       nil
     end
