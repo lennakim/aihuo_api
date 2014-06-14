@@ -19,51 +19,49 @@ class Welcome < Grape::API
   end
   get :home, jbuilder: 'welcome/home' do
     current_application
-    page_for_360 = Homepage.find_by(label: "首趣啪啪360")
-    page_for_authority = Homepage.find_by(label: "首趣啪啪官方")
-    page_for_skin = Homepage.find_by(label: "首趣啪啪皮肤")
+    cacke_key = [:v2, :home, params[:register_date], params[:filter], params[:ref]]
+    cache(key: cacke_key, expires_in: 2.hours) do
+      page_for_360 = Homepage.find_by(label: "首趣啪啪360")
+      page_for_authority = Homepage.find_by(label: "首趣啪啪官方")
+      page_for_skin = Homepage.find_by(label: "首趣啪啪皮肤")
 
-    case params[:filter]
-    when :healthy
-      @banners = Article.healthy.limit(2)
-      @submenus = page_for_skin.contents.submenus
-      @categories = []
-      @sections = [
-        page_for_skin.contents.sections(1),
-        page_for_skin.contents.sections(2),
-        page_for_skin.contents.sections(3),
-      ]
-      @brands = []
-    when :all
-      @banners =
-        if hide_gift_products?
-          # FIXME:
-          # @application.articles.banner_without_gifts not works, don't know why
-          # Article.banner_without_gifts.where(application_id: @application.id)
-          @application.articles.banner.without_gifts
+      case params[:filter]
+      when :healthy
+        @banners = Article.healthy.limit(2)
+        @submenus = page_for_skin.contents.submenus
+        @categories = []
+        @sections = [
+          page_for_skin.contents.sections(1),
+          page_for_skin.contents.sections(2),
+          page_for_skin.contents.sections(3),
+        ]
+        @brands = []
+      when :all
+        @banners =
+          if hide_gift_products?
+            # FIXME:
+            # @application.articles.banner_without_gifts not works, don't know why
+            # Article.banner_without_gifts.where(application_id: @application.id)
+            @application.articles.banner.without_gifts
+          else
+            @application.articles.banner
+          end
+        # @tags = Tag.where(id: Tag::CATEGORIES)
+        if params[:ref] && params[:ref] == "360"
+          # @submenus = page_for_360.contents.submenus
+          @submenus = page_for_authority.contents.submenus
         else
-          @application.articles.banner
+          @submenus = page_for_authority.contents.submenus
         end
-      # @tags = Tag.where(id: Tag::CATEGORIES)
-      if params[:ref] && params[:ref] == "360"
-        @submenus = page_for_360.contents.submenus
-      else
-        @submenus = page_for_authority.contents.submenus
+        @categories = page_for_authority.contents.categories
+        @sections = [
+          page_for_authority.contents.sections(1),
+          page_for_authority.contents.sections(2),
+          page_for_authority.contents.sections(3),
+        ]
+        @brands = page_for_authority.contents.brands
       end
-      @categories = page_for_authority.contents.categories
-      @sections = [
-        page_for_authority.contents.sections(1),
-        page_for_authority.contents.sections(2),
-        page_for_authority.contents.sections(3),
-      ]
-      @brands = page_for_authority.contents.brands
     end
-
-
-    # cache(key: [:v2, :home, @banners.last], expires_in: 2.days) do
-    #   @banners
-    #   @tags
-    # end
   end
 
   get :notifications, jbuilder: 'welcome/notification' do
