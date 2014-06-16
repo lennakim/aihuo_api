@@ -9,6 +9,20 @@ class Welcome < Grape::API
     def hide_gift_products?
       date_param.blank? || date_param < 2.days.ago(Date.today)
     end
+
+    def hours_now
+      Time.now.strftime("%H").to_i
+    end
+
+    def profile_number
+      if 14 < hours_now && hours_now < 20
+        "1"
+      elsif 20 < hours_now && hours_now < 2
+        "2"
+      else
+        "0"
+      end
+    end
   end
 
   params do
@@ -19,11 +33,21 @@ class Welcome < Grape::API
   end
   get :home, jbuilder: 'welcome/home' do
     current_application
-    cacke_key = [:v2, :home, params[:register_date], params[:filter], params[:ref]]
+
+    cacke_key = [
+      :v2,
+      :home,
+      params[:register_date],
+      params[:filter],
+      params[:ref],
+      profile_number
+    ]
+
     cache(key: cacke_key, expires_in: 2.hours) do
-      page_for_360 = Homepage.find_by(label: "首趣啪啪360")
-      page_for_authority = Homepage.find_by(label: "首趣啪啪官方")
-      page_for_skin = Homepage.find_by(label: "首趣啪啪皮肤")
+
+      page_for_360 = Homepage.by_hour(profile_number).find_by(label: "首趣啪啪360")
+      page_for_authority = Homepage.by_hour(profile_number).find_by(label: "首趣啪啪官方")
+      page_for_skin = Homepage.by_hour(profile_number).find_by(label: "首趣啪啪皮肤")
 
       case params[:filter]
       when :healthy
@@ -46,10 +70,8 @@ class Welcome < Grape::API
           else
             @application.articles.banner
           end
-        # @tags = Tag.where(id: Tag::CATEGORIES)
         if params[:ref] && params[:ref] == "360"
-          # @submenus = page_for_360.contents.submenus
-          @submenus = page_for_authority.contents.submenus
+          @submenus = page_for_360.contents.submenus
         else
           @submenus = page_for_authority.contents.submenus
         end
