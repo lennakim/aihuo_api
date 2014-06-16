@@ -10,9 +10,9 @@ class Contents < Grape::API
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'contents/contents' do
-      # cache(key: [:v2, :contents, params[:page], params[:per_page]], expires_in: 4.hours) do
+      cache(key: [:v2, :contents, params[:page], params[:per_page]], expires_in: 6.hours) do
         @contents = paginate(Content)
-      # end
+      end
     end
 
 
@@ -28,9 +28,9 @@ class Contents < Grape::API
 
       desc "Return a content."
       get "/", jbuilder: 'contents/content'  do
-        # cache(key: [:v2, :content, @content], expires_in: 1.days) do
+        cache(key: [:v2, :content, @content], expires_in: 1.hours) do
           @content
-        # end
+        end
       end
 
       desc "Like a content."
@@ -91,10 +91,7 @@ class Contents < Grape::API
           end
         end
       end
-
-
     end
-
 
   end
 end
