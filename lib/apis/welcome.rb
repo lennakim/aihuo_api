@@ -81,9 +81,9 @@ class Welcome < Grape::API
       {id: 2, title: 'HOT男人', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense02.jpg', url: "http://blsm-public.oss.aliyuncs.com/downloads/110130565_v2.6.1.apk", apk_sign: "com.yoka.hotman"}
     ]
     @tactics = [
-      {id: 1, type: 3, value: "from_commu_to_topicdetail"},
-      {id: 2, type: 2, value: "23:00"},
-      {id: 3, type: 1, value: "20"},
+      {id: 1, action: "open_activity", value: "from_commu_to_topicdetail", unit: 'activity'},
+      {id: 2, action: "time_triggered", value: "23:00", unit: 'time'},
+      {id: 3, action: "open_app", value: "20", unit: 'second'},
     ]
   end
 
