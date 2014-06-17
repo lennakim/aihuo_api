@@ -27,7 +27,7 @@ ENV["RACK_ENV"] = 'production'
 daemonize true
 
 workers 4
-threads 32, 768
+threads 32, 512
 
 wd = File.expand_path('../../', __FILE__)
 tmp_path = File.join(wd, 'tmp')
@@ -56,7 +56,7 @@ on_worker_boot do
   ActiveSupport.on_load(:active_record) do
     config = YAML.load(ERB.new(File.read('config/database.yml')).result)[ENV['RACK_ENV']]
     config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
-    config['pool'] = ENV['DB_POOL'] || ENV['MAX_THREADS'] || 64
+    config['pool'] = ENV['DB_POOL'] || ENV['MAX_THREADS'] || 512
     ActiveRecord::Base.establish_connection(config)
   end
 end
