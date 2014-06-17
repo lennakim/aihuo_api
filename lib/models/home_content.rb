@@ -28,7 +28,7 @@ class HomeContent < ActiveRecord::Base
   end
 
   def image
-    store_host + "/images/homepages/#{page_id}/#{self[:image]}" if self[:image]
+    store_host + "/images/homepages/00#{page_id}/#{self[:image]}" if self[:image]
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
