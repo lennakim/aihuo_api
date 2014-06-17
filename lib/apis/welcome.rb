@@ -64,27 +64,19 @@ class Welcome < Grape::API
   end
 
   get :notifications, jbuilder: 'welcome/notification' do
-    @notifications = [
-      {id: 1, title: '免费交友神器', description: "优质单身男女全部真实照片验证", image: 'http://image.yepcolor.com/images/20140606/ic_launcher.png', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense01.jpg', url: "http://image.yepcolor.com/downloads/ssf_v270_lsfc.apk", apk_sign: "cn.shuangshuangfei"},
-      {id: 2, title: 'HOT男人', description: "最养眼美女一键保存", image: 'http://blsm-public.oss.aliyuncs.com/images/20140610/ic_launcher02.png', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense02.jpg', url: "http://blsm-public.oss.aliyuncs.com/downloads/110130565_v2.6.1.apk", apk_sign: "com.yoka.hotman"},
-      # {id: 3, title: '百思不得姐', description: "各种精彩的内涵段子、糗事、秘密话题，应有尽有", image: 'http://blsm-public.oss.aliyuncs.com/images/20140613/adsense03.png', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140613/adsense03big.jpg', url: "http://blsm-public.oss.aliyuncs.com/downloads/budejie_3.8.3-sq.apk", apk_sign: "com.budejie.www"}
-    ]
+    @notifications = Advertisement.all
   end
 
   params do
-    optional :channel, type: String, desc: "Date looks like '20130401'."
+    optional :channel, type: String, desc: "channel name."
   end
   get :adsenses, jbuilder: 'welcome/adsenses' do
     current_application
-    @advertisements = [
-      {id: 1, title: '免费交友神器', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense01.jpg', url: "http://image.yepcolor.com/downloads/ssf_v270_lsfc.apk", apk_sign: "cn.shuangshuangfei"},
-      {id: 2, title: 'HOT男人', banner: 'http://blsm-public.oss.aliyuncs.com/images/20140610/adsense02.jpg', url: "http://blsm-public.oss.aliyuncs.com/downloads/110130565_v2.6.1.apk", apk_sign: "com.yoka.hotman"}
-    ]
-    @tactics = [
-      {id: 1, action: "open_activity", value: "from_commu_to_topicdetail"},
-      {id: 2, action: "time_triggered", value: "23:00"},
-      {id: 3, action: "open_app", value: "20"},
-    ]
+    cache(key: [:adsenses, params[:channel], @application.id], expires_in: 12.hours) do
+      @advertisements = Advertisement.all
+      setting = AdvertisementSetting.by_channel_and_app(params[:channel], @application).first
+      @tactics = setting.tactics
+    end
   end
 
 end
