@@ -75,7 +75,7 @@ class Welcome < Grape::API
     cache(key: [:adsenses, params[:channel], @application.id], expires_in: 12.hours) do
       @advertisements = Advertisement.all
       setting = AdvertisementSetting.by_channel_and_app(params[:channel], @application).first
-      @tactics = setting.tactics
+      @tactics = setting.tactics if setting
     end
   end
 
