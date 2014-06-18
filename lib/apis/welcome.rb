@@ -17,7 +17,7 @@ class Welcome < Grape::API
     def profile_number
       if 14 < hours_now && hours_now < 20
         "1"
-      elsif 20 < hours_now && hours_now < 2
+      elsif 20 <= hours_now && hours_now <= 2
         "2"
       else
         "0"
