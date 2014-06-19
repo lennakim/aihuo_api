@@ -11,7 +11,8 @@ require 'mina/rvm'    # for rvm support. (http://rvm.io)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-# set :domain, '115.29.164.196' # production 1
+set :domain, '115.29.164.196' # production 1
+# set :domain, '115.29.4.146' # production 2
 set :domains, ['115.29.164.196', '115.29.4.146']
 
 set :deploy_to, '/var/www/api.aihuo360.com'
@@ -129,6 +130,17 @@ task :deploy_all do
     domains.each do |domain|
       set :domain, domain
       invoke :deploy
+      run!
+    end
+  end
+end
+
+desc "Restart all servers"
+task :restart_all do
+  isolate do
+    domains.each do |domain|
+      set :domain, domain
+      invoke :restart
       run!
     end
   end

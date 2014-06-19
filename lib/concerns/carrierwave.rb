@@ -20,20 +20,24 @@ module CarrierWave
     "/uploads/#{self.class.to_s.underscore}/#{column.to_s}/#{self.id}/"
   end
 
+  def material_dir
+    "/images/#{created_at.strftime('%Y%m%d')}/"
+  end
+
+  # version nil
+  # path :url, :path
+  def carrierwave_material(version, path)
+    store_host + material_dir + send(path)
+  end
+
   # version :list, :grid, :retain
   # path :url, :path
-  # def store_dir
-  #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  # end
   def carrierwave_image(version, path)
     combination_url(:image, version)
   end
 
   # version :list, :grid, :retain
   # path :url, :path
-  # def store_dir
-  #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  # end
   def carrierwave_background(version, path)
     combination_url(:background, version)
   end
