@@ -10,9 +10,10 @@ class Coupon < ActiveRecord::Base
   scope :by_device, ->(device_id) { where(:to => [device_id, 'ALL']) }
   scope :enabled, -> { where(enabled: true) }
   scope :separate, -> { where(separate: true) }
-  scope :available_for, ->(t) {
-    enabled.where("start_time <= ? AND end_time >= ?", t, t)
+  scope :available, -> {
+    enabled.where("start_time <= ? AND end_time >= ?", Time.now, Time.now)
   }
+  scope :by_sdk_ver, ->(ver) { where(application_ver: ver) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
   def used!
