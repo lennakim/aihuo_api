@@ -42,7 +42,7 @@ class Welcome < Grape::API
       profile_number
     ]
 
-    cache(key: cacke_key, expires_in: 2.hours) do
+    cache(key: cacke_key, expires_in: 5.minutes) do
 
       page_for_360 = Homepage.by_hour(profile_number).find_by(label: "首趣啪啪360")
       page_for_authority = Homepage.by_hour(profile_number).find_by(label: "首趣啪啪官方")
