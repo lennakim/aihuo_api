@@ -25,6 +25,13 @@ class Orders < Grape::API
         error!({error: "unknown host"}, 500)
       end
     end
+
+    def confirm_type
+      original_order_id = @order.id # 记录目前订单ID
+      # HACK: Reset @order to origin order
+      @order = @order.find_original_order # 合并订单后本订单删除，返回原始订单
+      type = original_order_id == @order.id ? :create : :merge # 如果ID不同证明是合并订单
+    end
   end
 
   resources 'orders' do
@@ -63,12 +70,9 @@ class Orders < Grape::API
       if sign_approval?
         @order = Order.newly.build(order_params)
         if @order.save
-          @order.calculate_total_by_coupon(params[:coupon])
-          @order.merge_pending_orders
-          original_order_id = @order.id # 记录目前订单ID
-          @order = @order.find_original_order # 合并订单后本订单删除，返回原始订单
-          type = original_order_id == @order.id ? :create : :merge # 如果ID不同证明是合并订单
-          @order.send_confirm_sms(type)
+          @order.calculate_total_by_coupon(params[:coupon], true, true)
+          @order.merge_pending_orders if @order.need_merge?
+          @order.send_confirm_sms(confirm_type)
           @order
         else
           status 500

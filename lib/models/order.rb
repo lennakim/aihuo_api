@@ -52,6 +52,11 @@ class Order < ActiveRecord::Base
   accepts_nested_attributes_for :line_items
   # class methods .............................................................
   # public instance methods ...................................................
+  # 订单中是否包含0元购的产品
+  def has_gift?
+    gift_items.sum(:quantity) > 1
+  end
+
   def number
     created_at.to_i.to_s + (id * 2 + 19871030).to_s
   end
@@ -77,31 +82,32 @@ class Order < ActiveRecord::Base
 
   # 满就包邮
   def calculate_shipping_charge
-    if pay_type == 0 && item_total >= 149 || pay_type == 1 && item_total >= 199
+    if pay_type == 0 && item_total >= 158 || pay_type == 1 && item_total >= 199
       update_column(:shipping_charge, 0)
     end
   end
 
   # 优惠劵逻辑
-  def calculate_with_coupon(coupon)
+  def calculate_with_coupon(coupon, additional = false)
     if item_total > coupon.additional_condition && can_use_coupon?(coupon)
       case coupon.category
       when 1 # 运费
         new_shipping_charge = shipping_charge - coupon.money
         new_shipping_charge = 0 if new_shipping_charge < 0
         update_attribute(:shipping_charge, new_shipping_charge)
-      when 8 # 总价减免
+      when 8 # 总价折扣
         update_attribute(:item_total, item_total * coupon.money)
-      when 9 # 总价减折扣
+      when 9 # 总价减免
         update_attribute(:item_total, item_total - coupon.money)
       end
       coupon.used!
-      coupons << coupon
+      # 优惠劵被使用过后，加入关联表作为记录
+      coupons << coupon if additional
     end
   end
 
   # validate 参数用来标示，优惠劵是否需要验证在有效期内
-  def calculate_total_by_coupon(coupon_id, validate = true)
+  def calculate_total_by_coupon(coupon_id, validate = true, additional = false)
     return if coupon_id.blank?
 
     # 有效的优惠劵不包含本卷，说明如果优惠劵已经作废
@@ -111,12 +117,12 @@ class Order < ActiveRecord::Base
     # FIXME: 如果 id 是虚构的，则会造成程序出错
     # 优惠劵ID是错误的
     return if coupon.blank?
-    calculate_with_coupon(coupon)
+    calculate_with_coupon(coupon, additional)
   end
 
   # 利用优惠劵重新计算订单的产品价格和运费
-  def calculate_total_by_coupons(coupon_ids)
-    coupon_ids.each { |coupon_id| calculate_total_by_coupon(coupon_id, false) }
+  def calculate_total_by_coupons(coupon_ids, additional = false)
+    coupon_ids.each { |coupon_id| calculate_total_by_coupon(coupon_id, true, additional) }
   end
 
   def payments_total
@@ -181,11 +187,11 @@ class Order < ActiveRecord::Base
   def message
     case pay_type
     when 0
-      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。" if gift_items.sum(:quantity) > 1
+      "0元购商品只能包含一件哦，稍候客服会协助您修改订单。" if has_gift?
     when 1
       if item_total == 0
         "您的订单中产品总价是0元，请再挑选一件商品以便我们尽快安排发货。"
-      elsif gift_items.sum(:quantity) > 1
+      elsif has_gift?
         "0元购商品只能包含一件哦，稍候客服会协助您修改订单。"
       end
     end

@@ -4,15 +4,15 @@ module MergePendingOrder
   included do
   end
 
-  # 找到创建时间最早的 pending 订单, 当做原始订单
+  # 找到创建时间最早的 pending 订单且支付方式相同的, 当做原始订单
   def find_original_order
-    Order.newly.where(device_id: device_id, application_id: application_id)
+    Order.newly.where(device_id: device_id, application_id: application_id, pay_type: pay_type)
       .reorder("id ASC").first
   end
 
-  # 找到除本身之外的其他 pending 订单
+  # 找到除本身之外且支付方式相同的其他 pending 订单
   def find_pending_orders
-    Order.newly.where(device_id: device_id, application_id: application_id)
+    Order.newly.where(device_id: device_id, application_id: application_id, pay_type: pay_type)
       .where.not(id: id)
   end
 
@@ -36,7 +36,9 @@ module MergePendingOrder
   def merge_line_items(orders)
     orders.each do |order|
       order.line_items.each { |item| self.line_items << item }
-      order.coupons.each { |coupon| self.coupons << coupon }
+      # FIX ME:
+      # 折扣优惠劵有BUG, 这一版本不能累加
+      # order.coupons.each { |coupon| self.coupons << coupon }
     end
   end
 
@@ -44,16 +46,41 @@ module MergePendingOrder
   def merge_pending_orders
     original_order = find_original_order
     pending_orders = original_order.find_pending_orders
-
-    return if pending_orders && pending_orders.size.zero?
+    # 合并订单产品
     original_order.merge_line_items(pending_orders)
     original_order.calculate_payment_total_with_pending_orders(pending_orders)
     original_order.calculate_item_total
-
+    # FIX ME: 如果两张订单都用优惠劵的话计算错误
+    # 优惠劵
     coupon_ids = original_order.coupons.collect(&:to_param)
-    original_order.calculate_total_by_coupons(coupon_ids)
-
+    original_order.calculate_total_by_coupons(coupon_ids, false)
     pending_orders.destroy_all
+  end
+
+  # 1. create order
+  # 2. order item total == 0
+  # -- 流程A
+  #   1. order pay type <> origin order pay type => create order
+  #   2. order pay type == origin order pay type
+  #     1. origin order confim by servicer => merge order
+  #     2. origin order NOT confim by servicer => create order # 这个是不存在的逻辑
+  # 3. order item total != 0
+  #   1. origin order include gift => create order
+  #   2. origin order exclude gift
+  #   -- 流程同A
+  #     1. order pay type <> origin order pay type => create order
+  #     2. order pay type == origin order pay type
+  #       1. origin order confim by servicer => merge order
+  #       2. origin order NOT confim by servicer => create order # 这个是不存在的逻辑
+  def need_merge?
+    original_order = find_original_order
+    pending_orders = original_order.find_pending_orders
+
+    return false if pending_orders && pending_orders.size.zero?
+    # 本订单只含0元购，其他订单包含0元购，两个订单不合并，创建新订单
+    return false if item_total != 0 && original_order.has_gift?
+    return false if pay_type != original_order.pay_type
+    true
   end
 
   module ClassMethods
