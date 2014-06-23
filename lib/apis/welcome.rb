@@ -94,10 +94,10 @@ class Welcome < Grape::API
   end
   get :adsenses, jbuilder: 'welcome/adsenses' do
     current_application
-    cache(key: [:adsenses, params[:channel], @application.id], expires_in: 12.hours) do
+    cache(key: [:adsenses, params[:channel], @application.id], expires_in: 1.hours) do
       @advertisements = Advertisement.all
       setting = AdvertisementSetting.by_channel_and_app(params[:channel], @application).first
-      @tactics = setting.tactics if setting
+      @tactics = setting ? setting.tactics : Tactic.all
     end
   end
 
