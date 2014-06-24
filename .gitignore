@@ -17,7 +17,6 @@
 database.yml
 log
 .rvmrc
-routes.rb
 tags
 .keep
 newrelic.yml
