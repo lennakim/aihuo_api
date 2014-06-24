@@ -51,7 +51,9 @@ class Products < Grape::API
         Date.today,
         params[:match],
         params[:min_price],
-        params[:max_price]
+        params[:max_price],
+        params[:page],
+        params[:per_page]
       ]
       cache(key: cacke_key, expires_in: 4.hours) do
         @products =

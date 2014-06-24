@@ -88,9 +88,9 @@ end
 
 desc 'Starts the application'
 task :start => :environment do
-  # queue "cd #{app_path} ; bundle exec puma -C config/puma.rb -e production -d"
+  queue "cd #{app_path} ; bundle exec puma -C config/puma.rb -e production -d"
   # queue "cd #{app_path} ; bundle exec puma"
-  queue "cd #{app_path} ; bundle exec pumactl -F config/puma.rb start"
+  # queue "cd #{app_path} ; bundle exec pumactl -F config/puma.rb start"
 end
 
 desc 'Stop the application'
