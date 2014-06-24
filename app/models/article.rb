@@ -1,7 +1,7 @@
 class Article < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
-  # acts_as_taggable_on :tags
+  acts_as_taggable_on :tags
   # includes ..................................................................
   include EncryptedId
   include CarrierWave
