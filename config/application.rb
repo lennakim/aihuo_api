@@ -1,44 +1,33 @@
-# 初始化时加载路径 lib/app lib/api lib/views lib/models lib/concerns
-%w[app apis models views concerns].each do |folder|
-  $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib', folder))
+require File.expand_path('../boot', __FILE__)
+
+# require 'rails/all'
+# Pick the frameworks you want:
+require 'active_record/railtie'
+# require 'action_controller/railtie'
+require 'action_mailer/railtie'
+# require 'sprockets/railtie'
+# require "rails/test_unit/railtie"
+
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
+
+module ShouquApi
+  class Application < Rails::Application
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration should go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded.
+
+    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
+    # config.time_zone = 'Central Time (US & Canada)'
+
+    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    # config.i18n.default_locale = :de
+    config.paths.add File.join('app', 'apis'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'apis', '*')]
+
+    config.cache_store = :file_store, "tmp/cache"
+  end
 end
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-
-# 初始化时加载 boot, require Gemfile 里面的 gem
-require 'boot'
-
-# 设定 Server 运行在什么环境下
-# bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT
-# http://www.modrails.com/documentation/Users%20guide%20Nginx.html#RackEnv
-Bundler.require :default, ENV['RACK_ENV']
-
-# 建立数据库连接
-environment = ENV['RACK_ENV']
-dbconfig = YAML.load(ERB.new(File.read('config/database.yml')).result)[environment]
-ActiveRecord::Base.establish_connection(dbconfig)
-# ActiveRecord::Base.logger = Logger.new(STDERR)
-ActiveRecord::Base.logger = Logger.new('log/database.log')
-ActiveSupport::LogSubscriber.colorize_logging = false
-if environment == 'production'
-  ActiveRecord::Base.logger.level = Logger::INFO
-end
-
-# 初始化时加载所有 initializers 文件夹内的文件
-Dir[File.expand_path('../initializers/*.rb', __FILE__)].each { |f| require f }
-
-# 初始化时加载所有 lib 文件夹内的文件
-Dir[File.expand_path('../../lib/concerns/*.rb', __FILE__)].each { |f| require f }
-Dir[File.expand_path('../../lib/apis/*.rb', __FILE__)].each { |f| require f }
-Dir[File.expand_path('../../lib/models/*.rb', __FILE__)].each { |f| require f }
-
-Grape::ShamanCache.configure do |config|
-  config.cache = ActiveSupport::Cache::FileStore.new("tmp/cache")
-end
-
-# [deprecated] I18n.enforce_available_locales will default to true in the future.
-# If you really want to skip validation of your locale you can set I18n.
-# enforce_available_locales = false to avoid this message.
-I18n.enforce_available_locales = false
-
-require "api"
-require "app"

@@ -1,38 +1,16 @@
-require 'rubygems'
-require 'bundler'
+# Add your own tasks in files placed in lib/tasks ending in .rake,
+# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
-end
+require File.expand_path('../config/application', __FILE__)
 
-# add command 'rake routes'
-require 'rake'
-
-task :environment do
-  ENV["RACK_ENV"] ||= 'development'
-  require File.expand_path("../config/environment", __FILE__)
-end
-
-task :routes => :environment do
-  ShouQuShop::API.routes.each do |route|
+desc "API Routes"
+task :routes do
+  puts "method     path"
+  ::API.routes.each do |route|
     method = route.route_method.ljust(10)
     path = route.route_path
     puts "#{method} #{path}"
   end
 end
 
-# add command 'rake test'
-require 'rake/testtask'
-
-Rake::TestTask.new do |t|
-  t.pattern = "test/**/*_test.rb"
-  # t.libs << "lib"
-  t.libs << "test"
-end
-
-# run 'rake' will be run 'rake test'
-task default: :test
+Rails.application.load_tasks
