@@ -44,7 +44,7 @@ state_path File.join(tmp_path, 'sockets', 'puma.state')
 stdout_redirect File.join(log_path, 'puma.out.log'), File.join(log_path, 'puma.err.log'), true
 
 # Bind the server.
-# bind "unix:///var/run/api.aihuo360.com.sock"
+bind "unix:///var/run/api.aihuo360.com.sock"
 
 preload_app! #utilizing copy-on-write
 activate_control_app
