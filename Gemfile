@@ -1,56 +1,31 @@
 source 'https://rubygems.org'
-# source 'http://ruby.taobao.org/'
 
-# An opinionated micro-framework for creating REST-like APIs in Ruby.
-# https://github.com/intridea/grape
-gem 'grape', "0.7.0"
-gem "rack", "~> 1.5.0"
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '4.1.2.rc2'
+gem 'grape', '0.7.0'
 gem 'mysql2'
-gem 'activerecord', '4.0.2'
-
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'grape-jbuilder'
-# gem 'kaminari', :require => 'kaminari/grape'
-gem 'grape-kaminari'
+gem 'jbuilder', '~> 2.0'
+
 gem 'grape-shaman_cache', '0.3.0'
+gem 'grape-jbuilder'
+gem 'grape-kaminari'
+gem 'acts-as-taggable-on'
 gem 'newrelic-grape', :git => 'https://github.com/flyerhzm/newrelic-grape.git'
-gem 'acts-as-taggable-on', :git => 'https://github.com/wjp2013/acts-as-taggable-on.git', :branch => '2-4-stable'
-# https://github.com/pencil/encrypted_id
-gem 'encrypted_id'
 # https://github.com/collectiveidea/awesome_nested_set
 gem 'awesome_nested_set', '~> 3.0.0.rc.1'
-
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-#supports CORS
-gem 'rack-cors'
-
-# https://github.com/sickill/racksh
-gem "racksh"
 
 group :development do
+  gem 'spring'
   # Use mina for deployment
   # https://github.com/nadarei/mina
   gem 'mina'
   # A robust Ruby code analyzer, based on the community Ruby style guide.
   # https://github.com/bbatsov/rubocop
   gem 'rubocop', '~> 0.18.1'
-  gem "rake"
-  # reloading rack development server / forking version of rackup
-  # Start your app by running 'shotgun'
-  gem 'shotgun'
-end
-
-group :test do
-  gem 'minitest', require: false
-  gem 'rack-test', require: 'rack/test'
 end
 
 group :development, :test do
@@ -59,6 +34,5 @@ group :development, :test do
 end
 
 group :production do
-  # Ruby Web Server
   gem 'puma'
 end

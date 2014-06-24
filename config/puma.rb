@@ -10,7 +10,6 @@ require 'puma'
 # The default is “development”.
 #
 environment = 'production'
-ENV["RACK_ENV"] = 'production'
 
 # ENV["BUNDLER_GEMFILE"] = "/var/www/api.aihuo360.com/Gemfile"
 # ENV["BUNDLE_GEMFILE"] = "/var/www/api.aihuo360.com/Gemfile"
@@ -45,21 +44,20 @@ state_path File.join(tmp_path, 'sockets', 'puma.state')
 stdout_redirect File.join(log_path, 'puma.out.log'), File.join(log_path, 'puma.err.log'), true
 
 # Bind the server.
-bind "unix:///var/run/api.aihuo360.com.sock"
+# bind "unix:///var/run/api.aihuo360.com.sock"
+
+preload_app! #utilizing copy-on-write
+activate_control_app
 
 # Thread safety
 # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server
 # https://devcenter.heroku.com/articles/concurrency-and-database-connections#connection-pool
 on_worker_boot do
-  ActiveRecord::Base.connection_pool.disconnect!
-
+  # worker specific setup
   ActiveSupport.on_load(:active_record) do
-    config = YAML.load(ERB.new(File.read('config/database.yml')).result)[ENV['RACK_ENV']]
-    config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
-    config['pool'] = ENV['DB_POOL'] || ENV['MAX_THREADS'] || 256
+    config = ActiveRecord::Base.configurations[Rails.env] ||
+                Rails.application.config.database_configuration[Rails.env]
+    config['pool'] = ENV['MAX_THREADS'] || 256
     ActiveRecord::Base.establish_connection(config)
   end
 end
-
-preload_app! #utilizing copy-on-write
-activate_control_app
