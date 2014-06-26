@@ -54,7 +54,7 @@ class Order < ActiveRecord::Base
   # public instance methods ...................................................
   # 订单中是否包含0元购的产品
   def has_gift?
-    gift_items.sum(:quantity) > 1
+    gift_items.sum(:quantity) > 0
   end
 
   def number

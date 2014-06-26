@@ -6,8 +6,12 @@ module MergePendingOrder
 
   # 找到创建时间最早的 pending 订单且支付方式相同的, 当做原始订单
   def find_original_order
-    Order.newly.where(device_id: device_id, application_id: application_id, pay_type: pay_type)
-      .reorder("id ASC").first
+    Order.newly
+      .where(
+        device_id: device_id,
+        application_id: application_id,
+        pay_type: pay_type
+      ).reorder("id ASC").first
   end
 
   # 找到除本身之外且支付方式相同的其他 pending 订单
@@ -59,26 +63,27 @@ module MergePendingOrder
 
   # 1. create order
   # 2. order item total == 0
-  # -- 流程A
-  #   1. order pay type <> origin order pay type => create order
-  #   2. order pay type == origin order pay type
-  #     1. origin order confim by servicer => merge order
-  #     2. origin order NOT confim by servicer => create order # 这个是不存在的逻辑
-  # 3. order item total != 0
   #   1. origin order include gift => create order
   #   2. origin order exclude gift
-  #   -- 流程同A
-  #     1. order pay type <> origin order pay type => create order
-  #     2. order pay type == origin order pay type
-  #       1. origin order confim by servicer => merge order
-  #       2. origin order NOT confim by servicer => create order # 这个是不存在的逻辑
+  #   -- A
+  #     1. order pay type == origin pay type
+  #       1. origin order confim by servicer => create order
+  #       2. origin order NOT confim by servicer => merge order
+  #     2. order pay type != origin pay type => crete order
+  # 3. order item total != 0
+  #   -- A
+  #     1. order pay type == origin pay type
+  #       1. origin order confim by servicer => create order
+  #       2. origin order NOT confim by servicer => merge order
+  #     2. order pay type != origin pay type => crete order
   def need_merge?
     original_order = find_original_order
     pending_orders = original_order.find_pending_orders
-
+    # 没有等待合并的订单
     return false if pending_orders && pending_orders.size.zero?
     # 本订单只含0元购，其他订单包含0元购，两个订单不合并，创建新订单
-    return false if item_total != 0 && original_order.has_gift?
+    return false if item_total == 0 && original_order.has_gift?
+    # 支付方式不同则不合并
     return false if pay_type != original_order.pay_type
     true
   end
