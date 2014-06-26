@@ -76,17 +76,17 @@ class ShortMessage < ActiveRecord::Base
     case order.pay_type
     when 0
       if order.payment_total != 0
-        "您的物品加运费共#{order.total}元，您已经支付成功#{order.payment_total}元。正在为您安排发货，保密包装。"
+        "您的物品加运费共#{order.total}元，您已经支付成功#{order.payment_total}元。正在为您安排发货，保密包装。【首趣商城】"
       end
     when 1
       order.short_messages.make_as_sended if type == :update
       prepend_text = type == :merge ? "订单已合并，" : ""
       if order.shipping_address.blank? && order.name.blank?
-        "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道)和姓名立刻发货。【订单确认】"
+        "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道)和姓名立刻发货。【首趣商城】"
       elsif order.shipping_address.blank?
-        "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道)立刻发货。【订单确认】"
+        "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道)立刻发货。【首趣商城】"
       else
-        "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复数字1立刻发货，2-4天送达。有疑问请联系:4007065868【订单确认】"
+        "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复数字1立刻发货，2-4天送达。有疑问请联系:4007065868【首趣商城】"
       end
     end
   end
