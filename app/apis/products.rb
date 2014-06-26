@@ -55,13 +55,13 @@ class Products < Grape::API
         params[:page],
         params[:per_page]
       ]
-      # cache(key: cacke_key, expires_in: 4.hours) do
+      cache(key: cacke_key, expires_in: 4.hours) do
         @products =
           paginate(
             Product.search(query_params, date_param, Date.today, params[:match])
               .price_between(params[:min_price], params[:max_price])
           )
-      # end
+      end
     end
 
     params do

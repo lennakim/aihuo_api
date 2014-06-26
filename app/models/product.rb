@@ -16,7 +16,7 @@ class Product < ActiveRecord::Base
   default_scope { order("products.out_of_stock, products.rank DESC") }
 
   scope :gifts, -> {
-    joins(:product_props).where(product_props: { sale_price: 0 })
+    select("products.id AS id").joins(:product_props).where(product_props: { sale_price: 0 })
       .group('products.id')
   }
 
@@ -46,6 +46,9 @@ class Product < ActiveRecord::Base
       when NilClass # keyword is nil, return all the products
         self
       end
+    # 只显示打了 tag 的产品
+    tagging_ids = self.with_tagging.pluck(:id)
+    products = products.where(id: tagging_ids)
     # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购
     if date.blank? || date && today && date < 2.days.ago(today)
       gifts_ids = self.gifts.pluck(:id)
@@ -63,6 +66,13 @@ class Product < ActiveRecord::Base
       joins(:product_props).where(product_props: { sale_price: min...max })
     end
   }
+
+  scope :with_tagging, -> {
+    select("taggings.taggable_id AS id")
+      .joins(:taggings).where(taggings: { taggable_type: 'Product'})
+      .group('taggings.taggable_id')
+  }
+
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'XRbLEgrUCLHh94qG'
   # class methods .............................................................
