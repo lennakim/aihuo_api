@@ -34,7 +34,8 @@ class Topic < ActiveRecord::Base
   # User is a device id.
   def destroy_by(user)
     if user == device_id
-      update_attributes({ device_id: nil, nickname: "匿名" }) # 帖主本人删除
+      # 帖主本人删除, member id 123510 named "匿名"
+      update_attributes({ device_id: nil, nickname: "匿名", member_id: nil })
     else
       update_attribute(:deleted_by, user) # 管理员删除
       destroy
@@ -45,6 +46,7 @@ class Topic < ActiveRecord::Base
     member = Member.find(member_id) if member_id
     self.member = member if member && member.authenticate?(password)
   end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
   private

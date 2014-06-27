@@ -31,12 +31,13 @@ class Topics < Grape::API
     route_param :id do
 
       before do
-        @topic = Topic.find(params[:id])
+        @topic = Topic.find(params[:id]) rescue nil
       end
 
       desc "Return a topic."
       get "/", jbuilder: 'topics/topic'  do
-        cache(key: [:v2, :topic, @topic], expires_in: 2.days) do
+        cache(key: [:v2, :topic, params[:id]], expires_in: 2.days) do
+          error!('帖子已经被帖主删除', 404) unless @topic
           @topic
         end
       end
