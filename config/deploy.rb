@@ -19,6 +19,7 @@ set :deploy_to, '/var/www/api.aihuo360.com'
 set :repository, 'git@bitbucket.org:Xiaopuzhu/adultshop_new.git'
 set :branch, 'master'
 # set :branch, 'develop'
+set :keep_releases, 20
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
@@ -73,6 +74,7 @@ task :deploy => :environment do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
     invoke :'git:clone'
+    invoke :'deploy:cleanup'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     # invoke :'bundle:install --binstubs'
