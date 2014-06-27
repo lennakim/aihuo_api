@@ -6,12 +6,21 @@ class Contents < Grape::API
 
     desc "Listing contents."
     params do
+      optional :filter, type: Symbol, values: [:healthy, :all], default: :all, desc: "Filtering for blacklist."
       optional :page, type: Integer, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'contents/contents' do
-      cache(key: [:v2, :contents, params[:page], params[:per_page]], expires_in: 5.minutes) do
-        @contents = paginate(Content)
+      cache_key =
+        [:v2, :contents, params[:filter], params[:page], params[:per_page]]
+      cache(key: cache_key, expires_in: 5.minutes) do
+        @contents =
+          case params[:filter]
+          when :healthy
+            paginate(Content.healthy)
+          when :all
+            paginate(Content)
+          end
       end
     end
 
