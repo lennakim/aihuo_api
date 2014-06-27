@@ -45,23 +45,11 @@ class Products < Grape::API
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'products/products' do
-      cacke_key = [
-        query_params,
-        date_param,
-        Date.today,
-        params[:match],
-        params[:min_price],
-        params[:max_price],
-        params[:page],
-        params[:per_page]
-      ]
-      cache(key: cacke_key, expires_in: 4.hours) do
-        @products =
-          paginate(
-            Product.search(query_params, date_param, Date.today, params[:match])
-              .price_between(params[:min_price], params[:max_price])
-          )
-      end
+      @products =
+        paginate(
+          Product.search(query_params, date_param, Date.today, params[:match])
+            .price_between(params[:min_price], params[:max_price])
+        )
     end
 
     params do
