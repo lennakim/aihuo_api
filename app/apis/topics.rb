@@ -67,6 +67,24 @@ class Topics < Grape::API
         status 202
       end
 
+      desc "Follow a topic."
+      params do
+        requires :device_id, type: String, desc: "Device ID."
+      end
+      put :follow, jbuilder: 'topics/topic' do
+        Favorite.find_or_create_by(favable: @topic, device_id: params[:device_id])
+        status 202
+      end
+
+      desc 'Unfollow a topic.'
+      params do
+        requires :device_id, type: String, desc: "Device ID."
+      end
+      put :unfollow, jbuilder: 'topics/topic' do
+        Favorite.by_device_id(params[:device_id]).by_favable(@topic).destroy_all
+        status 202
+      end
+
       resources 'replies' do
         desc "Return a listing of replies for a topic."
         params do
