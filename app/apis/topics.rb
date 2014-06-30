@@ -3,7 +3,7 @@ class Topics < Grape::API
 
     desc "Return topics list for all nodes."
     params do
-      optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine], default: :mine, desc: "Filtering topics."
+      optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine, :followed], default: :mine, desc: "Filtering topics."
       requires :device_id, type: String, desc: "Device ID."
       optional :page, type: Integer, default: 1, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
@@ -21,6 +21,8 @@ class Topics < Grape::API
         Topic.approved.lasted
       when :mine
         Topic.with_deleted.by_device(params[:device_id])
+      when :followed
+        Topic.favorites_by_device(params[:device_id])
       end
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end

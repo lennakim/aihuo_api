@@ -10,6 +10,7 @@ class Topic < ActiveRecord::Base
   belongs_to :node, :counter_cache => true
   belongs_to :member
   has_many :replies, -> { order "created_at DESC" }, as: :replyable, :dependent => :destroy
+  has_many :favorites, as: :favable
   # validations ...............................................................
   validates_uniqueness_of :body, :scope => :device_id, :message => "请勿重复发言"
   # callbacks .................................................................
@@ -27,6 +28,9 @@ class Topic < ActiveRecord::Base
   scope :lasted, -> { where(best: false).reorder("top DESC, replied_at DESC") }
   scope :excellent, -> { where(best: true).reorder("top DESC, updated_at DESC") }
   scope :checking, -> { where(approved: false) }
+  scope :favorites_by_device, ->(device_id) {
+    joins(:favorites).where(favorites: { device_id: device_id })
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: '36aAoQHCaJKETWHR'
   # class methods .............................................................
