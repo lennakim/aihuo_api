@@ -21,7 +21,12 @@ module EncryptedId
       options = args.slice!(0) || {}
       if !(scope.is_a? Symbol) && has_encrypted_id? && !options[:no_encrypted_id]
         begin
-          scope = decrypt(encrypted_id_key, "#{scope}")
+          scope =
+            if scope.is_a? Array
+              scope.map!{ |encrypted_id| decrypt(encrypted_id_key, encrypted_id) }
+            else
+              decrypt(encrypted_id_key, "#{scope}")
+            end
         rescue OpenSSL::Cipher::CipherError
           raise ActiveRecord::RecordNotFound.new("Could not decrypt ID #{args[0]}")
         end

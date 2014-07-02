@@ -3,7 +3,7 @@ class Topics < Grape::API
 
     desc "Return topics list for all nodes."
     params do
-      optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine], default: :mine, desc: "Filtering topics."
+      optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine, :followed], default: :mine, desc: "Filtering topics."
       requires :device_id, type: String, desc: "Device ID."
       optional :page, type: Integer, default: 1, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
@@ -21,8 +21,40 @@ class Topics < Grape::API
         Topic.approved.lasted
       when :mine
         Topic.with_deleted.by_device(params[:device_id])
+      when :followed
+        Topic.favorites_by_device(params[:device_id])
       end
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
+    end
+
+    desc "Delete multiplea topics."
+    params do
+      requires :device_id, type: String, desc: "Device ID."
+      requires :topic_ids, type: Array, desc: "Topis IDs."
+    end
+    delete "/" do
+      @topics = Topic.find(params[:topic_ids])
+      @topics.each do |topic|
+        if topic.can_destroy_by?(params[:device_id])
+          topic.destroy_by(params[:device_id])
+          status 204
+        else
+          error! "Access Denied", 401
+        end
+      end
+    end
+
+    desc 'Unfollow multiplea topics.'
+    params do
+      requires :device_id, type: String, desc: "Device ID."
+      requires :topic_ids, type: Array, desc: "Topis IDs."
+    end
+    put :unfollow do
+      @topics = Topic.find(params[:topic_ids])
+      @topics.each do |topic|
+        Favorite.by_device_id(params[:device_id]).by_favable(topic).destroy_all
+      end
+      status 204
     end
 
     params do
@@ -31,12 +63,13 @@ class Topics < Grape::API
     route_param :id do
 
       before do
-        @topic = Topic.find(params[:id])
+        @topic = Topic.find(params[:id]) rescue nil
       end
 
       desc "Return a topic."
       get "/", jbuilder: 'topics/topic'  do
-        cache(key: [:v2, :topic, @topic], expires_in: 2.days) do
+        cache(key: [:v2, :topic, params[:id]], expires_in: 2.days) do
+          error!('帖子已经被帖主删除', 404) unless @topic
           @topic
         end
       end
@@ -45,10 +78,10 @@ class Topics < Grape::API
       params do
         requires :device_id, type: String, desc: "Device ID."
       end
-      delete "/", jbuilder: 'topics/topic' do
+      delete "/" do
         if @topic.can_destroy_by?(params[:device_id])
           @topic.destroy_by(params[:device_id])
-          status 202
+          status 204
         else
           error! "Access Denied", 401
         end
@@ -57,13 +90,32 @@ class Topics < Grape::API
       desc "Like a topic."
       put :like, jbuilder: 'topics/topic' do
         @topic.liked
-        status 202
+        status 201
       end
 
       desc 'Unlike a topic.'
       put :dislike, jbuilder: 'topics/topic' do
         @topic.disliked
-        status 202
+        status 201
+      end
+
+      desc "Follow a topic."
+      params do
+        requires :device_id, type: String, desc: "Device ID."
+      end
+      put :follow, jbuilder: 'topics/topic' do
+        Favorite.find_or_create_by(favable: @topic, device_id: params[:device_id])
+        @topic
+        status 201
+      end
+
+      desc 'Unfollow a topic.'
+      params do
+        requires :device_id, type: String, desc: "Device ID."
+      end
+      put :unfollow do
+        Favorite.by_device_id(params[:device_id]).by_favable(@topic).destroy_all
+        status 204
       end
 
       resources 'replies' do

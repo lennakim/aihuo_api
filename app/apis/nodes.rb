@@ -49,7 +49,7 @@ class Nodes < Grape::API
 
       resources 'topics' do
         params do
-          optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine, :all], default: :all, desc: "Filtering topics."
+          optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine, :followed, :all], default: :all, desc: "Filtering topics."
           requires :device_id, type: String, desc: "Device ID."
           optional :page, type: Integer, default: 1, desc: "Page number."
           optional :per_page, type: Integer, default: 10, desc: "Per page value."
@@ -66,6 +66,8 @@ class Nodes < Grape::API
             @node.topics.approved.lasted
           when :mine
             @node.topics.with_deleted.by_device(params[:device_id])
+          when :followed
+            @node.topics.favorites_by_device(params[:device_id])
           when :all
             @node.topics
           end

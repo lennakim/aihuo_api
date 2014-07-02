@@ -10,6 +10,7 @@ class Topic < ActiveRecord::Base
   belongs_to :node, :counter_cache => true
   belongs_to :member
   has_many :replies, -> { order "created_at DESC" }, as: :replyable, :dependent => :destroy
+  has_many :favorites, as: :favable
   # validations ...............................................................
   validates_uniqueness_of :body, :scope => :device_id, :message => "请勿重复发言"
   # callbacks .................................................................
@@ -27,6 +28,9 @@ class Topic < ActiveRecord::Base
   scope :lasted, -> { where(best: false).reorder("top DESC, replied_at DESC") }
   scope :excellent, -> { where(best: true).reorder("top DESC, updated_at DESC") }
   scope :checking, -> { where(approved: false) }
+  scope :favorites_by_device, ->(device_id) {
+    joins(:favorites).where(favorites: { device_id: device_id })
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: '36aAoQHCaJKETWHR'
   # class methods .............................................................
@@ -34,7 +38,8 @@ class Topic < ActiveRecord::Base
   # User is a device id.
   def destroy_by(user)
     if user == device_id
-      update_attributes({ device_id: nil, nickname: "匿名" }) # 帖主本人删除
+      # 帖主本人删除, member id 123510 named "匿名"
+      update_attributes({ device_id: nil, nickname: "匿名", member_id: nil })
     else
       update_attribute(:deleted_by, user) # 管理员删除
       destroy
@@ -45,6 +50,7 @@ class Topic < ActiveRecord::Base
     member = Member.find(member_id) if member_id
     self.member = member if member && member.authenticate?(password)
   end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
   private

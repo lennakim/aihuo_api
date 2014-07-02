@@ -90,13 +90,25 @@ class Welcome < Grape::API
 
   params do
     optional :channel, type: String, desc: "channel name."
+    optional :var, type: String, desc: "version number."
   end
   get :adsenses, jbuilder: 'welcome/adsenses' do
     current_application
-    @advertisements = @application.advertisements
+    @advertisements =
+      if params[:ver].present?
+        @application.advertisements
+      else
+        @application.advertisements.reorder("id DESC").limit(1)
+      end
     @advertisements.increase_view_count
+
     setting = AdvertisementSetting.by_channel_and_app(params[:channel], @application).first
     @tactics = setting ? setting.tactics : Tactic.all
+  end
+
+  get :latest_apk do
+    @lasted_apk_url = Setting.find_by(name: 'latest_apk_url')
+    @lasted_apk_url.to_json(only: [:value, :updated_at])
   end
 
 end
