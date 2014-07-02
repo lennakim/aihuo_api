@@ -27,6 +27,36 @@ class Topics < Grape::API
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
 
+    desc "Delete multiplea topics."
+    params do
+      requires :device_id, type: String, desc: "Device ID."
+      requires :topic_ids, type: Array, desc: "Topis IDs."
+    end
+    delete "/" do
+      @topics = Topic.find(params[:topic_ids])
+      @topics.each do |topic|
+        if topic.can_destroy_by?(params[:device_id])
+          topic.destroy_by(params[:device_id])
+          status 204
+        else
+          error! "Access Denied", 401
+        end
+      end
+    end
+
+    desc 'Unfollow multiplea topics.'
+    params do
+      requires :device_id, type: String, desc: "Device ID."
+      requires :topic_ids, type: Array, desc: "Topis IDs."
+    end
+    put :unfollow do
+      @topics = Topic.find(params[:topic_ids])
+      @topics.each do |topic|
+        Favorite.by_device_id(params[:device_id]).by_favable(topic).destroy_all
+      end
+      status 204
+    end
+
     params do
       requires :id, type: String, desc: "Topic id."
     end
@@ -48,10 +78,10 @@ class Topics < Grape::API
       params do
         requires :device_id, type: String, desc: "Device ID."
       end
-      delete "/", jbuilder: 'topics/topic' do
+      delete "/" do
         if @topic.can_destroy_by?(params[:device_id])
           @topic.destroy_by(params[:device_id])
-          status 202
+          status 204
         else
           error! "Access Denied", 401
         end
@@ -60,13 +90,13 @@ class Topics < Grape::API
       desc "Like a topic."
       put :like, jbuilder: 'topics/topic' do
         @topic.liked
-        status 202
+        status 201
       end
 
       desc 'Unlike a topic.'
       put :dislike, jbuilder: 'topics/topic' do
         @topic.disliked
-        status 202
+        status 201
       end
 
       desc "Follow a topic."
@@ -75,16 +105,17 @@ class Topics < Grape::API
       end
       put :follow, jbuilder: 'topics/topic' do
         Favorite.find_or_create_by(favable: @topic, device_id: params[:device_id])
-        status 202
+        @topic
+        status 201
       end
 
       desc 'Unfollow a topic.'
       params do
         requires :device_id, type: String, desc: "Device ID."
       end
-      put :unfollow, jbuilder: 'topics/topic' do
+      put :unfollow do
         Favorite.by_device_id(params[:device_id]).by_favable(@topic).destroy_all
-        status 202
+        status 204
       end
 
       resources 'replies' do
