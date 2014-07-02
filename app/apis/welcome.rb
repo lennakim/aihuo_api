@@ -99,4 +99,9 @@ class Welcome < Grape::API
     @tactics = setting ? setting.tactics : Tactic.all
   end
 
+  get :lasted_apk do
+    @lasted_apk_url = Setting.find_by(name: 'lasted_apk_url')
+    @lasted_apk_url.to_json(only: [:value, :updated_at])
+  end
+
 end
