@@ -39,7 +39,7 @@ class Topic < ActiveRecord::Base
   def destroy_by(user)
     if user == device_id
       # 帖主本人删除, member id 123510 named "匿名"
-      update_attributes({ device_id: nil, nickname: "匿名", member_id: nil })
+      update_attributes({ device_id: nil, nickname: "匿名", member_id: 123510 })
     else
       update_attribute(:deleted_by, user) # 管理员删除
       destroy
