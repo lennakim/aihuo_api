@@ -49,7 +49,7 @@ class Topics < Grape::API
       requires :device_id, type: String, desc: "Device ID."
       requires :topic_ids, type: Array, desc: "Topis IDs."
     end
-    put :unfollow do
+    delete :unfollow do
       @topics = Topic.find(params[:topic_ids])
       @topics.each do |topic|
         Favorite.by_device_id(params[:device_id]).by_favable(topic).destroy_all
@@ -113,7 +113,7 @@ class Topics < Grape::API
       params do
         requires :device_id, type: String, desc: "Device ID."
       end
-      put :unfollow do
+      delete :unfollow do
         Favorite.by_device_id(params[:device_id]).by_favable(@topic).destroy_all
         status 204
       end
