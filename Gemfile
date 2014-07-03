@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.2.rc2'
+gem 'rails', '4.1.4'
 gem 'grape', '0.7.0'
 gem 'mysql2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
