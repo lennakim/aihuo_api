@@ -95,10 +95,11 @@ class Welcome < Grape::API
   get :adsenses, jbuilder: 'welcome/adsenses' do
     current_application
     @advertisements =
-      if params[:ver].present?
-        @application.advertisements
-      else
+      # HACK: '升级助手' old version client had a bug. do NOT remove next line.
+      if params[:ver].blank? && @application.api_key == "7cb8ded2"
         @application.advertisements.reorder("id DESC").limit(1)
+      else
+        @application.advertisements
       end
     @advertisements.increase_view_count
 
