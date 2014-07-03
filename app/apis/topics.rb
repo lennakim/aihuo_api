@@ -33,7 +33,7 @@ class Topics < Grape::API
       requires :topic_ids, type: Array, desc: "Topis IDs."
     end
     delete "/" do
-      @topics = Topic.find(params[:topic_ids])
+      @topics = Topic.with_deleted.find_by_encrypted_id(params[:topic_ids])
       @topics.each do |topic|
         if topic.can_destroy_by?(params[:device_id])
           topic.destroy_by(params[:device_id])
@@ -63,7 +63,7 @@ class Topics < Grape::API
     route_param :id do
 
       before do
-        @topic = Topic.find(params[:id]) rescue nil
+        @topic = Topic.with_deleted.find_by_encrypted_id(params[:id]) rescue nil
       end
 
       desc "Return a topic."
