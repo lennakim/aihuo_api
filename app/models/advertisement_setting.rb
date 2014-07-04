@@ -11,11 +11,7 @@ class AdvertisementSetting < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { where(activity: true) }
   scope :by_channel_and_app, ->(channel, app) {
-    # 如果有 channel 就先查询该 channel 下的全部设置
-    settings = channel ? where(channel: channel) : self
-    # 如果 channel 有设置就返回集合，否则返回全部记录，用来处理渠道不存在的情况
-    settings = settings.present? ? settings : self
-    settings.where(product_name: app.name)
+    where(product_name: app.name, channel: channel)
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   self.table_name = "adv_settings"

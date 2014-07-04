@@ -89,7 +89,7 @@ class Welcome < Grape::API
   end
 
   params do
-    optional :channel, type: String, desc: "channel name."
+    optional :channel, type: String, default: "全部渠道", desc: "channel name."
     optional :var, type: String, desc: "version number."
   end
   get :adsenses, jbuilder: 'welcome/adsenses' do
