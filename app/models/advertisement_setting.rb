@@ -11,7 +11,8 @@ class AdvertisementSetting < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { where(activity: true) }
   scope :by_channel_and_app, ->(channel, app) {
-    where(product_name: app.name, channel: channel)
+    settings = where(product_name: app.name, channel: channel)
+    where(product_name: app.name, channel: "全部渠道") if settings.size.zero?
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   self.table_name = "adv_settings"
