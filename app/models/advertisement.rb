@@ -24,13 +24,6 @@ class Advertisement < ActiveRecord::Base
     })
   end
 
-  def baidu_pan_url
-    if id == 4
-      "https://pcs.baidu.com/rest/2.0/pcs/file?method=download&access_token=23.00f332af7bb1da1390a33e48ab5d4d60.2592000.1407039697.2667843560-2742236&path=%2Fapps%2Fsft_fresh%2F3999011_ip.apk"
-    else
-      carrierwave_material(nil, :url)
-    end
-  end
   # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................
