@@ -27,7 +27,7 @@ module CarrierWave
   # version nil
   # path :url, :path
   def carrierwave_material(version, path)
-    store_host + material_dir + send(path)
+    store_host + material_dir + send(path) unless send(path).blank?
   end
 
   # version :list, :grid, :retain
