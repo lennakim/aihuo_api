@@ -11,11 +11,9 @@ class Advertisements < Grape::API
       end
       put "/" do
         current_application
-        AdvStatistic.increase_count(
-          @application.id,
-          params[:id],
-          params[:action]
-        )
+        status = AdvStatistic.increase_count(@application.id, params[:id], params[:action])
+        status_code = status == true ? 201 : 200
+        status status_code
       end
     end
   end
