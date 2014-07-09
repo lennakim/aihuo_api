@@ -1,4 +1,4 @@
-class AdvStatistic < ActiveRecord::Base
+class AdvApplicationReport < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
   # relationships .............................................................
@@ -6,27 +6,21 @@ class AdvStatistic < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
+  default_scope { order("created_at DESC") }
   scope :by_app, ->(app_id) { where(application_id: app_id) }
-  scope :by_advertisement, ->(advertisement_id) {
-    where(adv_content_id: advertisement_id)
-  }
   scope :today, -> {
     where(created_at: Date.today.midnight..Date.today.end_of_day)
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
-  def self.increase_count(app_id, advertisement_id, action)
-    adv_statistic =
-      today.by_app(app_id).by_advertisement(advertisement_id).first_or_create
-    adv_statistic.increase_count(action)
-  end
-
-  def increase_count(action)
-    [:view, :click, :install].include?(action) &&
-      update_attribute("#{action}_count", send("#{action}_count") + 1)
+  def self.alert(app_id)
+    report = today.by_app(app_id).first_or_create
+    report.increase_count
   end
   # public instance methods ...................................................
+  def increase_count
+    update_attribute(:warning_count, warning_count + 1)
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
-
 end
