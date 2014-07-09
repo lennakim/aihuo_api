@@ -83,4 +83,5 @@ class API < Grape::API
   mount ::Tags
   mount ::PrivateMessages
   mount ::Contents
+  mount ::Advertisements
 end

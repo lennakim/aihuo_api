@@ -112,4 +112,11 @@ class Welcome < Grape::API
     @lasted_apk_url.to_json(only: [:value, :updated_at])
   end
 
+  put "report" do
+    current_application
+    status = AdvApplicationReport.alert(@application.id)
+    status_code = status == true ? 201 : 200
+    status status_code
+  end
+
 end
