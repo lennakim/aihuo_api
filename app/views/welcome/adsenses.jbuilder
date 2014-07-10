@@ -8,4 +8,11 @@ json.advertisements @advertisements do |advertisement|
   json.url advertisement.carrierwave_material(nil, :url)
   json.apk_sign advertisement.apk_sign
 end
-json.tactics @tactics, :id, :action, :value, :notice_type
+# json.tactics @tactics, :id, :action, :value, :notice_type, :adv_content_id
+json.tactics @tactics do |tractic|
+  json.id tractic.id
+  json.action tractic.action
+  json.value tractic.value
+  json.notice_type tractic.notice_type
+  json.advertisement_id tractic.adv_content_id if tractic.adv_content_id
+end
