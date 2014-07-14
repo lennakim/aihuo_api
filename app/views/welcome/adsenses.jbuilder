@@ -14,5 +14,5 @@ json.tactics @tactics do |tractic|
   json.action tractic.action
   json.value tractic.value
   json.notice_type tractic.notice_type
-  json.advertisement_id tractic.adv_content_id if tractic.adv_content_id
+  json.advertisement_ids tractic.adv_content_ids if tractic.adv_content_ids
 end
