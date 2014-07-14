@@ -2,6 +2,7 @@ class AdvertisementSetting < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
   # relationships .............................................................
+  belongs_to :application
   has_and_belongs_to_many :tactics,
     join_table: 'adv_settings_adv_tactics',
     foreign_key: 'adv_setting_id',
@@ -10,6 +11,12 @@ class AdvertisementSetting < ActiveRecord::Base
   # callbacks .................................................................
   # scopes ....................................................................
   default_scope { where(activity: true) }
+  scope :by_channel, ->(channel) {
+    settings = where(channel: channel)
+    settings = where(channel: "全部渠道") if settings.size.zero?
+    settings
+  }
+  # TODO: plese remove `by_channel_and_app` scope later.
   scope :by_channel_and_app, ->(channel, app) {
     settings = where(product_name: app.name, channel: channel)
     settings = where(product_name: app.name, channel: "全部渠道") if settings.size.zero?

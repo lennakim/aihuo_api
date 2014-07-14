@@ -103,7 +103,7 @@ class Welcome < Grape::API
       end
     @advertisements.increase_view_count
 
-    setting = AdvertisementSetting.by_channel_and_app(params[:channel], @application).first
+    setting = @application.advertisement_settings.by_channel(params[:channel]).first
     @tactics = setting ? setting.tactics : Tactic.all
   end
 

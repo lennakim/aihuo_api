@@ -6,6 +6,7 @@ class Application < ActiveRecord::Base
   has_many :coupons
   has_many :resources, class_name: 'Resource'
   has_many :articles, through: :resources, source: :resable, source_type: "Article"
+  has_many :advertisement_settings
   has_and_belongs_to_many :advertisements,
     join_table: 'adv_contents_applications',
     foreign_key: 'application_id',
