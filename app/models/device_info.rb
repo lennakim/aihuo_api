@@ -24,6 +24,8 @@ class DeviceInfo < ActiveRecord::Base
   def send_sales_promotion_msg
     # 设备没有百度用户信息，不发送通知
     return if baidu_user_id.blank?
+    # 爱侣应用不发送本通知
+    return if application_id == 32
 
     # 设备注册时间在3天前，不发送通知
     # 设备注册时间在3天内(前天，昨天，今天)，则发送0元购通知
