@@ -64,7 +64,7 @@ class Order < ActiveRecord::Base
   # 购买记录中的订单创建时间显示第一条评论的评论时间
   def commented_at
     if comments && !comments.size.zero?
-      comments.first.commented_at || comments.first.created_at
+      comments.first.comment_at || comments.first.created_at
     else
       created_at
     end
