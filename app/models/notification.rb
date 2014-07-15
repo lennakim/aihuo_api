@@ -16,8 +16,14 @@ class Notification < ActiveRecord::Base
   }
   # class methods .............................................................
   # 刚注册的用户，发送第一条0元购的通知
-  def self.send_sales_promotion_msg(device_id)
-    article_id = Article.gifts.pluck(:id).first
+  def self.send_sales_promotion_msg(device_id, app_id = nil)
+    # 爱侣应用发送另外一条0元购通知
+    article_id =
+      if app_id == 32
+        "1239"
+      else
+        Article.gifts.pluck(:id).first
+      end
     options = self::DEFAULT_MSG_OPTIONS.merge({
       notice_id: article_id,
       title: "0元购三天，您还等神马？！",
