@@ -24,16 +24,13 @@ class DeviceInfo < ActiveRecord::Base
   def send_sales_promotion_msg
     # 设备没有百度用户信息，不发送通知
     return if baidu_user_id.blank?
-    # 爱侣应用不发送本通知
-    return if application_id == 32
-
     # 设备注册时间在3天前，不发送通知
     # 设备注册时间在3天内(前天，昨天，今天)，则发送0元购通知
     # TODO:
     # *Date.today* maybe cached in production mode, so this line alwasy
     #   return same value. need to test and fix it later.
     if device && device.try(:created_at) > 2.days.ago(Date.today)
-      Notification.send_sales_promotion_msg(device_id)
+      Notification.send_sales_promotion_msg(device_id, application_id)
     end
   end
   # protected instance methods ................................................
