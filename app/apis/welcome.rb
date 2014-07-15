@@ -90,7 +90,7 @@ class Welcome < Grape::API
 
   params do
     optional :channel, type: String, default: "全部渠道", desc: "channel name."
-    optional :var, type: String, desc: "version number."
+    optional :ver, type: String, desc: "version number."
   end
   get :adsenses, jbuilder: 'welcome/adsenses' do
     current_application
@@ -107,9 +107,17 @@ class Welcome < Grape::API
     @tactics = setting ? setting.tactics : Tactic.all
   end
 
-  get :latest_apk do
-    @lasted_apk_url = Setting.find_by(name: 'latest_apk_url')
-    @lasted_apk_url.to_json(only: [:value, :updated_at])
+  params do
+    optional :ver, type: String, desc: "version number."
+  end
+  get :latest_apk, jbuilder: 'welcome/latest_apk' do
+    @lasted_apk_url =
+      case params[:ver]
+      when "1.1.0"
+        { value: "http://blsm-public.oss.aliyuncs.com/downloads/lib_v1.1.0.jar", updated_at: "2014-07-15T16:42:21+08:00" }
+      else
+        { value: "http://blsm-public.oss.aliyuncs.com/downloads/lib_v1.0.9.jar", updated_at: "2014-07-15T16:42:21+08:00" }
+      end
   end
 
   put "report" do
