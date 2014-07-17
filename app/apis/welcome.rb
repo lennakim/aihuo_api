@@ -111,9 +111,10 @@ class Welcome < Grape::API
     optional :ver, type: String, desc: "version number."
   end
   get :latest_apk, jbuilder: 'welcome/latest_apk' do
+    regular = /^1\.1\.\d$/
     @lasted_apk_url =
       case params[:ver]
-      when "1.1.0"
+      when regular
         { value: "http://blsm-public.oss.aliyuncs.com/downloads/lib_v1.1.0.jar", updated_at: "2014-07-15T16:42:21+08:00" }
       else
         { value: "http://blsm-public.oss.aliyuncs.com/downloads/lib_v1.0.9.jar", updated_at: "2014-07-15T16:42:21+08:00" }
