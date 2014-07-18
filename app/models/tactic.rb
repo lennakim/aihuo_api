@@ -17,7 +17,7 @@ class Tactic < ActiveRecord::Base
   def adv_content_ids
     if self[:adv_content_ids]
       format_id = Proc.new { |id| id.to_i if id }
-      self[:adv_content_ids].collect(&format_id).select { |id| id != 0 }
+      self[:adv_content_ids].collect(&format_id).select { |id| id != 0 && id != nil }
     end
   end
   # protected instance methods ................................................
