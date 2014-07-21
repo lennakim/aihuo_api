@@ -1,6 +1,7 @@
 json.advertisements @advertisements do |advertisement|
   json.id advertisement.id
   json.title advertisement.title
+  json.icon advertisement.carrierwave_material(nil, :icon)
   json.banner advertisement.carrierwave_material(nil, :banner)
   if advertisement.square_banner
     json.square_banner advertisement.carrierwave_material(nil, :square_banner)
