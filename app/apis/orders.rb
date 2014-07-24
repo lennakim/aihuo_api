@@ -89,7 +89,11 @@ class Orders < Grape::API
     route_param :id do
 
       before do
-        @order = Order.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
+        begin
+          @order = Order.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
+        rescue Exception => e
+          error! "Order not found", 404
+        end
       end
 
       desc "Return an order."
