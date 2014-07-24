@@ -18,7 +18,11 @@ class Nodes < Grape::API
     route_param :id do
 
       before do
-        @node = Node.find(params[:id])
+        begin
+          @node = Node.find(params[:id])
+        rescue Exception => e
+          error! "Node not found", 404
+        end
       end
 
       desc "Return roles, also to check a device is node manager or not."
