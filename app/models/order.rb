@@ -29,7 +29,7 @@ class Order < ActiveRecord::Base
   default_scope { order("id DESC") }
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : all }
   scope :with_comments, -> { joins(:comments) }
-  scope :newly, -> { where(state: "订单已下，等待确认") }
+  scope :newly, -> { where(state: NEWLY_STATE) }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
 
   # +pay_type+ attribute according to the following logic:
@@ -50,6 +50,17 @@ class Order < ActiveRecord::Base
   encrypted_id key: 'bYqILlFMZn3xd8Cy'
   delegate :extra_order_id, to: :express
   accepts_nested_attributes_for :line_items
+
+  NEWLY_STATE = "订单已下，等待确认"
+  DONE_STATES = [
+    "客户拒签，原件返回",
+    "客户签收，订单完成",
+    "客户放弃，订单取消",
+    "无法联系客户，订单取消",
+    "有拒签记录，订单取消",
+    "非本人下单，订单取消",
+    "重复订单，订单取消",
+  ]
   # class methods .............................................................
   # public instance methods ...................................................
   # 订单中是否包含0元购的产品
@@ -203,6 +214,41 @@ class Order < ActiveRecord::Base
 
   def send_confirm_sms(type)
     ShortMessage.send_confirm_sms(self, type)
+  end
+
+  # 订单可操作状态码，1 可取消; 2 可删除; 0 不可更改状态
+  def operation_code
+    if can_cancel?
+      1
+    elsif can_delete?
+      2
+    else
+      0
+    end
+  end
+
+  # "订单已下，等待确认" 的订单可以取消
+  def can_cancel?
+    state == NEWLY_STATE
+  end
+
+  # 包含 "取消" 关键字的订单可以取消
+  def can_delete?
+    DONE_STATES.include? state
+  end
+
+  def cancel!
+    update_attribute(:state, "客户放弃，订单取消")
+  end
+
+  def cancel_or_delete_by_client
+    if can_cancel?
+      cancel!
+    elsif can_delete?
+      destroy
+    else
+      false
+    end
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

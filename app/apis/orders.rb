@@ -87,15 +87,18 @@ class Orders < Grape::API
       requires :device_id, type: String, desc: "Device ID."
     end
     route_param :id do
-      desc "Return an order."
-      get "/", jbuilder: 'orders/order' do
+
+      before do
         @order = Order.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
       end
 
-      desc "Delete an order."
+      desc "Return an order."
+      get "/", jbuilder: 'orders/order'
+
+      desc "Cancel or Delete an order."
       delete "/", jbuilder: 'orders/order' do
-        @order = Order.done.where(device_id: params[:device_id]).find_by_encrypted_id(params[:id])
-        status 202 if @order.destroy
+        status_code = @order.cancel_or_delete_by_client ? 202 : 200
+        status status_code
       end
 
       desc "Update an order address info"
