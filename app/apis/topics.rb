@@ -63,7 +63,11 @@ class Topics < Grape::API
     route_param :id do
 
       before do
-        @topic = Topic.with_deleted.find_by_encrypted_id(params[:id]) rescue nil
+        begin
+          @topic = Topic.with_deleted.find_by_encrypted_id(params[:id])
+        rescue Exception => e
+          error! "Topic not found", 404
+        end
       end
 
       desc "Return a topic."
