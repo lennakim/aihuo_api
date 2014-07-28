@@ -26,7 +26,7 @@ environment = 'production'
 daemonize true
 
 workers 4
-threads 16, 256
+threads 16, 128
 
 wd = File.expand_path('../../', __FILE__)
 tmp_path = File.join(wd, 'tmp')
@@ -52,12 +52,3 @@ activate_control_app
 # Thread safety
 # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server
 # https://devcenter.heroku.com/articles/concurrency-and-database-connections#connection-pool
-on_worker_boot do
-  # worker specific setup
-  ActiveSupport.on_load(:active_record) do
-    config = ActiveRecord::Base.configurations[Rails.env] ||
-                Rails.application.config.database_configuration[Rails.env]
-    config['pool'] = ENV['MAX_THREADS'] || 256
-    ActiveRecord::Base.establish_connection(config)
-  end
-end
