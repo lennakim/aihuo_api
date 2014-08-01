@@ -16,8 +16,11 @@ class ShortMessage < ActiveRecord::Base
     if self.can_send_sms_to_device?(device_id)
       content = confirm_msg(order, type)
       if content.present?
-        order.short_messages.create({ device_id: device_id, phone: order.phone, content: content })
-        order.orderlogs.logging_action(:send_confirm_sms, content)
+        result = BluestormSMS.send order.phone, content
+        if result[:success]
+          order.short_messages.create({ device_id: device_id, phone: order.phone, content: content, sended: true})
+          order.orderlogs.logging_action(:send_confirm_sms, content)
+        end
       end
     else
       order.orderlogs.logging_action(:send_confirm_sms_error, order.id)
