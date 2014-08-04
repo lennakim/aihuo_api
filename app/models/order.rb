@@ -242,9 +242,10 @@ class Order < ActiveRecord::Base
   end
 
   def cancel_or_delete_by_client
-    if can_cancel?
+    case operation_code
+    when 1
       cancel!
-    elsif can_delete?
+    when 2
       destroy
     else
       false

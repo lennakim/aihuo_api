@@ -10,20 +10,7 @@ class Topics < Grape::API
     end
 
     get "/", jbuilder: 'topics/topics' do
-      topics = case params[:filter]
-      when :best
-        Topic.approved.excellent
-      when :checking
-        Topic.checking
-      when :hot
-        Topic.approved.popular
-      when :new
-        Topic.approved.lasted
-      when :mine
-        Topic.with_deleted.by_device(params[:device_id])
-      when :followed
-        Topic.favorites_by_device(params[:device_id])
-      end
+      topics = Topic.scope_by_filter(params[:filter], params[:device_id])
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
 

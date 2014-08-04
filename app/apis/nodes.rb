@@ -59,22 +59,7 @@ class Nodes < Grape::API
           optional :per_page, type: Integer, default: 10, desc: "Per page value."
         end
         get "/", jbuilder: 'topics/topics' do
-          topics = case params[:filter]
-          when :best
-            @node.topics.approved.excellent
-          when :checking
-            @node.topics.checking
-          when :hot
-            @node.topics.approved.popular
-          when :new
-            @node.topics.approved.lasted
-          when :mine
-            @node.topics.with_deleted.by_device(params[:device_id])
-          when :followed
-            @node.topics.favorites_by_device(params[:device_id])
-          when :all
-            @node.topics
-          end
+          topics = @node.topics.scope_by_filter(params[:filter], params[:device_id])
           @topics = paginate(topics.order("top DESC, updated_at DESC"))
         end
 
