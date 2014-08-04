@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/flypiggy/dalli.git
+  revision: 9b2d57cfab6033fd3f923218377bcad4737bca17
+  specs:
+    dalli (2.7.2)
+
+GIT
   remote: https://github.com/flyerhzm/newrelic-grape.git
   revision: 0098c06cb41c2ea86c0d342157e038c744f93400
   specs:
@@ -183,6 +189,7 @@ DEPENDENCIES
   awesome_nested_set (~> 3.0.0.rc.1)
   bluestorm_sms (= 0.0.4)
   china_sms
+  dalli!
   grape (= 0.7.0)
   grape-jbuilder
   grape-kaminari
