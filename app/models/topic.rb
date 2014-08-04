@@ -34,6 +34,26 @@ class Topic < ActiveRecord::Base
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: '36aAoQHCaJKETWHR'
   # class methods .............................................................
+  def self.scope_by_filter(filter, device_id = nil)
+    case filter
+    when :best
+      approved.excellent
+    when :checking
+      checking
+    when :hot
+      # Topic.approved.popular
+      approved.lasted
+    when :new
+      # Topic.approved.lasted
+      approved.reorder("top DESC, created_at DESC")
+    when :mine
+      with_deleted.by_device(device_id)
+    when :followed
+      favorites_by_device(device_id)
+    when :all
+      self
+    end
+  end
   # public instance methods ...................................................
   # User is a device id.
   def destroy_by(user)
