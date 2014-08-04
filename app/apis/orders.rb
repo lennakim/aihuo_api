@@ -21,7 +21,7 @@ class Orders < Grape::API
     end
 
     def validate_remote_host
-      unless request.env["HTTP_SAEAPPNAME"] == "paybank"
+      unless (request.env["HTTP_X_REAL_IP"] == "10.162.41.36" or request.env["HTTP_SAEAPPNAME"] == "paybank")
         error!({error: "unknown host"}, 500)
       end
     end

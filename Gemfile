@@ -17,6 +17,8 @@ gem 'awesome_nested_set', '~> 3.0.0.rc.1'
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
+gem 'bluestorm_sms', '0.0.4'
+gem 'dalli', github: 'flypiggy/dalli'
 
 group :development do
   gem 'spring'

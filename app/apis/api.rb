@@ -21,6 +21,7 @@ class API < Grape::API
     def current_application
       api_key = request.headers["Apikey"] || params[:api_key]
       @application = Application.where(api_key: api_key).first
+      error!({error: "unknown api key"}, 500) unless @application
     end
 
     def flatten_hash(hash)
