@@ -62,9 +62,7 @@ class Product < ActiveRecord::Base
   #   includes(:children).where(:children => { :id => nil })
   # }
   scope :price_between, ->(min, max) {
-    if min && max
-      joins(:product_props).where(product_props: { sale_price: min...max })
-    end
+    joins(:product_props).where(product_props: { sale_price: min...max })
   }
 
   scope :with_tagging, -> {
@@ -99,6 +97,7 @@ class Product < ActiveRecord::Base
   def detail_link
     "http://image.yepcolor.com/product_detail/" + self[:detail_link] if self[:detail_link]
   end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
