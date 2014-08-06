@@ -120,7 +120,7 @@ end
 #use like mina clear_cache type='product'
 task :clear_cache => :environment do
   queue! 'echo "Cleaning Cache:"'
-  queue! "#{rake} cache:clear"
+  queue  "cd #{app_path} ;bundle exec rake cache:clear"
 end
 
 desc 'run racksh'
