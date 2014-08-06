@@ -117,6 +117,12 @@ task :cat_err_log => :environment do
   queue "tail -n 200 #{app_path}/log/puma.err.log"
 end
 
+#use like mina clear_cache type='product'
+task :clear_cache => :environment do
+  queue! 'echo "Cleaning Cache:"'
+  queue! "#{rake} cache:clear"
+end
+
 desc 'run racksh'
 task :console => :environment do
   queue "cd #{app_path} ; bundle exec racksh"
