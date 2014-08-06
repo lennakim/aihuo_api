@@ -62,7 +62,9 @@ class Product < ActiveRecord::Base
   #   includes(:children).where(:children => { :id => nil })
   # }
   scope :price_between, ->(min, max) {
-    joins(:product_props).where(product_props: { sale_price: min...max })
+    if min && max
+      joins(:product_props).where(product_props: { sale_price: min...max })
+    end
   }
 
   scope :with_tagging, -> {
