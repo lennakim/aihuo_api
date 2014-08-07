@@ -69,7 +69,7 @@ class Members < Grape::API
         if @member && (@member.validate_login_captcha params[:captcha])
           @member.update_attributes(phone: params[:phone], verified: true) unless @member.phone
         else
-          error! "验证码错误", 401
+          error! "验证码错误", 400
         end
       else
         error! "Access Denied", 401
