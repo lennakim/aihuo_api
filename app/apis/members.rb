@@ -45,7 +45,7 @@ class Members < Grape::API
         member = Member.where(id: @device.member_id).by_phone(params[:phone]).first || Member.where(id: @device.member_id).without_phone.first
         if member
           member.send_captcha params[:phone]
-          status 200
+          {result: '验证码已发送'}
         else
           error! "登录失败", 404
         end
@@ -67,7 +67,7 @@ class Members < Grape::API
         current_device
         @member = Member.where(id: @device.member_id).first
         if @member && (@member.validate_login_captcha params[:captcha])
-          @member.update_attributes(phone: params[:phone]) unless member.phone
+          @member.update_attributes(phone: params[:phone], verified: true) unless @member.phone
         else
           error! "验证码错误", 401
         end
