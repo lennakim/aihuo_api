@@ -1,9 +1,5 @@
 class Devices < Grape::API
   helpers do
-    def current_device
-      @device = Device.where(device_id: params[:device_id]).first_or_create!
-    end
-
     def device_params
       current_device
       params[:device].delete("channel_id") if @device.channel_id.present?
