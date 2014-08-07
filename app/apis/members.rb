@@ -32,6 +32,50 @@ class Members < Grape::API
       end
     end
 
+    desc "User login with phone or device_id"
+    params do
+      requires :sign, type: String, desc: 'Sign value'
+      requires :device_id, type: String, desc: "Device ID"
+      requires :phone, type: String, desc: "Member phone"
+    end
+
+    get 'login' do
+      if sign_approval?
+        current_device
+        member = Member.where(id: @device.member_id).by_phone(params[:phone]).first || Member.where(id: @device.member_id).without_phone.first
+        if member
+          member.send_captcha params[:phone]
+          {result: '验证码已发送'}
+        else
+          error! "登录失败", 404
+        end
+      else
+        error! "Access Denied", 401
+      end
+    end
+
+    desc "Validate login captcha"
+    params do
+      requires :sign, type: String, desc: 'Sign value'
+      requires :device_id, type: String, desc: "Device ID"
+      requires :phone, type: String, desc: "Member phone"
+      requires :captcha, type: String, desc: "Captcha"
+    end
+
+    post 'login', jbuilder: 'members/member' do
+      if sign_approval?
+        current_device
+        @member = Member.where(id: @device.member_id).first
+        if @member && (@member.validate_login_captcha params[:captcha])
+          @member.update_attributes(phone: params[:phone], verified: true) unless @member.phone
+        else
+          error! "验证码错误", 401
+        end
+      else
+        error! "Access Denied", 401
+      end
+    end
+
     params do
       requires :id, type: String, desc: "Member id."
     end
@@ -51,7 +95,7 @@ class Members < Grape::API
         if sign_approval?
           @member = Member.find(params[:id])
           @member.update_attribute(:phone, params[:phone])
-          @member.send_captcha
+          @member.send_captcha params[:phone]
         else
           error! "Access Denied", 401
         end
@@ -101,6 +145,5 @@ class Members < Grape::API
         end
       end
     end
-
   end
 end
