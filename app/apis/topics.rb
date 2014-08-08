@@ -59,10 +59,8 @@ class Topics < Grape::API
 
       desc "Return a topic."
       get "/", jbuilder: 'topics/topic'  do
-        cache(key: [:v2, :topic, params[:id]], expires_in: 2.days) do
-          error!('帖子已经被帖主删除', 404) unless @topic
-          @topic
-        end
+        error!('帖子已经被帖主删除', 404) unless @topic
+        @topic
       end
 
       desc "Delete a topic."
