@@ -42,12 +42,12 @@ class Members < Grape::API
     get 'login' do
       if sign_approval?
         current_device
-        member = Member.where(id: @device.member_id).by_phone(params[:phone]).first || Member.where(id: @device.member_id).without_phone.first
+        member = Member.by_phone(params[:phone]).first || Member.where(id: @device.member_id).without_phone.first
         if member
           member.send_captcha params[:phone]
           {result: '验证码已发送'}
         else
-          error! "登录失败", 404
+          error! "用户不存在", 404
         end
       else
         error! "Access Denied", 401
@@ -65,9 +65,10 @@ class Members < Grape::API
     post 'login', jbuilder: 'members/member' do
       if sign_approval?
         current_device
-        @member = Member.where(id: @device.member_id).first
+        @member = Member.by_phone(params[:phone]).first || Member.where(id: @device.member_id).without_phone.first
         if @member && (@member.validate_login_captcha params[:captcha])
           @member.update_attributes(phone: params[:phone], verified: true) unless @member.phone
+          @member.device = @device
         else
           error! "验证码错误", 400
         end
