@@ -8,6 +8,8 @@ class Notification < ActiveRecord::Base
   # callbacks .................................................................
   # scopes ....................................................................
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
+  # push_type: 1 单个人, 2 一群人, 3 所有人
+  # message_type: 0 消息(透传), 1 通知
   DEFAULT_MSG_OPTIONS = {
     notice_id: nil,
     notice_type: "Article",
@@ -52,18 +54,20 @@ class Notification < ActiveRecord::Base
     self.send_msg(device_id, options)
   end
 
-  # push_type: 1 单个人, 2 一群人, 3 所有人
-  # message_type: 0 消息(透传), 1 通知
   def self.send_msg(device_id, options = {})
     device_info = DeviceInfo.find_by(device_id: device_id)
     return unless device_info
-    # binding.pry
     options.merge!({
       application_id: device_info.application_id,
       user_id: device_info.baidu_user_id,
       channel_id: device_info.baidu_channel_id,
     })
-    self.create!(options)
+    case device_info.baidu_channel_id
+    when "getui"
+      GetuiPusher.push_msg(options)
+    else
+      BaiduPusher.push_msg(options)
+    end
   end
   # public instance methods ...................................................
   # protected instance methods ................................................
