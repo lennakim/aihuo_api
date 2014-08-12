@@ -4,6 +4,7 @@ require 'mina/bundler'
 require 'mina/git'
 # require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 require 'mina/rvm'    # for rvm support. (http://rvm.io)
+require 'mina/rails'
 
 # Basic settings:
 #   domain       - The hostname to SSH to.
@@ -20,6 +21,7 @@ set :repository, 'git@bitbucket.org:Xiaopuzhu/adultshop_new.git'
 set :branch, 'master'
 # set :branch, 'develop'
 set :keep_releases, 20
+set :rails_env, :production
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
@@ -115,10 +117,10 @@ task :cat_err_log => :environment do
   queue "tail -n 200 #{app_path}/log/puma.err.log"
 end
 
-task :clean_cache => :environment do
-  queue! 'echo "Clean Cache:"'
-  queue! "echo 'rm -rf #{app_path}/tmp/cache/*'"
-  queue! "rm -rf #{app_path}/tmp/cache/*"
+#use like mina clear_cache type='product'
+task :clear_cache => :environment do
+  queue! 'echo "Cleaning Cache:"'
+  queue  "cd #{app_path} ;bundle exec rake cache:clear"
 end
 
 desc 'run racksh'

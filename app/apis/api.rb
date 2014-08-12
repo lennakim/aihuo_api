@@ -24,6 +24,10 @@ class API < Grape::API
       error!({error: "unknown api key"}, 500) unless @application
     end
 
+    def current_device
+      @device = Device.where(device_id: params[:device_id]).first_or_create!
+    end
+
     def flatten_hash(hash)
       hash.collect { |k, v| v.is_a?(Hash) ? flatten_hash(v) : "#{k}=#{v}" }
     end
