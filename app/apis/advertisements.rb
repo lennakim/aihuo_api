@@ -11,9 +11,15 @@ class Advertisements < Grape::API
       end
       put "/" do
         current_application
-        status = AdvStatistic.increase_count(@application.id, params[:id], params[:action])
-        status_code = status == true ? 201 : 200
-        status status_code
+        key = "#{Date.today}:#{@application.id}:#{params[:id]}:#{params[:action]}"
+        Rails.cache.dalli.with do |client|
+          if client.add(key, 1, 0, raw: true)
+            client.append('statistic_keys', ",#{key}") unless client.add('statistic_keys', key, 0, raw: true)
+          else
+            client.incr key
+          end
+        end
+        status 200
       end
     end
   end

@@ -14,6 +14,8 @@ class Member < ActiveRecord::Base
   # callbacks .................................................................
   after_create :increase_coin
   # scopes ....................................................................
+  scope :by_phone, ->(phone) { where(phone: phone, verified: true) }
+  scope :without_phone, ->{ where("phone is NULL") }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'uwGeTjFYo9z9NpoN'
   delegate :device_id, to: :device, allow_nil: true
@@ -37,20 +39,22 @@ class Member < ActiveRecord::Base
   end
 
   def can_send_captcha?
-    # 对于验证过手机号的用户，暂时不再允许验证
-    return false if verified?
     # 第一次创建的用户，发送验证码时间是空
     return true if captcha_updated_at.blank?
     # 上次发送时间在2分钟之前，并且当天发送次数在3次以内
     captcha_updated_at < Time.now.ago(120) && captcha_flag <= 4
   end
 
-  def send_captcha
+  def send_captcha phone_num
     return if !can_send_captcha?
     generate_captcha
     message = "【首趣商城】手机验证码:#{captcha}"
 
-    ShortMessage.send_sms_from_emay(phone, message)
+    ShortMessage.send_sms_from_emay(phone_num, message)
+  end
+
+  def validate_login_captcha login_captcha
+    captcha == login_captcha
   end
 
   def validate_captcha?(phone, captcha)

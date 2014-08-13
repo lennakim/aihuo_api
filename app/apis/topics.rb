@@ -10,20 +10,7 @@ class Topics < Grape::API
     end
 
     get "/", jbuilder: 'topics/topics' do
-      topics = case params[:filter]
-      when :best
-        Topic.approved.excellent
-      when :checking
-        Topic.checking
-      when :hot
-        Topic.approved.popular
-      when :new
-        Topic.approved.lasted
-      when :mine
-        Topic.with_deleted.by_device(params[:device_id])
-      when :followed
-        Topic.favorites_by_device(params[:device_id])
-      end
+      topics = Topic.scope_by_filter(params[:filter], params[:device_id])
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
 
@@ -72,10 +59,8 @@ class Topics < Grape::API
 
       desc "Return a topic."
       get "/", jbuilder: 'topics/topic'  do
-        cache(key: [:v2, :topic, params[:id]], expires_in: 2.days) do
-          error!('帖子已经被帖主删除', 404) unless @topic
-          @topic
-        end
+        error!('帖子已经被帖主删除', 404) unless @topic
+        @topic
       end
 
       desc "Delete a topic."
