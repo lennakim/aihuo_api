@@ -57,7 +57,7 @@ class Member < ActiveRecord::Base
     self.captcha == captcha
   end
 
-  def validate_captcha_with_phone?(phone, captcha)
+  def validate_captcha_with_phone?(captcha, phone)
     self.phone == phone && validate_captcha?(captcha) && !verified
   end
 

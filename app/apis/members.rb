@@ -44,7 +44,9 @@ class Members < Grape::API
       verify_sign
       current_device
       current_member
-      if @member && @member.send_captcha(params[:phone])
+      if @member
+        # FIXME: 这里的逻辑是错误的，有可能发送验证码失败，比如次数已满或者2分钟之内只能发一次
+        @member.send_captcha(params[:phone])
         { result: '验证码已发送' }
       else
         error! "用户不存在", 404
@@ -68,7 +70,7 @@ class Members < Grape::API
           @member.update_attribute(:phone, params[:phone])
         end
         @member.relate_to_device(params[:device_id])
-        verified!(false)
+        @member.verified!(false)
       else
         error! "验证码错误", 400
       end
