@@ -45,28 +45,32 @@ class Member < ActiveRecord::Base
     captcha_updated_at < Time.now.ago(120) && captcha_flag <= 4
   end
 
-  def send_captcha phone_num
+  def send_captcha(phone)
     return if !can_send_captcha?
     generate_captcha
     message = "【首趣商城】手机验证码:#{captcha}"
 
-    ShortMessage.send_sms_from_emay(phone_num, message)
+    ShortMessage.send_sms(phone, message)
   end
 
-  def validate_login_captcha login_captcha
-    captcha == login_captcha
+  def validate_captcha?(captcha)
+    self.captcha == captcha
   end
 
-  def validate_captcha?(phone, captcha)
-    self.phone == phone && self.captcha == captcha && !verified
+  def validate_captcha_with_phone?(phone, captcha)
+    self.phone == phone && validate_captcha?(captcha) && !verified
   end
 
-  def verified!
+  def verified!(need_increase_coin = true)
     self.password = captcha
     self.verified = true
     # 绑定手机号增加15金币
-    increase(15)
+    increase(15) if need_increase_coin
     save
+  end
+
+  def verified_by_phone(phone)
+    update_attributes(phone: phone, verified: true)
   end
 
   def relate_to_device(device_id)

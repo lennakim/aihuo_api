@@ -7,7 +7,7 @@ require 'active_record/railtie'
 require 'action_mailer/railtie'
 # require 'sprockets/railtie'
 require 'rake/testtask'
-require "rails/test_unit/railtie"
+# require "rails/test_unit/railtie"
 require "minitest/rails/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -37,7 +37,7 @@ module ShouquApi
     # Config minitest-rails
     # https://github.com/blowmage/minitest-rails#usage
     config.generators do |g|
-      g.test_framework :minitest, spec: false, fixture: true
+      g.test_framework :minitest, spec: true, fixture: true
     end
   end
 end

@@ -1,5 +1,9 @@
 class Members < Grape::API
   helpers do
+    def current_member
+      @member = Member.by_phone(params[:phone]).first || Member.where(id: @device.member_id).without_phone.first
+    end
+
     def member_params
       declared(params, include_missing: false)[:member]
     end
@@ -42,10 +46,9 @@ class Members < Grape::API
     get 'login' do
       if sign_approval?
         current_device
-        member = Member.by_phone(params[:phone]).first || Member.where(id: @device.member_id).without_phone.first
-        if member
-          member.send_captcha params[:phone]
-          {result: '验证码已发送'}
+        current_member
+        if @member && @member.send_captcha(params[:phone])
+          { result: '验证码已发送' }
         else
           error! "用户不存在", 404
         end
@@ -65,10 +68,13 @@ class Members < Grape::API
     post 'login', jbuilder: 'members/member' do
       if sign_approval?
         current_device
-        @member = Member.by_phone(params[:phone]).first || Member.where(id: @device.member_id).without_phone.first
-        if @member && (@member.validate_login_captcha params[:captcha])
-          @member.update_attributes(phone: params[:phone], verified: true) unless @member.phone
-          @member.device = @device
+        current_member
+        if @member && @member.validate_captcha?(params[:captcha])
+          unless @member.phone
+            @member.update_attribute(:phone, params[:phone])
+            verified!(false)
+          end
+          @member.relate_to_device(params[:device_id])
         else
           error! "验证码错误", 400
         end
@@ -113,7 +119,7 @@ class Members < Grape::API
       put :validate_captcha, jbuilder: 'members/member' do
         if sign_approval?
           @member = Member.find(params[:id])
-          if @member.validate_captcha?(params[:phone], params[:captcha])
+          if @member.validate_captcha_with_phone?(params[:captcha], params[:phone])
             @member.relate_to_device(params[:device_id])
             @member.verified!
           end
