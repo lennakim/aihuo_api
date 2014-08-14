@@ -70,6 +70,10 @@ class API < Grape::API
       hash_signature = declared(params, include_missing: false)
       sign(hash_signature, signature_keys).eql? params[:sign]
     end
+
+    def verify_sign
+      error!("Access Denied", 401) unless sign_approval?
+    end
   end
 
   mount ::Welcome
