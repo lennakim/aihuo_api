@@ -10,7 +10,7 @@ require "minitest/rails"
 # Uncomment for awesome colorful output
 require "minitest/pride"
 
-# require 'minitest/focus'
+require 'minitest/focus'
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
