@@ -17,3 +17,11 @@
     * 加载所有 lib 文件夹内的文件
     * 配置 ShamanCache 的缓存方式
     * 加载 api, app 两个文件
+
+## 运行测试
+
+```
+rake db:schema:dump
+rake db:test:prepare
+rake test
+```
