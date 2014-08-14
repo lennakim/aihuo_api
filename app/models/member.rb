@@ -48,7 +48,7 @@ class Member < ActiveRecord::Base
   def send_captcha(phone)
     return if !can_send_captcha?
     generate_captcha
-    message = "【首趣商城】手机验证码:#{captcha}"
+    message = "手机验证码:#{captcha} 【首趣商城】"
 
     ShortMessage.send_sms(phone, message)
   end
