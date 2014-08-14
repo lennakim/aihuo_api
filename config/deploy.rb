@@ -12,8 +12,15 @@ require 'mina/rails'
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :domain, '115.29.164.196' # production 1
-# set :domain, '115.29.4.146' # production 2
+#
+# mina deploy to=s1
+case ENV['to']
+when 's1'
+  set :domain, '115.29.164.196' # production 1
+when 's2'
+  set :domain, '115.29.4.146' # production 2
+end
+
 set :domains, ['115.29.164.196', '115.29.4.146']
 
 set :deploy_to, '/var/www/api.aihuo360.com'
@@ -78,12 +85,13 @@ task :deploy => :environment do
     invoke :'git:clone'
     invoke :'deploy:cleanup'
     invoke :'deploy:link_shared_paths'
-    invoke :'bundle:install'
+    # invoke :'bundle:install'
     # invoke :'bundle:install --binstubs'
     # invoke :'rails:db_migrate'
     # invoke :'rails:assets_precompile'
 
     to :launch do
+      queue "cd #{app_path} ; bundle install --without nothing"
       invoke :restart
       # invoke :start
     end

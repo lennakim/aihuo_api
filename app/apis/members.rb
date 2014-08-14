@@ -24,15 +24,12 @@ class Members < Grape::API
     end
 
     post "/", jbuilder: 'members/member' do
-      if sign_approval?
-        @member = Member.new(member_params)
-        if @member.save
-          @member.relate_to_device(params[:device_id])
-        else
-          error!(@member.errors.full_messages.join, 500)
-        end
+      verify_sign
+      @member = Member.new(member_params)
+      if @member.save
+        @member.relate_to_device(params[:device_id])
       else
-        error! "Access Denied", 401
+        error!(@member.errors.full_messages.join, 500)
       end
     end
 
@@ -44,16 +41,15 @@ class Members < Grape::API
     end
 
     get 'login' do
-      if sign_approval?
-        current_device
-        current_member
-        if @member && @member.send_captcha(params[:phone])
-          { result: '验证码已发送' }
-        else
-          error! "用户不存在", 404
-        end
+      verify_sign
+      current_device
+      current_member
+      if @member
+        # FIXME: 这里的逻辑是错误的，有可能发送验证码失败，比如次数已满或者2分钟之内只能发一次
+        @member.send_captcha(params[:phone])
+        { result: '验证码已发送' }
       else
-        error! "Access Denied", 401
+        error! "用户不存在", 404
       end
     end
 
@@ -66,20 +62,17 @@ class Members < Grape::API
     end
 
     post 'login', jbuilder: 'members/member' do
-      if sign_approval?
-        current_device
-        current_member
-        if @member && @member.validate_captcha?(params[:captcha])
-          unless @member.phone
-            @member.update_attribute(:phone, params[:phone])
-            verified!(false)
-          end
-          @member.relate_to_device(params[:device_id])
-        else
-          error! "验证码错误", 400
+      verify_sign
+      current_device
+      current_member
+      if @member && @member.validate_captcha?(params[:captcha])
+        unless @member.phone
+          @member.update_attribute(:phone, params[:phone])
         end
+        @member.relate_to_device(params[:device_id])
+        @member.verified!(false)
       else
-        error! "Access Denied", 401
+        error! "验证码错误", 400
       end
     end
 
@@ -99,13 +92,10 @@ class Members < Grape::API
       end
 
       put :send_captcha, jbuilder: 'members/member' do
-        if sign_approval?
-          @member = Member.find(params[:id])
-          @member.update_attribute(:phone, params[:phone])
-          @member.send_captcha params[:phone]
-        else
-          error! "Access Denied", 401
-        end
+        verify_sign
+        @member = Member.find(params[:id])
+        @member.update_attribute(:phone, params[:phone])
+        @member.send_captcha params[:phone]
       end
 
       desc "Validate captcha"
@@ -117,14 +107,11 @@ class Members < Grape::API
       end
 
       put :validate_captcha, jbuilder: 'members/member' do
-        if sign_approval?
-          @member = Member.find(params[:id])
-          if @member.validate_captcha_with_phone?(params[:captcha], params[:phone])
-            @member.relate_to_device(params[:device_id])
-            @member.verified!
-          end
-        else
-          error! "Access Denied", 401
+        verify_sign
+        @member = Member.find(params[:id])
+        if @member.validate_captcha_with_phone?(params[:captcha], params[:phone])
+          @member.relate_to_device(params[:device_id])
+          @member.verified!
         end
       end
 
