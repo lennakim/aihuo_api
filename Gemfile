@@ -31,6 +31,12 @@ group :development do
   gem 'rubocop', '~> 0.18.1'
 end
 
+group :test do
+  gem 'sqlite3'
+  gem 'minitest-rails'
+  gem 'minitest-focus'
+end
+
 group :development, :test do
   # gem 'api_taster', '0.6.0'
   gem 'pry'
