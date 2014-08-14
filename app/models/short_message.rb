@@ -16,7 +16,7 @@ class ShortMessage < ActiveRecord::Base
     if self.can_send_sms_to_device?(device_id)
       content = confirm_msg(order, type)
       if content.present?
-        result = BluestormSMS.send order.phone, content
+        result = self.send_sms(order.phone, content)
         if result[:success]
           order.update_attribute :sms_sended, true
           order.short_messages.create({ device_id: device_id, phone: order.phone, content: content, sended: true})
@@ -36,13 +36,8 @@ class ShortMessage < ActiveRecord::Base
     sended.today.where(device_id: device_id).count < 6
   end
 
-  def self.send_sms_from_emay(phone, message)
-    ChinaSMS.use(
-      :emay,
-      username: Setting.find_by_name(:sms_key).value,
-      password: Setting.find_by_name(:sms_pwd).value
-    )
-    ChinaSMS.to phone, message
+  def self.send_sms(phone, message)
+    BluestormSMS.send phone, message
   end
   # public instance methods ...................................................
   # protected instance methods ................................................
