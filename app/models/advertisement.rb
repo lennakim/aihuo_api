@@ -16,6 +16,7 @@ class Advertisement < ActiveRecord::Base
       .where(activity: true)
       .where("adv_statistics.install_count < adv_contents.plan_view_count")
       .order("updated_at DESC")
+      .distinct
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   self.table_name = "adv_contents"

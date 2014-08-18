@@ -1,0 +1,39 @@
+# Read about fixtures at
+# http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one:
+  id: 1
+  name: '爽翻天'
+  api_key: '731d17d9'
+  secret_key: '7ca0a5dc59e7f342c5063d0b48906c39'
+  user_id: 1
+  display_advertising: 1
+  getui_app_id: 'r4vsDdC0If7HLgCMcNhyLA'
+  getui_app_key: 'ZrSPSE91SK9bRcoYa2UoV4'
+  getui_master_secret: '3xz86XnQxJ6LQQMjiDikg6'
+
+two:
+  id: 2
+  name: '秘蜜'
+  api_key: '2d4c5104'
+  secret_key: '8604846a2d75a61e9ff1922cbc87937e'
+  user_id: 1
+  display_advertising: 1
+  getui_app_id: 'r4vsDdC0If7HLgCMcNhyLA'
+  getui_app_key: 'ZrSPSE91SK9bRcoYa2UoV4'
+  getui_master_secret: '3xz86XnQxJ6LQQMjiDikg6'
+
+three:
+  id: 3
+  name: '快活林'
+  api_key: 'bc1be8d9'
+  secret_key: '84f1e7911e447466dd093f389fedb23c'
+  user_id: 2
+  display_advertising: 0
+  getui_app_id: 'r4vsDdC0If7HLgCMcNhyLA'
+  getui_app_key: 'ZrSPSE91SK9bRcoYa2UoV4'
+  getui_master_secret: '3xz86XnQxJ6LQQMjiDikg6'
