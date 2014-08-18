@@ -37,7 +37,7 @@ module ShouquApi
     # Config minitest-rails
     # https://github.com/blowmage/minitest-rails#usage
     config.generators do |g|
-      g.test_framework :minitest, spec: true, fixture: true
+      g.test_framework :minitest, spec: false, fixture: true
     end
   end
 end
