@@ -12,6 +12,10 @@ require "minitest/pride"
 
 require 'minitest/focus'
 
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :truncation
+
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
@@ -24,5 +28,13 @@ class ActiveSupport::TestCase
   # http://dev.mensfeld.pl/tag/deprecation-warning/
   set_fixture_class adv_contents: Advertisement
   fixtures :all
+
+  def setup
+    DatabaseCleaner.start
+  end
+
+  def teardown
+    DatabaseCleaner.clean
+  end
 
 end

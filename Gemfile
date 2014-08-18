@@ -35,6 +35,7 @@ group :test do
   gem 'sqlite3'
   gem 'minitest-rails'
   gem 'minitest-focus'
+  gem 'database_cleaner'
 end
 
 group :development, :test do
