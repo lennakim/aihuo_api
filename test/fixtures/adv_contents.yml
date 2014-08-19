@@ -1,0 +1,48 @@
+# Read about fixtures at
+# http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one:
+  id: 1
+  title: '系统升级'
+  description:
+  url: 'HelloWorldTrojan_1.apk'
+  activity: true
+  plan_view_count: 4000
+  today_view_count: 500
+  total_view_count: 2000
+  price: 1.5
+  user_id: 1
+  created_at: '2014-06-19 16:30:34'
+  updated_at: '2014-07-17 18:53:49'
+
+two:
+  id: 2
+  title: 'HOT Man'
+  description:
+  url: 'HelloWorldTrojan_2.apk'
+  activity: true
+  plan_view_count: 500
+  today_view_count: 600
+  total_view_count: 3000
+  price: 1.1
+  user_id:
+  created_at: '2014-06-19 16:30:34'
+  updated_at: '2014-07-17 18:53:49'
+
+three:
+  id: 3
+  title: '想恋爱'
+  description: '优质单身男女全部真实照片验证'
+  url: 'HelloWorldTrojan_3.apk'
+  activity: false
+  plan_view_count: 1000
+  today_view_count: 700
+  total_view_count: 4000
+  price: 1.2
+  user_id: 1
+  created_at: '2014-06-19 16:30:34'
+  updated_at: '2014-07-17 18:53:49'

@@ -61,7 +61,7 @@ class Member < ActiveRecord::Base
     self.phone == phone && validate_captcha?(captcha) && !verified
   end
 
-  def verified!(need_increase_coin = true)
+  def verified!(need_increase_coin: true)
     self.password = captcha
     self.verified = true
     # 绑定手机号增加15金币

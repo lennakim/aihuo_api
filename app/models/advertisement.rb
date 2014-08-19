@@ -3,12 +3,20 @@ class Advertisement < ActiveRecord::Base
   # includes ..................................................................
   include CarrierWave
   # relationships .............................................................
+  has_many :adv_statistics, foreign_key: "adv_content_id"
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
-  default_scope {
-    where(activity: true).where("today_view_count < actual_view_count")
+  # default_scope {
+  #   where(activity: true).where("today_view_count < actual_view_count")
+  #     .order("updated_at DESC")
+  # }
+  scope :available, -> {
+    joins(:adv_statistics).merge(AdvStatistic.today)
+      .where(activity: true)
+      .where("adv_statistics.install_count < adv_contents.plan_view_count")
       .order("updated_at DESC")
+      .distinct
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   self.table_name = "adv_contents"

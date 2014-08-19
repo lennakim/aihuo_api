@@ -70,7 +70,7 @@ class Members < Grape::API
           @member.update_attribute(:phone, params[:phone])
         end
         @member.relate_to_device(params[:device_id])
-        @member.verified!(false)
+        @member.verified!(need_increase_coin: false)
       else
         error! "验证码错误", 400
       end
