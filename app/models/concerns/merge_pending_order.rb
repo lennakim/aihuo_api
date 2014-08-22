@@ -64,8 +64,20 @@ module MergePendingOrder
     # 优惠劵
     coupon_ids = original_order.coupons.collect(&:to_param)
     original_order.calculate_total_by_coupons(coupon_ids, false)
+    content = merge_orders_content(pending_orders)
+    original_order.orderlogs.logging_action(:merge, content)
     pending_orders.destroy_all
   end
+
+  def merge_orders_content(orders)
+    content = ""
+    orders.each do |order|
+      content << "合并了订单 #{order.id} 包含产品："
+      order.line_items.each { |item| content << "#{item.product_prop_value}" }
+    end
+    content
+  end
+  private :merge_orders_content
 
   # 1. create order
   # 2. order item total == 0

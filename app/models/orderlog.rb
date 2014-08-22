@@ -10,13 +10,17 @@ class Orderlog < ActiveRecord::Base
   def self.logging_action(method, content)
     case method.to_sym
     when :delete # 用户自己删除订单
-      create({ content: "Device ID: #{content} 刪除了订单。" })
+      create({ content: "【用户操作】用户刪除了订单 Device ID: #{content} " })
+    when :cancel # 用户自己取消订单
+      create({ content: "【用户操作】用户取消了订单 Device ID: #{content} " })
+    when :merge # 自动合并订单
+      create({ content: "【自动合并】#{content}" })
     when :send_confirm_sms # 用户下单
       create({ content: "【自动短信】#{content}" })
     when :send_confirm_sms_error
-      create({ content: "【短信失败】订单号码 #{content} 发送自动确认短信失败。请检查短信网关。" })
+      create({ content: "【短信失败】订单号码 #{content} 发送自动确认短信失败。请检查短信网关" })
     when :order_pay
-      create({ content: "【付款记录】客户成功支付 #{content} 元。" })
+      create({ content: "【付款记录】客户成功支付 #{content} 元" })
     end
   end
   # public instance methods ...................................................

@@ -239,6 +239,7 @@ class Order < ActiveRecord::Base
 
   def cancel!
     update_attribute(:state, "客户放弃，订单取消")
+    orderlogs.logging_action(:cancel, device_id)
   end
 
   def cancel_or_delete_by_client
