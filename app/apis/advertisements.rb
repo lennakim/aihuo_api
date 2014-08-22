@@ -6,7 +6,7 @@ class Advertisements < Grape::API
     route_param :id do
       desc "Change advertisement info."
       params do
-        requires :action, type: Symbol, values: [:view, :click, :install], desc: "Action Name."
+        requires :action, type: Symbol, values: [:view, :read, :click, :install], desc: "Action Name."
         requires :device_id, type: String, desc: "Device ID."
       end
       put "/" do
