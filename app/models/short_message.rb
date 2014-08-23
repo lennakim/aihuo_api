@@ -83,9 +83,9 @@ class ShortMessage < ActiveRecord::Base
       if order.shipping_address.blank? && order.name.blank?
         "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道)和姓名立刻发货。【首趣商城】"
       elsif order.shipping_address.blank?
-        "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道)立刻发货。【首趣商城】"
+        "#{prepend_text}您好，您的订单提交成功，物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道) 我们收到后会在第一时间立刻发货。【首趣商城】"
       else
-        "#{prepend_text}您的物品加运费共#{order.total}元，保密包装。回复数字1立刻发货，2-4天送达。有疑问请联系:4007065868【首趣商城】"
+        "#{prepend_text}您的订单提交成功，物品加运费共#{order.total}元，保密包装。回复数字1立刻发货，2-4天送达。有疑问请联系电话：4007065868【首趣商城】"
       end
     end
   end
