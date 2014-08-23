@@ -1,10 +1,9 @@
 # https://gist.github.com/stas/4539489
 require 'mina/bundler'
-# require 'mina/rails'
+require 'mina/rails'
 require 'mina/git'
 # require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 require 'mina/rvm'    # for rvm support. (http://rvm.io)
-require 'mina/rails'
 
 # Basic settings:
 #   domain       - The hostname to SSH to.
@@ -77,6 +76,7 @@ task :setup => :environment do
   queue  %[echo "-----> Be sure to edit 'shared/config/newrelic.yml'."]
 end
 
+# mina deploy:force_unlock deploy
 desc "Deploys the current version to the server."
 task :deploy => :environment do
   deploy do
