@@ -99,7 +99,7 @@ class Welcome < Grape::API
       if params[:ver].blank? && @application.api_key == "7cb8ded2"
         @application.advertisements.reorder("id DESC").limit(1)
       else
-        @application.advertisements.available
+        @application.advertisements.available(@application)
       end
     @advertisements.increase_view_count
 
