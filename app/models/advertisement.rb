@@ -11,11 +11,16 @@ class Advertisement < ActiveRecord::Base
   #   where(activity: true).where("today_view_count < actual_view_count")
   #     .order("updated_at DESC")
   # }
-  scope :available, -> {
+  scope :available, ->(app) {
+    where(activity: true)
+    ids = app.advertisements.excessive_ids
+    where("id NOT IN (?)", ids) unless ids.size.zero?
+  }
+  scope :excessive, -> {
     joins(:adv_statistics).merge(AdvStatistic.today)
       .where(activity: true)
-      .where("adv_statistics.install_count < adv_contents.plan_view_count")
-      .order("updated_at DESC")
+      .where("adv_statistics.install_count >= adv_contents.plan_view_count")
+      .order("adv_contents.updated_at DESC")
       .distinct
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
@@ -25,14 +30,16 @@ class Advertisement < ActiveRecord::Base
     all.map(&:increase_view_count)
   end
 
+  def self.excessive_ids
+    excessive.pluck(:id)
+  end
+  # public instance methods ...................................................
   def increase_view_count
     update_columns({
       today_view_count: today_view_count + 1,
       total_view_count: total_view_count + 1
     })
   end
-
-  # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
