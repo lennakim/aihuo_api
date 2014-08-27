@@ -50,7 +50,7 @@ class Welcome < Grape::API
       profile_number
     ]
 
-    cache(key: cacke_key, expires_in: 5.minutes) do
+    # cache(key: cacke_key, expires_in: 5.minutes) do
       page_for_360, page_for_authority, page_for_skin = set_homepage_data
       case params[:filter]
       when :healthy
@@ -86,7 +86,7 @@ class Welcome < Grape::API
         ]
         @brands = page_for_authority.contents.brands
       end
-    end
+    # end
   end
 
   get :notifications, jbuilder: 'welcome/notification' do
