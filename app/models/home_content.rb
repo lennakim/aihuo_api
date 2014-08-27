@@ -25,6 +25,8 @@ class HomeContent < ActiveRecord::Base
     else
       nil
     end
+  rescue
+    "ID error"
   end
 
   def image
