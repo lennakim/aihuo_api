@@ -125,10 +125,12 @@ task :cat_err_log => :environment do
   queue "tail -n 200 #{app_path}/log/puma.err.log"
 end
 
-#use like mina clear_cache type='product'
+# How to use: mina clear_cache to=s1 rails_env=production
+desc "Clean memcache"
 task :clear_cache => :environment do
   queue! 'echo "Cleaning Cache:"'
-  queue  "cd #{app_path} ;bundle exec rake cache:clear"
+  queue  "cd #{app_path}; bundle exec rake cache:clear RAILS_ENV=#{rails_env}"
+  queue  %[echo "-----> Rake Seeding Completed."]
 end
 
 desc 'run racksh'
