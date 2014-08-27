@@ -3,6 +3,7 @@ class Application < ActiveRecord::Base
   # includes ..................................................................
   include EncryptedId
   # relationships .............................................................
+  has_many :homepages
   has_many :coupons
   has_many :resources, class_name: 'Resource'
   has_many :articles, through: :resources, source: :resable, source_type: "Article"

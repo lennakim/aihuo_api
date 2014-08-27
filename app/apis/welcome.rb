@@ -23,6 +23,14 @@ class Welcome < Grape::API
         "0"
       end
     end
+
+    def set_homepage_data
+      homepages = Homepage.for_app(@application).by_hour(profile_number)
+      page_for_360 = homepages.find_by(label: "360")
+      page_for_authority = homepages.find_by(label: "官方")
+      page_for_skin = homepages.find_by(label: "皮肤")
+      [page_for_360, page_for_authority, page_for_skin]
+    end
   end
 
   params do
@@ -43,10 +51,7 @@ class Welcome < Grape::API
     ]
 
     cache(key: cacke_key, expires_in: 5.minutes) do
-      page_for_360 = Homepage.by_hour(profile_number).find_by(label: "首趣啪啪360")
-      page_for_authority = Homepage.by_hour(profile_number).find_by(label: "首趣啪啪官方")
-      page_for_skin = Homepage.by_hour(profile_number).find_by(label: "首趣啪啪皮肤")
-
+      page_for_360, page_for_authority, page_for_skin = set_homepage_data
       case params[:filter]
       when :healthy
         @banners = Article.healthy.limit(2)
