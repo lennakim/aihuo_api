@@ -12,9 +12,10 @@ class Advertisement < ActiveRecord::Base
   #     .order("updated_at DESC")
   # }
   scope :available, ->(app) {
-    where(activity: true)
+    scoped = where(activity: true)
     ids = app.advertisements.excessive_ids
-    where("id NOT IN (?)", ids) unless ids.size.zero?
+    scoped.where("id NOT IN (?)", ids) unless ids.size.zero?
+    scoped
   }
   scope :excessive, -> {
     joins(:adv_statistics).merge(AdvStatistic.today)
