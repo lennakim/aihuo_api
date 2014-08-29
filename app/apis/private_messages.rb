@@ -5,7 +5,7 @@ class PrivateMessages < Grape::API
         Member.decrypt(
           Member.encrypted_id_key,
           params[:private_message][:receiver_id]
-          )
+        )
       sender_id =
         Member.decrypt(
           Member.encrypted_id_key,
