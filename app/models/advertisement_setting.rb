@@ -3,26 +3,28 @@ class AdvertisementSetting < ActiveRecord::Base
   # includes ..................................................................
   # relationships .............................................................
   belongs_to :application
-  has_and_belongs_to_many :tactics,
-    join_table: 'adv_settings_adv_tactics',
-    foreign_key: 'adv_setting_id',
-    association_foreign_key: 'adv_tactic_id'
+  # has_and_belongs_to_many :tactics,
+  #   join_table: 'adv_settings_adv_tactics',
+  #   foreign_key: 'adv_setting_id',
+  #   association_foreign_key: 'adv_tactic_id'
+  has_many :tactics, foreign_key: 'adv_setting_id'
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
   default_scope { where(activity: true) }
   scope :by_channel, ->(channel) {
     settings = where(channel: channel)
-    settings = where(channel: "全部渠道") if settings.size.zero?
+    settings = where(channel: DEFAULT_CHANNL) if settings.size.zero?
     settings
   }
   # TODO: plese remove `by_channel_and_app` scope later.
   scope :by_channel_and_app, ->(channel, app) {
     settings = where(product_name: app.name, channel: channel)
-    settings = where(product_name: app.name, channel: "全部渠道") if settings.size.zero?
+    settings = where(product_name: app.name, channel: DEFAULT_CHANNL) if settings.size.zero?
     settings
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
+  DEFAULT_CHANNL = "默认渠道"
   self.table_name = "adv_settings"
   # class methods .............................................................
   # public instance methods ...................................................
