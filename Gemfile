@@ -19,7 +19,7 @@ gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
 gem 'bluestorm_sms', '0.0.4'
 gem 'dalli', github: 'flypiggy/dalli'
-gem 'igetui-ruby', require: 'igetui'
+gem 'igetui-ruby', '1.2.0', require: 'igetui'
 
 group :development do
   gem 'spring'

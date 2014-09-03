@@ -23,6 +23,8 @@ class GetuiPusher < Notification
               }
     content = content.to_s.gsub(":", "").gsub("=>", ":")
     template.transmission_content = content
+    # set iOS push info
+    template.set_push_info("ok", 1, args[:title], "")
 
     # 创建单体消息
     single_message = IGeTui::SingleMessage.new
