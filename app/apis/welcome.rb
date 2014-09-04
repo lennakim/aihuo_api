@@ -120,7 +120,7 @@ class Welcome < Grape::API
            adv_content_id_container += tactic.adv_content_ids
         end
         adv_content_id_container.uniq!
-        @advertisements = Advertisement.useable(adv_content_id_container)
+        Advertisement.useable(adv_content_id_container)
       end
     @advertisements.increase_view_count
   end
