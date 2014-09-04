@@ -25,11 +25,18 @@ class Advertisement < ActiveRecord::Base
       .distinct
   }
 
+  scope :useable, ->(ids){
+     infer_ids =  Advertisement.where(id: ids).available
+     infer_ids.each do |advertisement|
+      ids.delete(advertisement.id)
+     end
+     Advertisement.where(id: ids)
+  }
   scope :available, -> {
     Advertisement.select("adv_contents.*, sum(adv_statistics.install_count)")
     .joins(:adv_statistics).merge(AdvStatistic.today)
     .group("adv_contents.id")
-    .having("sum(adv_statistics.install_count) < adv_contents.plan_view_count")
+    .having("sum(adv_statistics.install_count) >= adv_contents.plan_view_count")
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   self.table_name = "adv_contents"
