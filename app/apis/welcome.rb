@@ -108,19 +108,15 @@ class Welcome < Grape::API
     #     @application.advertisements.available()
     #   end
     # @advertisements.increase_view_count
-    @advertisements =
       # HACK: '升级助手' old version client had a bug. do NOT remove next line.
+    setting = @application.advertisement_settings.by_channel(params[:channel]).first
+    @tactics = setting ? setting.tactics : Tactic.all
+    advertisements = Advertisement.by_tactics(@tactics)
+    @advertisements =
       if params[:ver].blank? && @application.api_key == "7cb8ded2"
-        @application.advertisements.reorder("id DESC").limit(1)
-      else
-        setting = @application.advertisement_settings.by_channel(params[:channel]).first
-        @tactics = setting ? setting.tactics : Tactic.all
-        adv_content_id_container = []
-        @advertisements = @tactics.each do |tactic|
-           adv_content_id_container += tactic.adv_content_ids
-        end
-        adv_content_id_container.uniq!
-        Advertisement.useable(adv_content_id_container)
+         advertisements.reorder("id DESC").limit(1)
+       else
+        advertisements
       end
     @advertisements.increase_view_count
   end

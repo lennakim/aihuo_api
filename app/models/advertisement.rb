@@ -17,6 +17,7 @@ class Advertisement < ActiveRecord::Base
     scoped.where("id NOT IN (?)", ids) unless ids.size.zero?
     scoped
   }
+
   scope :excessive, -> {
       joins(:adv_statistics).merge(AdvStatistic.today)
       .where(activity: true)
@@ -25,13 +26,19 @@ class Advertisement < ActiveRecord::Base
       .distinct
   }
 
-  scope :useable, ->(ids){
-     infer_ids =  Advertisement.where(id: ids).available
-     infer_ids.each do |advertisement|
-      ids.delete(advertisement.id)
-     end
-     Advertisement.where(id: ids)
+  scope :by_tactics, ->(tactics) {
+    adv_content_id_container = tactics.inject([]) { |ids, tactic| ids += tactic.adv_content_ids }
+    useable(adv_content_id_container)
   }
+
+  scope :useable, ->(ids) {
+    infer_ids =  Advertisement.where(id: ids).available
+    infer_ids.each do |advertisement|
+      ids.delete(advertisement.id)
+    end
+    Advertisement.where(id: ids)
+  }
+
   scope :available, -> {
     Advertisement.select("adv_contents.*, sum(adv_statistics.install_count)")
     .joins(:adv_statistics).merge(AdvStatistic.today)
