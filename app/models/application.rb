@@ -8,10 +8,12 @@ class Application < ActiveRecord::Base
   has_many :resources, class_name: 'Resource'
   has_many :articles, through: :resources, source: :resable, source_type: "Article"
   has_many :advertisement_settings
-  has_and_belongs_to_many :advertisements,
-    join_table: 'adv_contents_applications',
-    foreign_key: 'application_id',
-    association_foreign_key: 'adv_content_id'
+  has_many :tactics, through: :advertisement_settings
+  # Remember to remove `adv_contents_applications` later.
+  # has_and_belongs_to_many :advertisements,
+  #   join_table: 'adv_contents_applications',
+  #   foreign_key: 'application_id',
+  #   association_foreign_key: 'adv_content_id'
 
   # validations ...............................................................
   # callbacks .................................................................
@@ -20,6 +22,9 @@ class Application < ActiveRecord::Base
   encrypted_id key: 'VUUZzOQXNwx8HuyD'
   # class methods .............................................................
   # public instance methods ...................................................
+  def advertisements
+    Advertisement.by_tactics(tactics)
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end

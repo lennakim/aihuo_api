@@ -11,17 +11,17 @@ class AdvertisementSetting < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
-  default_scope { where(activity: true) }
+  scope :activity, -> { where(activity: true) }
   scope :by_channel, ->(channel) {
     settings = where(channel: channel)
     settings = where(channel: DEFAULT_CHANNL) if settings.size.zero?
-    settings
+    settings.activity
   }
   # TODO: plese remove `by_channel_and_app` scope later.
   scope :by_channel_and_app, ->(channel, app) {
     settings = where(product_name: app.name, channel: channel)
     settings = where(product_name: app.name, channel: DEFAULT_CHANNL) if settings.size.zero?
-    settings
+    settings.activity
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   DEFAULT_CHANNL = "默认渠道"
