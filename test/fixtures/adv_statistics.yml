@@ -19,7 +19,7 @@ fix_<%= i %>:
 <% 0.upto(29) do |i| %>
 fix_<%= i + 30 %>:
   application_id: 1
-  adv_content_id: 2
+  adv_content_id: 7
   view_count: <%= 3000 + i %>
   click_count: <%= 2000 + i %>
   install_count: <%= 1000 + i %>

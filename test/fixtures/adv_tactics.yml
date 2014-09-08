@@ -1,4 +1,4 @@
-# 仅包含有效数据
+# 包含广告未激活的数据
 tactic_1:
   id: 1
   action: open_app
@@ -31,7 +31,7 @@ tactic_3:
   created_at: '2014-06-19 16:30:34'
   updated_at: '2014-07-17 18:53:49'
 
-# 包含广告超量的数据, 广告 7 是未激活状态
+# 包含广告超量的数据, 广告 7 是超量
 tactic_4:
   id: 4
   action: open_app
@@ -42,13 +42,3 @@ tactic_4:
   created_at: '2014-06-19 16:30:34'
   updated_at: '2014-07-17 18:53:49'
 
-# app 2 的渠道设置关闭，不该返回此策略
-tactic_5:
-  id: 5
-  action: open_app
-  value: 20
-  notice_type: 1
-  adv_content_ids: <%= [1, 4].to_yaml.inspect %>
-  adv_setting_id: 2
-  created_at: '2014-06-19 16:30:34'
-  updated_at: '2014-07-17 18:53:49'

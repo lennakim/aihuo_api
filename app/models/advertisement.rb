@@ -7,8 +7,10 @@ class Advertisement < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
-  scope :available, -> {
+  scope :available, -> { where(adv_contents: { activity: true }) }
+  scope :unavailable, -> {
     select("adv_contents.*, SUM(adv_statistics.install_count) AS ic")
+      .where(adv_contents: { activity: true })
       .joins(:adv_statistics).merge(AdvStatistic.today)
       .group("adv_contents.id")
       .having("ic >= adv_contents.plan_view_count")
@@ -17,13 +19,17 @@ class Advertisement < ActiveRecord::Base
   self.table_name = "adv_contents"
   # class methods .............................................................
   def self.available_ids
-    available.all.map { |advertisement| advertisement.id }
+    available.pluck(:id)
+  end
+
+  def self.unavailable_ids
+    unavailable.all.map { |advertisement| advertisement.id }
   end
 
   def self.by_tactics(tactics)
-    combination = Proc.new { |sum, obj| ids << obj.adv_content_ids }
+    combination = Proc.new { |ids, obj| ids << obj.adv_content_ids.to_a }
     ids = tactics.inject([], &combination).flatten!
-    ids.blank? ? none : where(id: ids - self.available_ids)
+    ids.blank? ? none : where(id: (ids & available_ids) - unavailable_ids)
   end
 
   def self.increase_view_count
