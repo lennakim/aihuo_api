@@ -10,7 +10,6 @@ class Advertisement < ActiveRecord::Base
   scope :available, -> { where(adv_contents: { activity: true }) }
   scope :unavailable, -> {
     select("adv_contents.*, SUM(adv_statistics.install_count) AS ic")
-      .where(adv_contents: { activity: true })
       .joins(:adv_statistics).merge(AdvStatistic.today)
       .group("adv_contents.id")
       .having("ic >= adv_contents.plan_view_count")
