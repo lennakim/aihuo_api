@@ -12,6 +12,9 @@ module CoinRule
     case self # means case self.class
     when Member
       self.update_column(:coin_total, coin_total + coin)
+    when TaskLogging
+      member = self.member
+      member.update_column(:coin_total, member.coin_total + coin)
     end
   end
 

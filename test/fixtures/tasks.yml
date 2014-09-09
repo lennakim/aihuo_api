@@ -5,21 +5,18 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+
 one:
   id: 1
-  nickname: 'Victor'
-  coin_total: 5
-  verified: true
-  gender: true
-  phone: '13522412871'
-  captcha: '123456'
+  name: "login"
+  action: "increase"
+  value: 10
+  description: '登录送金币'
+
 
 two:
   id: 2
-  nickname: 'Tron'
-  coin_total: 40
-  verified: true
-  gender: true
-  phone: '13522412871'
-  captcha: '123456'
-
+  name: "test task"
+  action: "increase"
+  value: 5
+  description: '测试任务'
