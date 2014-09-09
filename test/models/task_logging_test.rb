@@ -17,7 +17,7 @@ class TaskLoggingTest < ActiveSupport::TestCase
     member = Member.find_by(id: 2)
     task_logging = TaskLogging.new(task_id: login_task.id, member_id: member.id)
     refute task_logging.save
-    assert_equal "此任务今日已完成。", task_logging.errors[:task_id][0]
+    assert_equal "此任务已完成。", task_logging.errors[:task_id][0]
   end
 
   # 情景3：一个设备可以每天完成多个非签到任务

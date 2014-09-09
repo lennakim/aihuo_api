@@ -22,10 +22,6 @@ class PrivateMessages < Grape::API
       Member.decrypt(Member.encrypted_id_key, params[:member_id])
     end
 
-    def authenticate?
-      member = Member.find params[:member_id]
-      member && member.authenticate?(params[:password])
-    end
   end
 
   resources 'private_messages' do
