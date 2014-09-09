@@ -978,13 +978,11 @@ ActiveRecord::Schema.define(version: 20140909062801) do
 
   create_table "task_loggings", force: true do |t|
     t.integer  "task_id"
-    t.string   "device_id"
     t.integer  "member_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "task_loggings", ["device_id"], name: "index_task_loggings_on_device_id", using: :btree
   add_index "task_loggings", ["member_id"], name: "index_task_loggings_on_member_id", using: :btree
   add_index "task_loggings", ["task_id"], name: "index_task_loggings_on_task_id", using: :btree
 
