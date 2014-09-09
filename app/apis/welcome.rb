@@ -99,17 +99,16 @@ class Welcome < Grape::API
   end
   get :adsenses, jbuilder: 'welcome/adsenses' do
     current_application
-    @advertisements =
-      # HACK: '升级助手' old version client had a bug. do NOT remove next line.
-      if params[:ver].blank? && @application.api_key == "7cb8ded2"
-        @application.advertisements.reorder("id DESC").limit(1)
-      else
-        @application.advertisements.available(@application)
-      end
-    @advertisements.increase_view_count
 
     setting = @application.advertisement_settings.by_channel(params[:channel]).first
-    @tactics = setting ? setting.tactics : Tactic.all
+    @tactics = setting ? setting.tactics : []
+
+    @advertisements = Advertisement.by_tactics(@tactics)
+    # HACK: '升级助手' old version client had a bug. do NOT remove next line.
+    if params[:ver].blank? && @application.api_key == "7cb8ded2"
+      @advertisements = @advertisements.reorder("id DESC").limit(1)
+    end
+    @advertisements.increase_view_count
   end
 
   params do

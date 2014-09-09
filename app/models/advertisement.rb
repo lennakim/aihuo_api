@@ -7,33 +7,34 @@ class Advertisement < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
-  # default_scope {
-  #   where(activity: true).where("today_view_count < actual_view_count")
-  #     .order("updated_at DESC")
-  # }
-  scope :available, ->(app) {
-    scoped = where(activity: true)
-    ids = app.advertisements.excessive_ids
-    scoped.where("id NOT IN (?)", ids) unless ids.size.zero?
-    scoped
-  }
-  scope :excessive, -> {
-    joins(:adv_statistics).merge(AdvStatistic.today)
-      .where(activity: true)
-      .where("adv_statistics.install_count >= adv_contents.plan_view_count")
-      .order("adv_contents.updated_at DESC")
-      .distinct
+  scope :available, -> { where(adv_contents: { activity: true }) }
+  scope :unavailable, -> {
+    select("adv_contents.*, SUM(adv_statistics.install_count) AS ic")
+      .joins(:adv_statistics).merge(AdvStatistic.today)
+      .group("adv_contents.id")
+      .having("ic >= adv_contents.plan_view_count")
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   self.table_name = "adv_contents"
   # class methods .............................................................
+  def self.available_ids
+    available.pluck(:id)
+  end
+
+  def self.unavailable_ids
+    unavailable.all.map { |advertisement| advertisement.id }
+  end
+
+  def self.by_tactics(tactics)
+    combination = Proc.new { |ids, obj| ids << obj.adv_content_ids.to_a }
+    ids = tactics.inject([], &combination).flatten!
+    ids.blank? ? none : where(id: (ids & available_ids) - unavailable_ids)
+  end
+
   def self.increase_view_count
     all.map(&:increase_view_count)
   end
 
-  def self.excessive_ids
-    excessive.pluck(:id)
-  end
   # public instance methods ...................................................
   def increase_view_count
     update_columns({
