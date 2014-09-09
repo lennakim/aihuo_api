@@ -23,3 +23,11 @@ two:
   phone: '13522412871'
   captcha: '123456'
 
+three:
+  id: 3
+  nickname: 'Tu'
+  coin_total: 80
+  verified: true
+  gender: true
+  phone: '13522412871'
+  captcha: '123456'
