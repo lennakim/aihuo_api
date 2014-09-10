@@ -1,30 +1,15 @@
-class BaiduPusher < Notification
+class Task < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
   # relationships .............................................................
+  has_many :task_loggings
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
-  #
-  # Push baidu notification.
-  #
-  # args - A Hash, include attributes that should be insert into database.
-  #
-  # Examples
-  #
-  # args = {
-  #   notice_id: 1237,
-  #   notice_type: "Article",
-  #   push_type: 1,
-  #   message_type: 1,
-  #   application_id: 28,
-  #   user_id: "1129993806436450586",
-  #   channel_id: "getui",
-  # }
-  def self.push_msg(args)
-    self.create!(args)
+  def self.login_task
+    find_by(name: "login")
   end
   # public instance methods ...................................................
   # protected instance methods ................................................

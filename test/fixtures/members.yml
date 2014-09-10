@@ -7,14 +7,27 @@
 #
 one:
   id: 1
-  nickname: 'Nike'
+  nickname: 'Victor'
   coin_total: 5
   verified: true
   gender: true
   phone: '13522412871'
   captcha: '123456'
 
-# column: value
-#
-two: {}
-#  column: value
+two:
+  id: 2
+  nickname: 'Tron'
+  coin_total: 40
+  verified: true
+  gender: true
+  phone: '13522412871'
+  captcha: '123456'
+
+three:
+  id: 3
+  nickname: 'Tu'
+  coin_total: 80
+  verified: true
+  gender: true
+  phone: '13522412871'
+  captcha: '123456'

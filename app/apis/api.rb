@@ -74,6 +74,11 @@ class API < Grape::API
     def verify_sign
       error!("Access Denied", 401) unless sign_approval?
     end
+
+    def authenticate?
+      member = Member.find params[:member_id]
+      member && member.authenticate?(params[:password])
+    end
   end
 
   mount ::Welcome
@@ -93,4 +98,5 @@ class API < Grape::API
   mount ::PrivateMessages
   mount ::Contents
   mount ::Advertisements
+  mount ::Tasks
 end

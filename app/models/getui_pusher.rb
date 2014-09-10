@@ -7,6 +7,22 @@ class GetuiPusher < Notification
   # scopes ....................................................................
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
+  #
+  # Push getui notification.
+  #
+  # args - A Hash, include attributes that should be push.
+  #
+  # Examples
+  #
+  # args = {
+  #   notice_id: 1237,
+  #   notice_type: "Article",
+  #   push_type: 1,
+  #   message_type: 1,
+  #   application_id: 28,
+  #   user_id: "1129993806436450586",
+  #   channel_id: "getui",
+  # }
   def self.push_msg(args)
     app = Application.find_by(id: args[:application_id])
     pusher = IGeTui.pusher(app.getui_app_id, app.getui_app_key, app.getui_master_secret)

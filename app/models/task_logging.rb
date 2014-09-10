@@ -1,32 +1,28 @@
-class BaiduPusher < Notification
+class TaskLogging < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
+  include CoinRule
   # relationships .............................................................
+  belongs_to :task
+  belongs_to :member
   # validations ...............................................................
+  # TODO: 将所有金币增减相关的操作都放入 task loggins 系统中，可以追踪用户的每一笔金币记录。
+  validates_uniqueness_of :task_id,
+    scope: :member_id,
+    message: "此任务已完成。",
+    conditions: -> { where(created_at: Date.today.midnight..Date.today.end_of_day) },
+    if: Proc.new { |task_logging| task_logging.task_id == Task.login_task.id }
   # callbacks .................................................................
+  after_create :run_task
   # scopes ....................................................................
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
-  #
-  # Push baidu notification.
-  #
-  # args - A Hash, include attributes that should be insert into database.
-  #
-  # Examples
-  #
-  # args = {
-  #   notice_id: 1237,
-  #   notice_type: "Article",
-  #   push_type: 1,
-  #   message_type: 1,
-  #   application_id: 28,
-  #   user_id: "1129993806436450586",
-  #   channel_id: "getui",
-  # }
-  def self.push_msg(args)
-    self.create!(args)
-  end
   # public instance methods ...................................................
   # protected instance methods ................................................
+  protected
+
+  def run_task
+    send(task.action, task.value)
+  end
   # private instance methods ..................................................
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140828090220) do
+ActiveRecord::Schema.define(version: 20140909062801) do
 
   create_table "adultshop_configs", force: true do |t|
     t.string   "file"
@@ -975,6 +975,25 @@ ActiveRecord::Schema.define(version: 20140828090220) do
   end
 
   add_index "tags", ["category"], name: "index_tags_on_category", using: :btree
+
+  create_table "task_loggings", force: true do |t|
+    t.integer  "task_id"
+    t.integer  "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "task_loggings", ["member_id"], name: "index_task_loggings_on_member_id", using: :btree
+  add_index "task_loggings", ["task_id"], name: "index_task_loggings_on_task_id", using: :btree
+
+  create_table "tasks", force: true do |t|
+    t.string   "name"
+    t.string   "action"
+    t.integer  "value"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "ticket_histories", force: true do |t|
     t.integer  "workorder_id"
