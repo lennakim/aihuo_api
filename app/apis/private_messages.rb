@@ -18,7 +18,7 @@ class PrivateMessages < Grape::API
       declared(params, include_missing: false)[:private_message]
     end
 
-    def receiver_id
+    def user_id
       Member.decrypt(Member.encrypted_id_key, params[:member_id])
     end
 
@@ -34,7 +34,6 @@ class PrivateMessages < Grape::API
       optional :page, type: Integer, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
-
     get '/', jbuilder: 'private_messages/messages' do
       messages =
         case params[:filter]
@@ -44,7 +43,7 @@ class PrivateMessages < Grape::API
           PrivateMessage.unscoped.spam
         end
       if authenticate?
-        @private_messages = paginate(messages.by_receiver(receiver_id))
+        @private_messages = paginate(messages.by_receiver(user_id))
       else
         error! "Access Denied", 401
       end
@@ -68,6 +67,22 @@ class PrivateMessages < Grape::API
       end
     end
 
+    desc "Delete private messages by ids."
+    params do
+      requires :member_id, type: String, desc: "Member ID."
+      requires :password, type: String, desc: "Member Password."
+      optional :ids, type: Array, desc: "Private Messages ids."
+    end
+    delete "/" do
+      if authenticate?
+        ids = PrivateMessage.find(params[:ids]).pluck(:id)
+        PrivateMessage.delete_history_by_ids(ids, user_id)
+        status 202
+      else
+        error! "Access Denied", 401
+      end
+    end
+
     desc "Create a private message."
     params do
       requires :sign, type: String, desc: "Sign value"
@@ -79,7 +94,6 @@ class PrivateMessages < Grape::API
       requires :member_id, type: String, desc: "Member ID."
       requires :password, type: String, desc: "Member Password."
     end
-
     post "/", jbuilder: 'private_messages/message' do
       if sign_approval? && authenticate?
         @private_message = PrivateMessage.new(private_message_params)

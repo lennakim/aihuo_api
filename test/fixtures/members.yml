@@ -31,3 +31,21 @@ three:
   gender: true
   phone: '13522412871'
   captcha: '123456'
+
+four:
+  id: 4
+  nickname: 'LiLei'
+  coin_total: 20
+  verified: true
+  gender: true
+  phone: '13522412871'
+  captcha: '123456'
+
+five:
+  id: 5
+  nickname: 'HanMeiMei'
+  coin_total: 20
+  verified: true
+  gender: true
+  phone: '13522412871'
+  captcha: '123456'
