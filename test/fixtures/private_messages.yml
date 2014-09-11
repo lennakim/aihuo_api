@@ -1,0 +1,70 @@
+# Read about fixtures at
+# http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+
+one:
+  id: 1
+  body: "Hi"
+  receiver_id: 4
+  sender_id: 5
+  spam: false
+  created_at: <%= 5.day.ago(Time.now) %>
+  updated_at: <%= Time.now %>
+
+two:
+  id: 2
+  body: "Hi"
+  receiver_id: 5
+  sender_id: 4
+  spam: false
+  created_at: <%= 4.day.ago(Time.now) %>
+  updated_at: <%= Time.now %>
+
+three:
+  id: 3
+  body: "What is your name"
+  receiver_id: 4
+  sender_id: 5
+  spam: false
+  created_at: <%= 2.day.ago(Time.now) %>
+  updated_at: <%= Time.now %>
+
+four:
+  id: 4
+  body: "My name is LiLei"
+  receiver_id: 5
+  sender_id: 4
+  spam: false
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+spam:
+  id: 10001
+  body: "HeHe, gun"
+  receiver_id: 4
+  sender_id: 5
+  spam: true
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+five:
+  id: 5
+  body: "HeHe, gun"
+  receiver_id: 3
+  sender_id: 5
+  spam: false
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+six:
+  id: 6
+  body: "Why?"
+  receiver_id: 5
+  sender_id: 3
+  spam: false
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

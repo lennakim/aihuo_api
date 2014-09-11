@@ -3,6 +3,7 @@ class PrivateMessage < ActiveRecord::Base
   # includes ..................................................................
   include EncryptedId
   include CoinRule
+  include DeletePrivateMessageHistory
   # relationships .............................................................
   belongs_to :sender, class_name: "Member", foreign_key: "sender_id"
   belongs_to :receiver, class_name: "Member", foreign_key: "receiver_id"
@@ -14,21 +15,37 @@ class PrivateMessage < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }
-  scope :by_receiver, ->(member_id) { where(receiver_id: member_id) }
+  scope :by_receiver, ->(member_id) { where(receiver_id: member_id, receiver_delete: false) }
+  # TODO: history and full_history condition can be move up to a method.
   scope :history, ->(member_id, friend_id) {
-    condition = [
-        "(receiver_id = ? AND sender_id = ?)",
-        "(receiver_id = ? AND sender_id = ?)"
+    condition =
+      [
+        "(receiver_id = ? AND sender_id = ? AND receiver_delete = ?)",
+        "(sender_id = ? AND receiver_id = ? AND sender_delete = ?)"
       ].join(" OR ")
-    where(condition, member_id, friend_id, friend_id, member_id)
+    where(condition, member_id, friend_id, false, member_id, friend_id, false)
   }
-  scope :friendly, ->(me, friend) {
-    where(sender_id: friend, receiver_id: me)
+  scope :full_history, ->(member_id, friend_id) {
+    condition =
+      [
+        "(receiver_id = ? AND sender_id = ?)",
+        "(sender_id = ? AND receiver_id = ?)"
+      ].join(" OR ")
+    where(condition, member_id, friend_id, member_id, friend_id)
   }
+  scope :friendly, ->(me, friend) { where(sender_id: friend, receiver_id: me) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'GZp4TPUCFsgzu7Jr'
   delegate :device_id, to: :receiver, allow_nil: true
   # class methods .............................................................
+  def self.by_filter(type)
+    case type
+    when :inbox
+      self
+    when :spam
+      unscoped.spam
+    end
+  end
   # public instance methods ...................................................
   def friendly_to_receiver?
     !PrivateMessage.friendly(sender_id, receiver_id).count.zero?
@@ -60,4 +77,5 @@ class PrivateMessage < ActiveRecord::Base
     error_msg = "发送失败，金币不足"
     errors.add(:member_id, error_msg) if sender.coin_total < 5 && !friendly_to_receiver?
   end
+
 end
