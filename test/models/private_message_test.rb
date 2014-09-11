@@ -105,6 +105,15 @@ class PrivateMessageTest < ActiveSupport::TestCase
     assert_equal 4, msgs.count
   end
 
+  # 情景4：从己方的角度删除聊天记录，收件箱不在返回删除的数据
+  def test_sender_delete_msg_should_hide_in_inbox
+    msgs = PrivateMessage.by_receiver(girl.id)
+    assert_equal 3, msgs.count
+
+    msgs.last.delete_history_by(girl.id)
+    msgs = PrivateMessage.by_receiver(girl.id)
+    assert_equal 1, msgs.count
+  end
 
   def test_delete_history_by_ids
     PrivateMessage.delete_history_by_ids([1, 6], girl.id)

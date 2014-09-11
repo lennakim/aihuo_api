@@ -3,6 +3,7 @@ class PrivateMessage < ActiveRecord::Base
   # includes ..................................................................
   include EncryptedId
   include CoinRule
+  include DeletePrivateMessageHistory
   # relationships .............................................................
   belongs_to :sender, class_name: "Member", foreign_key: "sender_id"
   belongs_to :receiver, class_name: "Member", foreign_key: "receiver_id"
@@ -14,7 +15,15 @@ class PrivateMessage < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }
-  scope :by_receiver, ->(member_id) { where(receiver_id: member_id) }
+  scope :by_receiver, ->(member_id) { where(receiver_id: member_id, receiver_delete: false) }
+  scope :by_filter, ->(type) {
+    case type
+    when :inbox
+      self
+    when :spam
+      unscoped.spam
+    end
+  }
   # TODO: history and full_history condition can be move up to a method.
   scope :history, ->(member_id, friend_id) {
     condition =
@@ -37,11 +46,6 @@ class PrivateMessage < ActiveRecord::Base
   encrypted_id key: 'GZp4TPUCFsgzu7Jr'
   delegate :device_id, to: :receiver, allow_nil: true
   # class methods .............................................................
-  def self.delete_history_by_ids(ids, user_id)
-    messages = where(id: ids)
-    delete_msg = Proc.new { |msg| msg.delete_history_by(user_id) }
-    messages.each(&delete_msg)
-  end
   # public instance methods ...................................................
   def friendly_to_receiver?
     !PrivateMessage.friendly(sender_id, receiver_id).count.zero?
@@ -49,17 +53,6 @@ class PrivateMessage < ActiveRecord::Base
 
   def opened!
     update_column(:opened, true)
-  end
-
-  def delete_history_by(user_id)
-    messages = PrivateMessage.history(sender_id, receiver_id)
-    delete_msg = Proc.new { |msg| msg.delete_by(user_id) }
-    messages.each(&delete_msg)
-  end
-
-  def delete_by(user_id)
-    delete_by_sender! if sender_id == user_id
-    delete_by_receiver! if receiver_id == user_id
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
@@ -85,11 +78,4 @@ class PrivateMessage < ActiveRecord::Base
     errors.add(:member_id, error_msg) if sender.coin_total < 5 && !friendly_to_receiver?
   end
 
-  def delete_by_sender!
-    update_attribute(:sender_delete, true)
-  end
-
-  def delete_by_receiver!
-    update_attribute(:receiver_delete, true)
-  end
 end

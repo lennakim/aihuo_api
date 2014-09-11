@@ -22,6 +22,13 @@ class PrivateMessages < Grape::API
       Member.decrypt(Member.encrypted_id_key, params[:member_id])
     end
 
+    def decrypt_private_message_ids
+      decrypt = Proc.new do |ids, id|
+        ids << PrivateMessage.decrypt(PrivateMessage.encrypted_id_key, id)
+      end
+      params[:ids].inject([], &decrypt)
+    end
+
   end
 
   resources 'private_messages' do
@@ -35,15 +42,9 @@ class PrivateMessages < Grape::API
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get '/', jbuilder: 'private_messages/messages' do
-      messages =
-        case params[:filter]
-        when :inbox
-          PrivateMessage
-        when :spam
-          PrivateMessage.unscoped.spam
-        end
       if authenticate?
-        @private_messages = paginate(messages.by_receiver(user_id))
+        @private_messages =
+          paginate(PrivateMessage.by_filter(params[:filter]).by_receiver(user_id))
       else
         error! "Access Denied", 401
       end
@@ -75,8 +76,7 @@ class PrivateMessages < Grape::API
     end
     delete "/" do
       if authenticate?
-        ids = PrivateMessage.find(params[:ids]).pluck(:id)
-        PrivateMessage.delete_history_by_ids(ids, user_id)
+        PrivateMessage.delete_history_by_ids(decrypt_private_message_ids, user_id)
         status 202
       else
         error! "Access Denied", 401
