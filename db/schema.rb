@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909062801) do
+ActiveRecord::Schema.define(version: 20140912063222) do
 
   create_table "adultshop_configs", force: true do |t|
     t.string   "file"
@@ -680,16 +680,49 @@ ActiveRecord::Schema.define(version: 20140909062801) do
 
   add_index "photos", ["product_id"], name: "index_photos_on_product_id", using: :btree
 
+  create_table "platform_accounts", force: true do |t|
+    t.integer  "platform_id"
+    t.string   "account_name"
+    t.decimal  "balance",      precision: 6, scale: 2, default: 0.0
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+  end
+
+  create_table "platform_balanceios", force: true do |t|
+    t.integer  "platform_account_id"
+    t.integer  "adv_content_id"
+    t.decimal  "money",               precision: 6, scale: 2, default: 0.0
+    t.datetime "created_at",                                                null: false
+    t.datetime "updated_at",                                                null: false
+    t.date     "report_date"
+  end
+
+  create_table "platform_statistics", force: true do |t|
+    t.integer  "adv_content_id"
+    t.integer  "platform_id"
+    t.integer  "install_count"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.date     "report_date"
+  end
+
+  create_table "platforms", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "adv_content_ids"
+  end
+
   create_table "private_messages", force: true do |t|
     t.text     "body"
     t.integer  "receiver_id"
     t.integer  "sender_id"
-    t.boolean  "opened",          default: false
-    t.boolean  "receiver_delete", default: false
-    t.boolean  "sender_delete",   default: false
-    t.boolean  "spam",            default: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "opened",           default: false
+    t.boolean  "receiver_deleted", default: false
+    t.boolean  "sender_deleted",   default: false
+    t.boolean  "spam",             default: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "private_messages", ["sender_id", "receiver_id"], name: "acts_as_messageable_ids", using: :btree

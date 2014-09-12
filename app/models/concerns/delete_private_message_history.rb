@@ -26,11 +26,11 @@ module DeletePrivateMessageHistory
   end
 
   def delete_by_sender!
-    update_attribute(:sender_delete, true)
+    update_attribute(:sender_deleted, true)
   end
 
   def delete_by_receiver!
-    update_attribute(:receiver_delete, true)
+    update_attribute(:receiver_deleted, true)
   end
 
 end

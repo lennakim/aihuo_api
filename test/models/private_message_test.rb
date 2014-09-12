@@ -82,11 +82,11 @@ class PrivateMessageTest < ActiveSupport::TestCase
 
     # 聊天记录中，己方发送已经标记删除
     assert_equal 4, full_history_between_boy_and_girl.first.id
-    assert full_history_between_boy_and_girl.first.sender_delete
+    assert full_history_between_boy_and_girl.first.sender_deleted
 
     # 聊天记录中，己方接受已经标记删除
     assert_equal 1, full_history_between_boy_and_girl.last.id
-    assert full_history_between_boy_and_girl.last.receiver_delete
+    assert full_history_between_boy_and_girl.last.receiver_deleted
   end
 
   # 情景2：从己方的角度删除聊天记录，自己看不到消息
@@ -118,8 +118,8 @@ class PrivateMessageTest < ActiveSupport::TestCase
   def test_delete_history_by_ids
     PrivateMessage.delete_history_by_ids([1, 6], girl.id)
 
-    assert PrivateMessage.find_by(id: 1).sender_delete
-    assert PrivateMessage.find_by(id: 2).receiver_delete
-    assert PrivateMessage.find_by(id: 6).receiver_delete
+    assert PrivateMessage.find_by(id: 1).sender_deleted
+    assert PrivateMessage.find_by(id: 2).receiver_deleted
+    assert PrivateMessage.find_by(id: 6).receiver_deleted
   end
 end
