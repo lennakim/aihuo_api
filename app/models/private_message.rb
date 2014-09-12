@@ -15,13 +15,13 @@ class PrivateMessage < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }
-  scope :by_receiver, ->(member_id) { where(receiver_id: member_id, receiver_delete: false) }
+  scope :by_receiver, ->(member_id) { where(receiver_id: member_id, receiver_deleted: false) }
   # TODO: history and full_history condition can be move up to a method.
   scope :history, ->(member_id, friend_id) {
     condition =
       [
-        "(receiver_id = ? AND sender_id = ? AND receiver_delete = ?)",
-        "(sender_id = ? AND receiver_id = ? AND sender_delete = ?)"
+        "(receiver_id = ? AND sender_id = ? AND receiver_deleted = ?)",
+        "(sender_id = ? AND receiver_id = ? AND sender_deleted = ?)"
       ].join(" OR ")
     where(condition, member_id, friend_id, false, member_id, friend_id, false)
   }
