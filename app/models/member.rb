@@ -3,6 +3,7 @@ class Member < ActiveRecord::Base
   # includes ..................................................................
   include CoinRule
   include EncryptedId
+  include HarmoniousFormatter
   # mount_uploader :avatar, AvatarUploader
   # relationships .............................................................
   has_one :device, -> { order('updated_at DESC') }, class_name: "Device"

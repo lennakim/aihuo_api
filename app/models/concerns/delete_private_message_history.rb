@@ -4,12 +4,19 @@ module DeletePrivateMessageHistory
   included do
   end
 
+  module ClassMethods
+    def delete_history_by_ids(ids, user_id)
+      messages = where(id: ids)
+      delete_msg = Proc.new { |msg| msg.delete_history_by(user_id) }
+      messages.each(&delete_msg)
+    end
+  end
+
   def delete_history_by(user_id)
     messages = PrivateMessage.full_history(sender_id, receiver_id)
     delete_msg = Proc.new { |msg| msg.delete_by(user_id.to_i) }
     messages.each(&delete_msg)
   end
-
 
   protected
 
@@ -26,11 +33,4 @@ module DeletePrivateMessageHistory
     update_attribute(:receiver_delete, true)
   end
 
-  module ClassMethods
-    def delete_history_by_ids(ids, user_id)
-      messages = where(id: ids)
-      delete_msg = Proc.new { |msg| msg.delete_history_by(user_id) }
-      messages.each(&delete_msg)
-    end
-  end
 end
