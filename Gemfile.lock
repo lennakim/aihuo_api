@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/flypiggy/dalli.git
-  revision: 9b2d57cfab6033fd3f923218377bcad4737bca17
-  specs:
-    dalli (2.7.2)
-
-GIT
   remote: https://github.com/flyerhzm/newrelic-grape.git
   revision: d6e58eae7e191c688e7cdecef610157a9ada6590
   specs:
@@ -58,6 +52,7 @@ GEM
     coderay (1.1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
+    dalli (2.7.2)
     database_cleaner (1.3.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -200,7 +195,7 @@ DEPENDENCIES
   awesome_nested_set (~> 3.0.0.rc.1)
   bluestorm_sms (= 0.0.4)
   china_sms
-  dalli!
+  dalli
   database_cleaner
   grape (= 0.7.0)
   grape-jbuilder
