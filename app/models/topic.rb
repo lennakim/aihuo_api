@@ -26,7 +26,7 @@ class Topic < ActiveRecord::Base
   #     .reorder("top DESC, front DESC, updated_at DESC")
   # }
   scope :lasted, -> { where(best: false).reorder("top DESC, replied_at DESC") }
-  scope :excellent, -> { where(best: true).reorder("top DESC, updated_at DESC") }
+  scope :excellent, -> { where(best: true).reorder("top DESC, bested_at DESC, updated_at DESC") }
   scope :checking, -> { where(approved: false) }
   scope :favorites_by_device, ->(device_id) {
     joins(:favorites).where(favorites: { device_id: device_id })
