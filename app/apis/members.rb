@@ -44,9 +44,10 @@ class Members < Grape::API
       verify_sign
       current_device
       current_member
+      current_application
       if @member
         # FIXME: 这里的逻辑是错误的，有可能发送验证码失败，比如次数已满或者2分钟之内只能发一次
-        @member.send_captcha(params[:phone])
+        @member.send_captcha(params[:phone], @application)
         { result: '验证码已发送' }
       else
         error! "用户不存在", 404
@@ -93,9 +94,10 @@ class Members < Grape::API
 
       put :send_captcha, jbuilder: 'members/member' do
         verify_sign
+        current_application
         @member = Member.find(params[:id])
         @member.update_attribute(:phone, params[:phone])
-        @member.send_captcha params[:phone]
+        @member.send_captcha params[:phone], @application
       end
 
       desc "Validate captcha"
