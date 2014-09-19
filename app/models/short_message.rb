@@ -36,8 +36,8 @@ class ShortMessage < ActiveRecord::Base
     sended.today.where(device_id: device_id).count < 6
   end
 
-  def self.send_sms(phone, message)
-    BluestormSMS.send phone, message
+  def self.send_sms(phone, message, ext = 0)
+    BluestormSMS.send phone, message, ext
   end
   # public instance methods ...................................................
   # protected instance methods ................................................
