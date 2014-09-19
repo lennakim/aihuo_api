@@ -5,6 +5,13 @@ GIT
     dalli (2.7.2)
 
 GIT
+  remote: git://github.com/wjp2013/bluestorm_sms.git
+  revision: cb9df0ea7c00f0ba30d2bea931595ff22b391c5f
+  specs:
+    bluestorm_sms (0.0.4)
+      iconv (~> 1.0)
+
+GIT
   remote: https://github.com/flyerhzm/newrelic-grape.git
   revision: d6e58eae7e191c688e7cdecef610157a9ada6590
   specs:
@@ -51,8 +58,6 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
-    bluestorm_sms (0.0.4)
-      iconv (~> 1.0)
     builder (3.2.2)
     china_sms (0.0.7)
     coderay (1.1.0)
@@ -198,7 +203,7 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-on
   awesome_nested_set (~> 3.0.0.rc.1)
-  bluestorm_sms (= 0.0.4)
+  bluestorm_sms (= 0.0.4)!
   china_sms
   dalli!
   database_cleaner
