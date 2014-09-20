@@ -17,6 +17,8 @@ class ShortMessage < ActiveRecord::Base
       content = confirm_msg(order, type)
       if content.present?
         result = self.send_sms(order.phone, content)
+        logger.info "---------send sms----------"
+        logger.info result
         if result[:success]
           order.update_attribute :sms_sended, true
           order.short_messages.create({ device_id: device_id, phone: order.phone, content: content, sended: true})
