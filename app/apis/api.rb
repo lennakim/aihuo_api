@@ -33,7 +33,7 @@ class API < Grape::API
     end
 
     def url_encode(s)
-      s.to_s.dup.force_encoding("ASCII-8BIT").gsub(/[^a-zA-Z0-9_\-.]/) {
+      s.to_s.dup.force_encoding("ASCII-8BIT").gsub(/[^a-zA-Z0-9_\-.\*]/) {
         sprintf("%%%02X", $&.unpack("C")[0])
       }
     end
