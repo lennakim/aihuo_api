@@ -6,9 +6,9 @@ GIT
 
 GIT
   remote: git://github.com/wjp2013/bluestorm_sms.git
-  revision: cb9df0ea7c00f0ba30d2bea931595ff22b391c5f
+  revision: 6fb5573d22abcd7cedb6c8860c20029fd4bcde5b
   specs:
-    bluestorm_sms (0.0.4)
+    bluestorm_sms (0.0.5)
       iconv (~> 1.0)
 
 GIT
@@ -203,7 +203,7 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-on
   awesome_nested_set (~> 3.0.0.rc.1)
-  bluestorm_sms (= 0.0.4)!
+  bluestorm_sms (= 0.0.5)!
   china_sms
   dalli!
   database_cleaner
