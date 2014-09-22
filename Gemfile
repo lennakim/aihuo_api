@@ -17,7 +17,7 @@ gem 'awesome_nested_set', '~> 3.0.0.rc.1'
 # https://github.com/radar/paranoia
 gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
-gem 'bluestorm_sms', '0.0.5', github: 'wjp2013/bluestorm_sms'
+gem 'bluestorm_sms', '0.0.6', github: 'wjp2013/bluestorm_sms'
 gem 'dalli', github: 'flypiggy/dalli'
 gem 'igetui-ruby', '1.2.0', require: 'igetui'
 
