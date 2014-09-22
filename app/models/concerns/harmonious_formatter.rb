@@ -15,7 +15,7 @@ module HarmoniousFormatter
   def nickname
     if self.attributes.include?("nickname")
       content = self[:nickname]
-      content.gsub!(/\d+/, '*')
+      content.gsub!(/\d+/, '*') if content
       content
     else
       raise NoMethodError.new("undefined method `nickname' for #{self}")
