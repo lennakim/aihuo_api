@@ -39,8 +39,7 @@ class ShortMessage < ActiveRecord::Base
   end
 
   def self.send_sms(phone, message, ext = 0)
-    # BluestormSMS.send phone, message, ext
-    BluestormSMS.send phone, message
+    BluestormSMS.send phone, message, ext
   end
   # public instance methods ...................................................
   # protected instance methods ................................................

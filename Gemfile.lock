@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: git://github.com/wjp2013/bluestorm_sms.git
-  revision: 620a686ff242427c048ffaf715b90537790c1056
+  revision: 2f2489eb9355d7f417269e3cbac27ec8c6784942
   specs:
     bluestorm_sms (0.0.6)
       iconv (~> 1.0)
