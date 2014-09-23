@@ -29,6 +29,8 @@ group :development do
   # A robust Ruby code analyzer, based on the community Ruby style guide.
   # https://github.com/bbatsov/rubocop
   gem 'rubocop', '~> 0.18.1'
+  gem 'guard'
+  gem 'guard-minitest'
 end
 
 group :test do

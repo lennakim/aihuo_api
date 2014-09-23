@@ -19,7 +19,7 @@ two:
 three:
   id: 3
   channel: '默认渠道'
-  activity: false
+  activity: true
   block: false
   application_id: 2
   created_at: '2014-06-19 16:30:34'

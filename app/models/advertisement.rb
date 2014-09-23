@@ -25,10 +25,13 @@ class Advertisement < ActiveRecord::Base
     unavailable.all.map { |advertisement| advertisement.id }
   end
 
-  def self.by_tactics(tactics)
+  def self.by_tactics(tactics, control_volume: true)
     combination = Proc.new { |ids, obj| ids << obj.adv_content_ids.to_a }
     ids = tactics.inject([], &combination).flatten!
-    ids.blank? ? none : where(id: (ids & available_ids) - unavailable_ids)
+    ids = available_ids if ids.nil? && !control_volume # 如果策略为空，且不控量。广告墙需要需要这样的策略
+    advertisement_ids = ids & available_ids
+    advertisement_ids = control_volume ? advertisement_ids - unavailable_ids : advertisement_ids
+    ids.blank? ? none : where(id: advertisement_ids)
   end
 
   def self.increase_view_count

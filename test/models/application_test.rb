@@ -43,4 +43,19 @@ class ApplicationTest < ActiveSupport::TestCase
     assert_equal 4, Advertisement.by_tactics(tactics).size
   end
 
+  # 测试广告墙
+  # 情景1：没有设置广告墙策略的应用，返回全部激活的广告
+  def test_app_without_wall_tactics
+    setting = @app_1.advertisement_settings.by_channel("默认渠道").first
+    tactics = setting ? setting.tactics.wall : []
+    assert_equal [1, 2, 4, 5, 6, 7], Advertisement.by_tactics(tactics, control_volume: false).pluck(:id)
+  end
+
+  # 情景2：设置广告墙策略的应用，返回和该策略相关的激活广告
+  def test_app_with_wall_tactics
+    setting = @app_2.advertisement_settings.by_channel("默认渠道").first
+    tactics = setting ? setting.tactics.wall : []
+    advertisements = Advertisement.by_tactics(tactics, control_volume: false)
+    assert_equal [4, 7], advertisements.pluck(:id)
+  end
 end

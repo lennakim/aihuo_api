@@ -50,7 +50,7 @@ class Welcome < Grape::API
       profile_number
     ]
 
-    # cache(key: cacke_key, expires_in: 5.minutes) do
+    cache(key: cacke_key, expires_in: 5.minutes) do
       page_for_360, page_for_authority, page_for_skin = set_homepage_data
       case params[:filter]
       when :healthy
@@ -86,7 +86,7 @@ class Welcome < Grape::API
         ]
         @brands = page_for_authority.contents.brands
       end
-    # end
+    end
   end
 
   get :notifications, jbuilder: 'welcome/notification' do
@@ -103,12 +103,22 @@ class Welcome < Grape::API
     setting = @application.advertisement_settings.by_channel(params[:channel]).first
     @tactics = setting ? setting.tactics : []
 
-    @advertisements = Advertisement.by_tactics(@tactics)
+    @advertisements = Advertisement.by_tactics(@tactics, control_volume: true)
     # HACK: '升级助手' old version client had a bug. do NOT remove next line.
     if params[:ver].blank? && @application.api_key == "7cb8ded2"
       @advertisements = @advertisements.reorder("id DESC").limit(1)
     end
     @advertisements.increase_view_count
+  end
+
+  params do
+    optional :channel, type: String, default: AdvertisementSetting::DEFAULT_CHANNL, desc: "channel name."
+  end
+  get :advertising_wall, jbuilder: 'welcome/adsenses' do
+    current_application
+    setting = @application.advertisement_settings.by_channel(params[:channel]).first
+    @tactics = setting ? setting.tactics.wall : []
+    @advertisements = Advertisement.by_tactics(@tactics, control_volume: false)
   end
 
   params do
