@@ -26,16 +26,25 @@ class Advertisement < ActiveRecord::Base
   end
 
   def self.by_tactics(tactics, control_volume: true)
-    combination = Proc.new { |ids, obj| ids << obj.adv_content_ids.to_a }
-    ids = tactics.inject([], &combination).flatten!
-    ids = available_ids if ids.nil? && !control_volume # 如果策略为空，且不控量。广告墙需要需要这样的策略
-    advertisement_ids = ids & available_ids
-    advertisement_ids = control_volume ? advertisement_ids - unavailable_ids : advertisement_ids
+    advertisement_ids = collection_advertisement_ids(tactics, control_volume)
     ids.blank? ? none : where(id: advertisement_ids)
   end
 
   def self.increase_view_count
     all.map(&:increase_view_count)
+  end
+
+  def self.collection_advertisement_ids(tactics, control_volume)
+    ids = collection_advertisement_ids_by_tactics(tactics, control_volume)
+    advertisement_ids = ids & available_ids
+    control_volume ? advertisement_ids - unavailable_ids : advertisement_ids
+  end
+
+  def self.collection_advertisement_ids_by_tactics(tactics, control_volume)
+    combination = Proc.new { |ids, obj| ids << obj.adv_content_ids.to_a }
+    ids = tactics.inject([], &combination).flatten! || [] # 如果策略为空，表示这个APP没有配置广告，设置一个空数组
+    ids = available_ids if ids.empty? && !control_volume # 如果策略为空，且不控量。广告墙需要需要这样的策略
+    ids
   end
 
   # public instance methods ...................................................
@@ -45,6 +54,7 @@ class Advertisement < ActiveRecord::Base
       total_view_count: total_view_count + 1
     })
   end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
