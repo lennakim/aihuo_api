@@ -20,10 +20,10 @@ class Topic < ActiveRecord::Base
   scope :approved, -> { where(approved: true) }
   scope :by_device, ->(device_id) { where(device_id: device_id) }
   scope :popular, -> { where("replies_count >= 50") }
-  scope :newly, -> { where(best: false).reorder("created_at DESC") }
+  scope :newly, -> { where(best: false).reorder("top DESC, created_at DESC") }
   scope :latest, -> { where(best: false).reorder("top DESC, updated_at DESC") }
   scope :excellent, -> { where(best: true).reorder("bested_at DESC, updated_at DESC") }
-  scope :recommend, -> { where(recommend: true).reorder("created_at DESC") }
+  scope :recommend, -> { where(recommend: true, top: false).reorder("created_at DESC") }
   scope :checking, -> { where(approved: false) }
   scope :favorites_by_device, ->(device_id) {
     joins(:favorites).where(favorites: { device_id: device_id })
