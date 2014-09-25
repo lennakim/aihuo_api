@@ -53,7 +53,7 @@ class Nodes < Grape::API
 
       resources 'topics' do
         params do
-          optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine, :followed, :all], default: :all, desc: "Filtering topics."
+          optional :filter, type: Symbol, values: [:recommend, :best, :checking, :hot, :new, :mine, :followed, :all], default: :all, desc: "Filtering topics."
           requires :device_id, type: String, desc: "Device ID."
           optional :page, type: Integer, default: 1, desc: "Page number."
           optional :per_page, type: Integer, default: 10, desc: "Per page value."
