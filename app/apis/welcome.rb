@@ -31,6 +31,14 @@ class Welcome < Grape::API
       page_for_skin = homepages.find_by(label: "皮肤")
       [page_for_360, page_for_authority, page_for_skin]
     end
+
+    def get_sections(page)
+      @sections = []
+      HomeContent::SEVEN_BLOCK.each do |item|
+        @sections << page.contents.sections(item)
+        @sections.reject! { |s| s.count.zero? }
+     end
+    end
   end
 
   params do
@@ -57,12 +65,7 @@ class Welcome < Grape::API
         @banners = Article.healthy.limit(2)
         @submenus = page_for_skin.contents.submenus
         @categories = []
-        @sections = []
-        HomeContent::SEVEN_BLOCK.each do |item|
-          if (infer  = page_for_skin.contents.sections(item)).size > 0
-            @sections << infer
-          end
-        end
+        get_sections(page_for_skin)
         @brands = []
       when :all
         @banners =
@@ -80,12 +83,7 @@ class Welcome < Grape::API
           @submenus = page_for_authority.contents.submenus
         end
         @categories = page_for_authority.contents.categories
-        @sections = []
-        HomeContent::SEVEN_BLOCK.each do |item|
-          if (infer  = page_for_authority.contents.sections(item)).size > 0
-            @sections << infer
-          end
-        end
+        get_sections(page_for_authority)
         @brands = page_for_authority.contents.brands
       end
     end
