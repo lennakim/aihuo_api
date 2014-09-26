@@ -14,9 +14,9 @@ class HomeContent < ActiveRecord::Base
   scope :brands, -> { where(block: 5)}
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   alias_attribute :type, :typename
+  SECTIONS = [1, 2, 3, 6, 7]
   # class methods .............................................................
   # public instance methods ...................................................
-  SEVEN_BLOCK = [1, 2, 3, 6, 7]
   def id
     case typename
     when "Product"
