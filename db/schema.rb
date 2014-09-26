@@ -11,7 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140912063222) do
+ActiveRecord::Schema.define(version: 20140925041840) do
+
+  create_table "account_bill_infos", force: true do |t|
+    t.integer  "account_bill_id"
+    t.integer  "adv_content_id"
+    t.integer  "amount"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+    t.decimal  "price",           precision: 6, scale: 2, default: 0.0
+  end
+
+  create_table "account_bills", force: true do |t|
+    t.integer  "amount"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.decimal  "balance",    precision: 8, scale: 2, default: 0.0
+    t.integer  "user_id"
+    t.string   "company"
+    t.string   "state"
+    t.string   "details"
+  end
 
   create_table "adultshop_configs", force: true do |t|
     t.string   "file"
@@ -56,6 +78,9 @@ ActiveRecord::Schema.define(version: 20140912063222) do
     t.string   "square_banner"
     t.decimal  "price",             precision: 6, scale: 2, default: 0.0
     t.integer  "user_id"
+    t.string   "tag"
+    t.string   "version_name"
+    t.integer  "version_code"
   end
 
   create_table "adv_contents_applications", id: false, force: true do |t|
@@ -1056,6 +1081,9 @@ ActiveRecord::Schema.define(version: 20140912063222) do
     t.boolean  "best",          default: false
     t.boolean  "approved",      default: false
     t.integer  "member_id"
+    t.datetime "bested_at"
+    t.boolean  "recommend",     default: false
+    t.integer  "forward_count", default: 0
   end
 
   add_index "topics", ["approved"], name: "index_topics_on_approved", using: :btree
@@ -1063,6 +1091,7 @@ ActiveRecord::Schema.define(version: 20140912063222) do
   add_index "topics", ["deleted_at", "node_id", "approved", "best"], name: "index_topics_on_select", using: :btree
   add_index "topics", ["device_id"], name: "index_topics_on_device_id", using: :btree
   add_index "topics", ["member_id"], name: "index_topics_on_member_id", using: :btree
+  add_index "topics", ["recommend"], name: "index_topics_on_recommend", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

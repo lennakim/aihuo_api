@@ -1,6 +1,7 @@
 module Voting
   extend ActiveSupport::Concern
 
+  include TouchTopic
   # public instance methods ...................................................
   def add_liked
     likes_count + 1
@@ -15,14 +16,20 @@ module Voting
   end
 
   def liked
-    update_column(:likes_count, add_liked)
+    change_attribute(:likes_count, add_liked)
   end
 
   def disliked
-    update_column(:unlikes_count, add_disliked)
+    change_attribute(:unlikes_count, add_disliked)
   end
 
   def forward
-    update_column(:forward_count, add_forward)
+    change_attribute(:forward_count, add_forward)
+  end
+
+  private
+  def change_attribute(name, value)
+    self.send(name.to_s + '=', value)
+    save_and_touch_topic_updated_at
   end
 end
