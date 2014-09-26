@@ -16,6 +16,7 @@ class HomeContent < ActiveRecord::Base
   alias_attribute :type, :typename
   # class methods .............................................................
   # public instance methods ...................................................
+  SEVEN_BLOCK = [1, 2, 3, 6, 7]
   def id
     case typename
     when "Product"

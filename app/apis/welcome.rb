@@ -50,18 +50,24 @@ class Welcome < Grape::API
       profile_number
     ]
 
-    cache(key: cacke_key, expires_in: 5.minutes) do
+    # cache(key: cacke_key, expires_in: 5.minutes) do
       page_for_360, page_for_authority, page_for_skin = set_homepage_data
       case params[:filter]
       when :healthy
         @banners = Article.healthy.limit(2)
         @submenus = page_for_skin.contents.submenus
         @categories = []
-        @sections = [
-          page_for_skin.contents.sections(1),
-          page_for_skin.contents.sections(2),
-          page_for_skin.contents.sections(3),
-        ]
+        @sections = []
+        HomeContent::SEVEN_BLOCK.each do |item|
+          if (infer  = page_for_skin.contents.sections(item)).size > 0
+            @sections << infer
+          end
+        end
+        # @sections = [
+        #   page_for_skin.contents.sections(1),
+        #   page_for_skin.contents.sections(2),
+        #   page_for_skin.contents.sections(3),
+        # ]
         @brands = []
       when :all
         @banners =
@@ -79,15 +85,16 @@ class Welcome < Grape::API
           @submenus = page_for_authority.contents.submenus
         end
         @categories = page_for_authority.contents.categories
-        @sections = [
-          page_for_authority.contents.sections(1),
-          page_for_authority.contents.sections(2),
-          page_for_authority.contents.sections(3),
-        ]
+        @sections = []
+        HomeContent::SEVEN_BLOCK.each do |item|
+          if (infer  = page_for_authority.contents.sections(item)).size > 0
+            @sections << infer
+          end
+        end
         @brands = page_for_authority.contents.brands
       end
     end
-  end
+  # end
 
   get :notifications, jbuilder: 'welcome/notification' do
     @notifications = Advertisement.all
