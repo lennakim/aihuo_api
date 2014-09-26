@@ -9,11 +9,11 @@ require "minitest/rails"
 
 # Uncomment for awesome colorful output
 require "minitest/pride"
-
 require 'minitest/focus'
-
+require "minitest/reporters"
 require 'database_cleaner'
 
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 DatabaseCleaner.strategy = :truncation
 
 class ActiveSupport::TestCase
