@@ -2,11 +2,12 @@ class Nodes < Grape::API
   resources 'nodes' do
     desc "Return public nodes list."
     params do
+      optional :filter, type: Symbol, values: [:male, :female, :all], default: :all, desc: "Filtering topics."
       optional :page, type: Integer, default: 1, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'nodes/nodes' do
-      @nodes = paginate(Node.by_state(:public))
+      @nodes = paginate(Node.by_state(:public).by_filter(params[:filter]))
       cache(key: [:v2, :nodes, @nodes], expires_in: 2.days) do
         @nodes
       end
