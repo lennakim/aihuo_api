@@ -1,0 +1,27 @@
+# Read about fixtures at
+# http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+
+one:
+  id: 1
+  body: "这是一个帖子哦"
+  node_id: 1
+  device_id: '1234'
+  approved: true
+  member_id: 1
+  created_at: <%= 3.day.ago(Time.now) %>
+  updated_at: <%= 2.day.ago(Time.now) %>
+
+two:
+  id: 2
+  body: "这是一个很老很老的帖子哦"
+  node_id: 1
+  device_id: '1234'
+  approved: true
+  member_id: 1
+  created_at: <%= 20.day.ago(Time.now) %>
+  updated_at: '2014-07-17 18:53:49'

@@ -20,13 +20,10 @@ class Topic < ActiveRecord::Base
   scope :approved, -> { where(approved: true) }
   scope :by_device, ->(device_id) { where(device_id: device_id) }
   scope :popular, -> { where("replies_count >= 50") }
-  # scope :lasted, -> {
-  #   select('`topics`.*', '(`topics`.replies_count <= 50) AS front')
-  #     .where(best: false).where("replies_count <= 50")
-  #     .reorder("top DESC, front DESC, updated_at DESC")
-  # }
-  scope :lasted, -> { where(best: false).reorder("top DESC, replied_at DESC") }
-  scope :excellent, -> { where(best: true).reorder("top DESC, bested_at DESC, updated_at DESC") }
+  scope :newly, -> { where(best: false).reorder("top DESC, created_at DESC") }
+  scope :latest, -> { where(best: false).reorder("top DESC, updated_at DESC") }
+  scope :excellent, -> { where(best: true).reorder("bested_at DESC, updated_at DESC") }
+  scope :recommend, -> { where(recommend: true, top: false).reorder("created_at DESC") }
   scope :checking, -> { where(approved: false) }
   scope :favorites_by_device, ->(device_id) {
     joins(:favorites).where(favorites: { device_id: device_id })
@@ -36,16 +33,16 @@ class Topic < ActiveRecord::Base
   # class methods .............................................................
   def self.scope_by_filter(filter, device_id = nil)
     case filter
+    when :recommend
+      approved.recommend
     when :best
       approved.excellent
     when :checking
       checking
     when :hot
-      # Topic.approved.popular
-      approved.lasted
+      approved.latest
     when :new
-      # Topic.approved.lasted
-      approved.reorder("top DESC, created_at DESC")
+      approved.newly
     when :mine
       with_deleted.by_device(device_id)
     when :followed

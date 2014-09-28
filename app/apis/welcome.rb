@@ -1,90 +1,33 @@
 class Welcome < Grape::API
-  helpers do
-    def date_param
-      date = request.headers["Registerdate"] || params[:register_date]
-      date.to_date if date
-    end
-
-    # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购宝典
-    def hide_gift_products?
-      date_param.blank? || date_param < 2.days.ago(Date.today)
-    end
-
-    def hours_now
-      Time.now.strftime("%H").to_i
-    end
-
-    def profile_number
-      if 14 < hours_now && hours_now < 20
-        "1"
-      elsif 20 <= hours_now || hours_now <= 2
-        "2"
-      else
-        "0"
-      end
-    end
-
-    def set_homepage_data
-      homepages = Homepage.for_app(@application).by_hour(profile_number)
-      page_for_360 = homepages.find_by(label: "360")
-      page_for_authority = homepages.find_by(label: "官方")
-      page_for_skin = homepages.find_by(label: "皮肤")
-      [page_for_360, page_for_authority, page_for_skin]
-    end
-  end
+  helpers WelcomeHelper
 
   params do
-    optional :register_date, type: String, desc: "Date looks like '20130401'."
-    optional :filter, type: Symbol, values: [:healthy, :all], default: :all, desc: "Filtering for blacklist."
-    optional :ref, type: String, desc: ""
+    use :home
   end
   get :home, jbuilder: 'welcome/home' do
     current_application
 
-    cacke_key = [
-      :v2,
-      :home,
-      params[:register_date],
-      params[:filter],
-      params[:ref],
-      profile_number
-    ]
+    cacke_key = [:v2, :home, params[:register_date], params[:filter], params[:ref], profile_number]
 
     cache(key: cacke_key, expires_in: 5.minutes) do
       page_for_360, page_for_authority, page_for_skin = set_homepage_data
+
+      get_banners(params[:filter])
       case params[:filter]
       when :healthy
-        @banners = Article.healthy.limit(2)
-        @submenus = page_for_skin.contents.submenus
-        @categories = []
-        @sections = [
-          page_for_skin.contents.sections(1),
-          page_for_skin.contents.sections(2),
-          page_for_skin.contents.sections(3),
-        ]
-        @brands = []
+        get_submenus(page_for_skin)
+        get_categories(nil)
+        get_sections(page_for_skin)
+        get_brands(nil)
       when :all
-        @banners =
-          if hide_gift_products?
-            # FIXME:
-            # @application.articles.banner_without_gifts not works, don't know why
-            # Article.banner_without_gifts.where(application_id: @application.id)
-            @application.articles.banner.without_gifts
-          else
-            @application.articles.banner
-          end
-        if params[:ref] && params[:ref] == "360"
-          @submenus = page_for_360.contents.submenus
+        if params[:ref] == "360"
+          get_submenus(page_for_360)
         else
-          @submenus = page_for_authority.contents.submenus
+          get_submenus(page_for_authority)
         end
-        @categories = page_for_authority.contents.categories
-        @sections = [
-          page_for_authority.contents.sections(1),
-          page_for_authority.contents.sections(2),
-          page_for_authority.contents.sections(3),
-        ]
-        @brands = page_for_authority.contents.brands
+        get_categories(page_for_authority)
+        get_sections(page_for_authority)
+        get_brands(page_for_authority)
       end
     end
   end
@@ -94,8 +37,7 @@ class Welcome < Grape::API
   end
 
   params do
-    optional :channel, type: String, default: AdvertisementSetting::DEFAULT_CHANNL, desc: "channel name."
-    optional :ver, type: String, desc: "version number."
+    use :channel, :ver
   end
   get :adsenses, jbuilder: 'welcome/adsenses' do
     current_application
@@ -112,7 +54,7 @@ class Welcome < Grape::API
   end
 
   params do
-    optional :channel, type: String, default: AdvertisementSetting::DEFAULT_CHANNL, desc: "channel name."
+    use :channel
   end
   get :advertising_wall, jbuilder: 'welcome/adsenses' do
     current_application
@@ -122,7 +64,7 @@ class Welcome < Grape::API
   end
 
   params do
-    optional :ver, type: String, desc: "version number."
+    use :ver
   end
   get :latest_apk, jbuilder: 'welcome/latest_apk' do
     regular = /^1\.1\.\d$/

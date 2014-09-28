@@ -3,7 +3,7 @@ class Topics < Grape::API
 
     desc "Return topics list for all nodes."
     params do
-      optional :filter, type: Symbol, values: [:best, :checking, :hot, :new, :mine, :followed], default: :mine, desc: "Filtering topics."
+      optional :filter, type: Symbol, values: [:recommend, :best, :checking, :hot, :new, :mine, :followed], default: :mine, desc: "Filtering topics."
       requires :device_id, type: String, desc: "Device ID."
       optional :page, type: Integer, default: 1, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
@@ -105,6 +105,15 @@ class Topics < Grape::API
       delete :unfollow do
         Favorite.by_device_id(params[:device_id]).by_favable(@topic).destroy_all
         status 204
+      end
+
+      desc "Repost a topic."
+      params do
+        requires :device_id, type: String, desc: "Device ID."
+      end
+      put :forward, jbuilder: 'topics/topic' do
+        @topic.forward
+        status 202
       end
 
       resources 'replies' do

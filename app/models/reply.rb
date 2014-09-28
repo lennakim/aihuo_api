@@ -4,9 +4,10 @@ class Reply < ActiveRecord::Base
   include EncryptedId
   include ForumValidations
   include HarmoniousFormatter
+  include TouchTopic
   # relationships .............................................................
   belongs_to :replyable, polymorphic: true
-  belongs_to :topic, foreign_key: 'replyable_id', counter_cache: true, touch: true
+  belongs_to :topic, foreign_key: 'replyable_id', counter_cache: true
   belongs_to :content, foreign_key: 'replyable_id', counter_cache: true, touch: true
   belongs_to :member
   has_many :replies, as: :replyable
@@ -66,6 +67,8 @@ class Reply < ActiveRecord::Base
     update_column(:topic_id, replyable_id) if replyable_type == "Topic"
   end
 
+  # 需求变化，topics 排序不再考虑回复时间，而统一使用 topic 的 updated_at
+  # update_topic_status 可以酌情在2个迭代后删除
   def update_topic_status
     if replyable_type == 'Topic'
       topic.update_column(:replied_at, Time.now) if topic.replies_count <= 50
