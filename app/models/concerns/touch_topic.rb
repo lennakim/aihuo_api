@@ -10,7 +10,7 @@ module TouchTopic
   def save_and_touch_topic_updated_at
     case self
     when Reply
-      if topic.created_at > 5.days.ago(Date.today)
+      if topic && topic.created_at > 5.days.ago(Date.today)
         topic.updated_at = Time.now
         topic.save(validate: false)
       end
