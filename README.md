@@ -23,5 +23,8 @@
 ```
 rake db:schema:dump
 rake db:test:prepare
-rake test
 ```
+
+then
+
+```rake test``` or ```guard````
