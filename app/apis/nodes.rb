@@ -2,12 +2,13 @@ class Nodes < Grape::API
   resources 'nodes' do
     desc "Return public nodes list."
     params do
-      optional :filter, type: Symbol, values: [:male, :female, :all], default: :all, desc: "Filtering topics."
+      optional :filter, type: Symbol, values: [:male, :female, :all, :joins], default: :all, desc: "Filtering topics."
+      optional :member_id, type: String, desc: "Member ID."
       optional :page, type: Integer, default: 1, desc: "Page number."
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'nodes/nodes' do
-      @nodes = paginate(Node.by_state(:public).by_filter(params[:filter]))
+      @nodes = paginate(Node.by_state(:public).by_filter(params[:filter], params[:member_id]))
       cache(key: [:v2, :nodes, @nodes], expires_in: 2.days) do
         @nodes
       end
@@ -50,6 +51,39 @@ class Nodes < Grape::API
           status 200
         end
         { success: response }
+      end
+
+      desc "Join a group"
+      params do
+        requires :member, type: Hash do
+          requires :id, type: String, desc: "Member ID."
+          requires :password, type: String, desc: "Member password."
+        end
+      end
+      post :join do
+        @member = Member.find(params[:id])
+        if sign_approval? && @member.authenticate?(params[:member][:password])
+          @member.nodes << @node
+        else
+          error! "Access Denied", 401
+        end
+      end
+
+
+      desc "Quit a group"
+      params do
+        requires :member, type: Hash do
+          requires :id, type: String, desc: "Member ID."
+          requires :password, type: String, desc: "Member password."
+        end
+      end
+      post :quit do
+        @member = Member.find(params[:id])
+        if sign_approval? && @member.authenticate?(params[:member][:password])
+          @member.nodes.delete @node
+        else
+          error! "Access Denied", 401
+        end
       end
 
       resources 'topics' do

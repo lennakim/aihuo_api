@@ -10,7 +10,7 @@ class Member < ActiveRecord::Base
   has_many :devices
   has_many :sended_private_messages, class_name: "PrivateMessage", foreign_key: "sender_id"
   has_many :received_private_messages, class_name: "PrivateMessage", foreign_key: "receiver_id"
-  has_and_belongs_to_many :nodes
+  has_and_belongs_to_many :nodes, -> { uniq }
   # validations ...............................................................
   validates :nickname, presence: true, uniqueness: true, length: 2..16
   # callbacks .................................................................

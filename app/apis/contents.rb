@@ -1,6 +1,4 @@
 class Contents < Grape::API
-  helpers do
-  end
 
   resources 'contents' do
 

@@ -4,7 +4,7 @@ class Node < ActiveRecord::Base
   include EncryptedId
   # relationships .............................................................
   has_many :topics
-  has_and_belongs_to_many :members
+  has_and_belongs_to_many :members, -> { uniq }
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
@@ -13,14 +13,17 @@ class Node < ActiveRecord::Base
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'bb2CJaHsHjEZhd2T'
   # class methods .............................................................
-  def self.by_filter(filter)
-    gender =
-      case filter
-      when :all then 0
-      when :male then 1
-      when :female then 2
+  def self.by_filter(filter, member_id)
+    case filter
+    when :all then where(gender: 0)
+    when :male then where(gender: 1)
+    when :female then where(gender: 2)
+    when :joins
+      if member_id
+        member = Member.find(member_id)
+        member.nodes
       end
-    where(gender: gender)
+    end
   end
   # public instance methods ...................................................
   def manager_list
