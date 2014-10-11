@@ -59,6 +59,7 @@ class Nodes < Grape::API
           requires :id, type: String, desc: "Member ID."
           requires :password, type: String, desc: "Member password."
         end
+        requires :sign, type: String, desc: "sign value."
       end
       post :join do
         @member = Member.find(params[:id])
@@ -76,6 +77,7 @@ class Nodes < Grape::API
           requires :id, type: String, desc: "Member ID."
           requires :password, type: String, desc: "Member password."
         end
+        requires :sign, type: String, desc: "sign value."
       end
       post :quit do
         @member = Member.find(params[:id])
