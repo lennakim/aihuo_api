@@ -106,6 +106,7 @@ class Nodes < Grape::API
           requires :nickname, type: String, desc: "User nickname."
           requires :device_id, type: String, desc: "Deivce ID."
           requires :sign, type: String, desc: "sign value."
+          optional :topic_images_attributes, type: Hash, desc: "照片"
           optional :member, type: Hash do
             requires :id, type: String, desc: "Member ID."
             requires :password, type: String, desc: "Member Password."
@@ -116,7 +117,8 @@ class Nodes < Grape::API
             @topic = @node.topics.new({
                        body: params[:body],
                        nickname: params[:nickname],
-                       device_id: params[:device_id]
+                       device_id: params[:device_id],
+                       topic_images_attributes: params[:topic_images_attributes]
                      })
             if params[:member]
               @topic.relate_to_member_with_authenticate(

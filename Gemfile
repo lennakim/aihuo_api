@@ -21,6 +21,16 @@ gem 'bluestorm_sms', '0.0.6', github: 'wjp2013/bluestorm_sms'
 gem 'dalli', github: 'flypiggy/dalli'
 gem 'igetui-ruby', '1.2.0', require: 'igetui'
 
+# Because activesupport doesn't encoding invalid code anymore.
+# Add activesupport-json_encoder gem to Gemfile fix this issue.
+# https://github.com/rails/rails/issues/15226
+gem 'activesupport-json_encoder'
+
+gem 'mini_magick'
+gem 'carrierwave'
+gem 'rest-client'
+gem 'carrierwave-aliyun'
+
 group :development do
   gem 'spring'
   # Use mina for deployment

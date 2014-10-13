@@ -4,7 +4,7 @@ class Product < ActiveRecord::Base
   acts_as_taggable_on :tags
   # includes ..................................................................
   include EncryptedId
-  include CarrierWave
+  include CarrierWaveMini
   # relationships .............................................................
   has_many :product_props
   has_many :photos

@@ -1,4 +1,4 @@
-module CarrierWave
+module CarrierWaveMini
   module Configuration
     extend ActiveSupport::Concern
 

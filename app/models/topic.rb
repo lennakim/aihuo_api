@@ -11,6 +11,7 @@ class Topic < ActiveRecord::Base
   belongs_to :member
   has_many :replies, -> { order "created_at DESC" }, as: :replyable, :dependent => :destroy
   has_many :favorites, as: :favable
+  has_many :topic_images
   # validations ...............................................................
   validates_uniqueness_of :body, :scope => :device_id, :message => "请勿重复发言"
   # callbacks .................................................................
@@ -30,6 +31,7 @@ class Topic < ActiveRecord::Base
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: '36aAoQHCaJKETWHR'
+  accepts_nested_attributes_for :topic_images
   # class methods .............................................................
   def self.scope_by_filter(filter, device_id = nil)
     case filter
