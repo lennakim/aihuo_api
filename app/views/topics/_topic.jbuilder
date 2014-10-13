@@ -16,7 +16,7 @@ if topic.member
   end
 end
 if topic.topic_images.any?
-  json.topic_images topic.topic_images do |topic_image|
+  json.images topic.topic_images do |topic_image|
     json.partial! "topic_images/topic_image", topic_image: topic_image
   end
 end
