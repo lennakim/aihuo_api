@@ -117,9 +117,11 @@ class Nodes < Grape::API
             @topic = @node.topics.new({
                        body: params[:body],
                        nickname: params[:nickname],
-                       device_id: params[:device_id],
-                       topic_images_attributes: params[:topic_images_attributes]
+                       device_id: params[:device_id]
                      })
+            if params[:topic_images_attributes]
+              @topic.topic_images_attributes = params[:topic_images_attributes]
+            end
             if params[:member]
               @topic.relate_to_member_with_authenticate(
                 params[:member][:id],
