@@ -70,6 +70,8 @@ class Order < ActiveRecord::Base
 
   def number
     created_at.to_i.to_s + (id * 2 + 19871030).to_s
+  rescue
+    '异常订单号'
   end
 
   # 购买记录中的订单创建时间显示第一条评论的评论时间

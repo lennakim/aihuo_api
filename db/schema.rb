@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925041840) do
+ActiveRecord::Schema.define(version: 20141008021758) do
 
   create_table "account_bill_infos", force: true do |t|
     t.integer  "account_bill_id"
@@ -555,6 +555,11 @@ ActiveRecord::Schema.define(version: 20140925041840) do
   add_index "members", ["province"], name: "index_members_on_province", using: :btree
   add_index "members", ["score_total"], name: "index_members_on_score_total", using: :btree
 
+  create_table "members_nodes", id: false, force: true do |t|
+    t.integer "member_id"
+    t.integer "node_id"
+  end
+
   create_table "messages", force: true do |t|
     t.string   "subject"
     t.text     "body"
@@ -587,6 +592,9 @@ ActiveRecord::Schema.define(version: 20140925041840) do
     t.boolean  "privated",     default: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.string   "icon"
+    t.text     "rule"
+    t.integer  "gender",       default: 0
   end
 
   create_table "notifications", force: true do |t|

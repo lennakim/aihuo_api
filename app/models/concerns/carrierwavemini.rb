@@ -2,18 +2,18 @@
 # http://blog.andywaite.com/2012/12/23/exploring-concerns-for-rails-4/
 # http://richonrails.com/articles/rails-4-code-concerns-in-active-record-models#.UmduaCSezDc
 require "configuration"
-module CarrierWave
+module CarrierWaveMini
   extend ActiveSupport::Concern
 
   class << self
-    include CarrierWave::Configuration
+    include CarrierWaveMini::Configuration
     def configure(&block)
       yield self
     end
   end
 
   def store_host
-    "http://" + CarrierWave.aliyun_host
+    "http://" + CarrierWaveMini.aliyun_host
   end
 
   def store_dir(column)

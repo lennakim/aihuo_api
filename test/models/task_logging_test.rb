@@ -6,14 +6,14 @@ class TaskLoggingTest < ActiveSupport::TestCase
   end
 
   # 情景1：一个设备一天可以成功签到1次
-  def test_task_logging_validates_uniqueness_of_task_id_each_day_validation
+  def test_task_logging_secne_1_validation
     member = Member.find_by(id: 1)
     task_logging = TaskLogging.new(task_id: login_task.id, member_id: member.id)
     assert task_logging.save
   end
 
   # 情景2：一个设备当天成功签到之后不能再继续签到
-  def test_task_logging_validates_uniqueness_of_task_id_each_day_invalidation
+  def test_task_logging_secne_2_invalidation
     member = Member.find_by(id: 2)
     task_logging = TaskLogging.new(task_id: login_task.id, member_id: member.id)
     refute task_logging.save
@@ -21,7 +21,7 @@ class TaskLoggingTest < ActiveSupport::TestCase
   end
 
   # 情景3：一个设备可以每天完成多个非签到任务
-  def test_task_logging_validates_uniqueness_of_task_id_in_one_day_validation
+  def test_task_logging_secne_3_validation
     test_task = tasks(:two)
     member = Member.find_by(id: 2)
     task_logging = TaskLogging.new(task_id: test_task.id, member_id: member.id)

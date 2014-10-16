@@ -4,7 +4,7 @@ class Article < ActiveRecord::Base
   acts_as_taggable_on :tags
   # includes ..................................................................
   include EncryptedId
-  include CarrierWave
+  include CarrierWaveMini
   include ArticleFormatter
   # relationships .............................................................
   has_many :resources, :as => :resable

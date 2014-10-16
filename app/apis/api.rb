@@ -29,7 +29,14 @@ class API < Grape::API
     end
 
     def flatten_hash(hash)
-      hash.collect { |k, v| v.is_a?(Hash) ? flatten_hash(v) : "#{k}=#{v}" }
+      hash.collect do |k, v|
+        if v.is_a?(Hash)
+          # When upload a file, make tempfile and other params out of hash.
+          v.has_key?("tempfile") ? "#{k}=#{v['filename']}" : flatten_hash(v)
+        else
+          "#{k}=#{v}"
+        end
+      end
     end
 
     def url_encode(s)
@@ -45,7 +52,6 @@ class API < Grape::API
         hash_signature.delete(signature_key.to_sym)
       end
 
-      # calculated_signature = hash_signature.collect { |k, v| "#{k}=#{v}" }
       calculated_signature = flatten_hash(hash_signature)
       calculated_signature = calculated_signature.flatten.sort.join
 
