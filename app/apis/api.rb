@@ -1,15 +1,15 @@
 require 'digest/md5'
+
 class API < Grape::API
   include Grape::ShamanCache
-  # Include Grape::Kaminari module in your api
   include Grape::Kaminari
 
   version 'v2', using: :path
   # prefix 'api'
 
   format :json
+  # formatter :json, GrapeJbuilderFormatter
   formatter :json, Grape::Formatter::Jbuilder
-
 
   helpers do
     # example:
