@@ -39,7 +39,11 @@ module WelcomeHelper
     end
   end
 
-  def set_homepage_data
+  def cacke_key
+    [:v2, :home, params[:api_key], params[:register_date], params[:filter], params[:ref], profile_number]
+  end
+
+  def get_homepage_data
     homepages = Homepage.for_app(@application).by_hour(profile_number)
     page_for_360 = homepages.find_by(label: "360")
     page_for_authority = homepages.find_by(label: "官方")
