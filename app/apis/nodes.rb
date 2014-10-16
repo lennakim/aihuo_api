@@ -93,7 +93,6 @@ class Nodes < Grape::API
         end
         post "/", jbuilder: 'topics/topic' do
           if sign_approval?
-            # binding.pry
             @topic = @node.topics.new(topic_params)
             if params[:member]
               @topic.relate_to_member_with_authenticate(

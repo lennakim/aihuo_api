@@ -5,12 +5,11 @@ class Welcome < Grape::API
     use :home
   end
   get :home, jbuilder: 'welcome/home' do
-    current_application
 
-    cacke_key = [:v2, :home, params[:register_date], params[:filter], params[:ref], profile_number]
+    cache(key: cacke_key, expires_in: 5.minutes) do
+      current_application
 
-    # cache(key: cacke_key, expires_in: 5.minutes) do
-      page_for_360, page_for_authority, page_for_skin = set_homepage_data
+      page_for_360, page_for_authority, page_for_skin = get_homepage_data
 
       get_banners(params[:filter])
       case params[:filter]
@@ -29,7 +28,7 @@ class Welcome < Grape::API
         get_sections(page_for_authority)
         get_brands(page_for_authority)
       end
-    # end
+    end
   end
 
   get :notifications, jbuilder: 'welcome/notification' do
