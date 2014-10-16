@@ -1,14 +1,14 @@
 class Nodes < Grape::API
+  helpers NodesHelper
+
   resources 'nodes' do
     desc "Return public nodes list."
     params do
-      optional :filter, type: Symbol, values: [:male, :female, :all, :joins], default: :all, desc: "Filtering topics."
-      optional :member_id, type: String, desc: "Member ID."
-      optional :page, type: Integer, default: 1, desc: "Page number."
-      optional :per_page, type: Integer, default: 10, desc: "Per page value."
+      use :nodes
     end
     get "/", jbuilder: 'nodes/nodes' do
-      @nodes = paginate(Node.by_state(:public).by_filter(params[:filter], params[:member_id]))
+      nodes = Node.by_state(:public).by_filter(params[:filter], params[:member_id])
+      @nodes = paginate(nodes)
       cache(key: [:v2, :nodes, @nodes], expires_in: 2.days) do
         @nodes
       end
@@ -38,9 +38,7 @@ class Nodes < Grape::API
 
       desc "Block a user in node."
       params do
-        requires :device_id, type: String, desc: "Device ID."
-        requires :object_id, type: String, desc: "Object ID."
-        requires :object_type, type: Symbol, values: [:topic, :reply], default: :topic, desc: "Object Type."
+        use :block_a_user
       end
       post :block_user do
         obj = eval(params[:object_type].to_s.capitalize).find(params[:object_id])
@@ -55,11 +53,7 @@ class Nodes < Grape::API
 
       desc "Join a group"
       params do
-        requires :member, type: Hash do
-          requires :id, type: String, desc: "Member ID."
-          requires :password, type: String, desc: "Member password."
-        end
-        requires :sign, type: String, desc: "sign value."
+        use :join_or_quit
       end
       post :join do
         @member = Member.find(params[:id])
@@ -73,11 +67,7 @@ class Nodes < Grape::API
 
       desc "Quit a group"
       params do
-        requires :member, type: Hash do
-          requires :id, type: String, desc: "Member ID."
-          requires :password, type: String, desc: "Member password."
-        end
-        requires :sign, type: String, desc: "sign value."
+        use :join_or_quit
       end
       post :quit do
         @member = Member.find(params[:id])
@@ -90,10 +80,7 @@ class Nodes < Grape::API
 
       resources 'topics' do
         params do
-          optional :filter, type: Symbol, values: [:recommend, :best, :checking, :hot, :new, :mine, :followed, :all], default: :all, desc: "Filtering topics."
-          requires :device_id, type: String, desc: "Device ID."
-          optional :page, type: Integer, default: 1, desc: "Page number."
-          optional :per_page, type: Integer, default: 10, desc: "Per page value."
+          use :topics
         end
         get "/", jbuilder: 'topics/topics' do
           topics = @node.topics.scope_by_filter(params[:filter], params[:device_id])
@@ -102,26 +89,12 @@ class Nodes < Grape::API
 
         desc "Create a topic to the node."
         params do
-          requires :body, type: String, desc: "Topic content."
-          requires :nickname, type: String, desc: "User nickname."
-          requires :device_id, type: String, desc: "Deivce ID."
-          requires :sign, type: String, desc: "sign value."
-          optional :topic_images_attributes, type: Hash, desc: "照片"
-          optional :member, type: Hash do
-            requires :id, type: String, desc: "Member ID."
-            requires :password, type: String, desc: "Member Password."
-          end
+          use :create_topic
         end
         post "/", jbuilder: 'topics/topic' do
           if sign_approval?
-            @topic = @node.topics.new({
-                       body: params[:body],
-                       nickname: params[:nickname],
-                       device_id: params[:device_id]
-                     })
-            if params[:topic_images_attributes]
-              @topic.topic_images_attributes = params[:topic_images_attributes]
-            end
+            # binding.pry
+            @topic = @node.topics.new(topic_params)
             if params[:member]
               @topic.relate_to_member_with_authenticate(
                 params[:member][:id],
