@@ -19,7 +19,7 @@ class Nodes < Grape::API
         begin
           @node = Node.find(params[:id])
         rescue Exception => e
-          error! "Node not found", 404
+          error! "Node not found", 422
         end
       end
 
@@ -52,7 +52,7 @@ class Nodes < Grape::API
         use :join_or_quit
       end
       post :join do
-        @member = Member.find(params[:id])
+        current_member
         if sign_approval? && @member.authenticate?(params[:member][:password])
           @member.nodes << @node
         else
@@ -66,7 +66,7 @@ class Nodes < Grape::API
         use :join_or_quit
       end
       post :quit do
-        @member = Member.find(params[:id])
+        current_member
         if sign_approval? && @member.authenticate?(params[:member][:password])
           @member.nodes.delete @node
         else

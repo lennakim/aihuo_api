@@ -54,4 +54,12 @@ module NodesHelper
     # so we make it as standard Hash.
     params[:topic].to_h
   end
+
+  def current_member
+    begin
+      @member = Member.find(params[:member][:id])
+    rescue RecordNotFound => e
+      error! "Node not found", 422
+    end
+  end
 end
