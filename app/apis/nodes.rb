@@ -7,11 +7,7 @@ class Nodes < Grape::API
       use :nodes
     end
     get "/", jbuilder: 'nodes/nodes' do
-      nodes = Node.by_state(:public).by_filter(params[:filter], params[:member_id])
-      @nodes = paginate(nodes)
-      cache(key: [:v2, :nodes, @nodes], expires_in: 2.days) do
-        @nodes
-      end
+      @nodes = Node.by_state(:public).by_filter(params[:filter], params[:member_id])
     end
 
     params do

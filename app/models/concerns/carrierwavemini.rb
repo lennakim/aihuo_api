@@ -42,6 +42,12 @@ module CarrierWaveMini
     combination_url(:background, version)
   end
 
+  # version nil
+  # path :url, :path
+  def carrierwave_icon(version, path)
+    combination_url(:icon, version)
+  end
+
   private
 
     def combination_url(type, version)
