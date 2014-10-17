@@ -64,6 +64,6 @@ module NodesHelper
   end
 
   def cacke_key
-    [:v2, :node, :topics, params[:fitler], params[:page], params[:per_page]]
+    [:v2, :node, :topics, params[:filter], params[:page], params[:per_page]]
   end
 end
