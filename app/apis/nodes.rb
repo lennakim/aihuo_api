@@ -79,8 +79,10 @@ class Nodes < Grape::API
           use :topics
         end
         get "/", jbuilder: 'topics/topics' do
-          topics = @node.topics.scope_by_filter(params[:filter], params[:device_id])
-          @topics = paginate(topics.order("top DESC, updated_at DESC"))
+          cache(key: cacke_key, expires_in: 1.minutes) do
+            topics = @node.topics.scope_by_filter(params[:filter], params[:device_id])
+            @topics = paginate(topics.order("top DESC, updated_at DESC"))
+          end
         end
 
         desc "Create a topic to the node."

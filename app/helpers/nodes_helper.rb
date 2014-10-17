@@ -62,4 +62,8 @@ module NodesHelper
       error! "Node not found", 422
     end
   end
+
+  def cacke_key
+    [:v2, :node, :topics, params[:fitler], params[:page], params[:per_page]]
+  end
 end
