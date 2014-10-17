@@ -55,6 +55,7 @@ class Nodes < Grape::API
         current_member
         if sign_approval? && @member.authenticate?(params[:member][:password])
           @member.nodes << @node
+          @node
         else
           error! "Access Denied", 401
         end
@@ -69,6 +70,7 @@ class Nodes < Grape::API
         current_member
         if sign_approval? && @member.authenticate?(params[:member][:password])
           @member.nodes.delete @node
+          @node
         else
           error! "Access Denied", 401
         end
