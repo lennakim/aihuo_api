@@ -6,7 +6,7 @@ class Welcome < Grape::API
   end
   get :home, jbuilder: 'welcome/home' do
 
-    cache(key: cacke_key, expires_in: 5.minutes) do
+    cache(key: cacke_key, expires_in: 2.hours) do
       current_application
 
       page_for_360, page_for_authority, page_for_skin = get_homepage_data
