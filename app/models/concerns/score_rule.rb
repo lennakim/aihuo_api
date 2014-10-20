@@ -2,20 +2,19 @@ module ScoreRule
   extend ActiveSupport::Concern
 
   included do
+    after_create :increase_score
   end
 
   module ClassMethods
   end
 
-  def points_to_next_level
-    maximum_points_for_level(next_level) if self.respond_to?(:level)
-  end
-
-  def next_level
-    level + 1 if self.respond_to?(:level)
-  end
-
   private
+
+  def increase_score
+    case self
+    when Reply then increase_points(1) # 回复帖子奖励 1 积分
+    end
+  end
 
   def increase_points(point = 1)
     get_member

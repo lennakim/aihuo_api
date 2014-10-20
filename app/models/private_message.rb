@@ -1,17 +1,13 @@
 class PrivateMessage < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
-  include EncryptedId
-  include CoinRule
-  include DeletePrivateMessageHistory
+  include CoinRule, EncryptedId, DeletePrivateMessageHistory
   # relationships .............................................................
   belongs_to :sender, class_name: "Member", foreign_key: "sender_id"
   belongs_to :receiver, class_name: "Member", foreign_key: "receiver_id"
   # validations ...............................................................
-  validate :coin_must_enough
   # callbacks .................................................................
   after_create :send_notice_msg
-  after_create :reduce_coin
   # scopes ....................................................................
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }
@@ -67,17 +63,4 @@ class PrivateMessage < ActiveRecord::Base
       Notification.send_private_message_msg(device_id)
     end
   end
-
-  # 陌生的两个人首次发送一条小纸条扣5金币
-  # 接收者回复纸条不扣金币，发送者再次发送仍然扣金币
-  def reduce_coin
-    reduce_coins(5) unless friendly_to_receiver?
-  end
-
-  # 发送小纸条前验证用户余额
-  def coin_must_enough
-    error_msg = "发送失败，金币不足"
-    errors.add(:member_id, error_msg) if sender.coin_total < 5 && !friendly_to_receiver?
-  end
-
 end

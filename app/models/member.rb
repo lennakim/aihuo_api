@@ -1,10 +1,7 @@
 class Member < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
-  include CoinRule
-  include ScoreRule
-  include EncryptedId
-  include HarmoniousFormatter
+  include CoinRule, ScoreRule, EncryptedId, HarmoniousFormatter
   # mount_uploader :avatar, AvatarUploader
   # relationships .............................................................
   has_one :device, -> { order('updated_at DESC') }, class_name: "Device"
@@ -15,7 +12,6 @@ class Member < ActiveRecord::Base
   # validations ...............................................................
   validates :nickname, presence: true, uniqueness: true, length: 2..16
   # callbacks .................................................................
-  after_create :increase_coin
   # scopes ....................................................................
   scope :by_phone, ->(phone) { where(phone: phone, verified: true) }
   scope :without_phone, ->{ where("phone is NULL") }
@@ -87,6 +83,14 @@ class Member < ActiveRecord::Base
     device = Device.find_by(device_id: device_id)
     device.update_column(:member_id, self.id) if device
   end
+
+  def points_to_next_level
+    maximum_points_for_level(next_level)
+  end
+
+  def next_level
+    level + 1
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
@@ -109,10 +113,5 @@ class Member < ActiveRecord::Base
 
   def generate_salt
     self.salt = SecureRandom.hex
-  end
-
-  # 注册就送5金币
-  def increase_coin
-    increase_coins(5)
   end
 end
