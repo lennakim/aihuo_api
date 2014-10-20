@@ -5,6 +5,7 @@ class Reply < ActiveRecord::Base
   include ForumValidations
   include HarmoniousFormatter
   include TouchTopic
+  include ScoreRule
   # relationships .............................................................
   belongs_to :replyable, polymorphic: true
   belongs_to :topic, foreign_key: 'replyable_id', counter_cache: true
@@ -20,6 +21,7 @@ class Reply < ActiveRecord::Base
   # callbacks .................................................................
   after_create :set_topic_id
   after_create :send_notice_msg
+  after_create :increase_score
   # scopes ....................................................................
   # default_scope { order("created_at DESC") }
   scope :to_me, ->(device_id) {
@@ -64,5 +66,10 @@ class Reply < ActiveRecord::Base
 
   def set_topic_id
     update_column(:topic_id, replyable_id) if replyable_type == "Topic"
+  end
+
+  # 回复帖子奖励 1 积分
+  def increase_score
+    increase_points(1)
   end
 end

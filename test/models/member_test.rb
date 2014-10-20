@@ -32,6 +32,11 @@ class MembersTest < ActiveSupport::TestCase
     assert_equal 0, @member_2.nodes.count
   end
 
+  def test_member_points_to_next_level
+    assert_equal 0, @member_2.level
+    assert_equal 10, @member_2.points_to_next_level
+  end
+
   # def test_send_sms
   #   result = @member_1.send_captcha("13641374170")
   #   assert result[:success]

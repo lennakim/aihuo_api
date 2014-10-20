@@ -6,9 +6,12 @@ module CoinRule
     # after_create :reduce
   end
 
+  module ClassMethods
+  end
+
   private
 
-  def increase(coin = 5)
+  def increase_coins(coin = 5)
     case self # means case self.class
     when Member
       self.update_column(:coin_total, coin_total + coin)
@@ -18,13 +21,11 @@ module CoinRule
     end
   end
 
-  def reduce(coin = 5)
+  def reduce_coins(coin = 5)
     case self # means case self.class
     when PrivateMessage
       self.sender.update_column(:coin_total, self.sender.coin_total - coin)
     end
   end
 
-  module ClassMethods
-  end
 end

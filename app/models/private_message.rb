@@ -15,7 +15,9 @@ class PrivateMessage < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { where(spam: false).order("created_at DESC") }
   scope :spam, -> { where(spam: true) }
-  scope :by_receiver, ->(member_id) { where(receiver_id: member_id, receiver_deleted: false) }
+  scope :by_receiver, ->(member_id) {
+    where(receiver_id: member_id, receiver_deleted: false)
+  }
   # TODO: history and full_history condition can be move up to a method.
   scope :history, ->(member_id, friend_id) {
     condition =
@@ -69,7 +71,7 @@ class PrivateMessage < ActiveRecord::Base
   # 陌生的两个人首次发送一条小纸条扣5金币
   # 接收者回复纸条不扣金币，发送者再次发送仍然扣金币
   def reduce_coin
-    reduce(5) unless friendly_to_receiver?
+    reduce_coins(5) unless friendly_to_receiver?
   end
 
   # 发送小纸条前验证用户余额

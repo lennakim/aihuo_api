@@ -2,6 +2,7 @@ class Member < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
   include CoinRule
+  include ScoreRule
   include EncryptedId
   include HarmoniousFormatter
   # mount_uploader :avatar, AvatarUploader
@@ -74,7 +75,7 @@ class Member < ActiveRecord::Base
     self.password = captcha
     self.verified = true
     # 绑定手机号增加15金币
-    increase(15) if need_increase_coin
+    increase_coins(15) if need_increase_coin
     save
   end
 
@@ -112,6 +113,6 @@ class Member < ActiveRecord::Base
 
   # 注册就送5金币
   def increase_coin
-    increase(5)
+    increase_coins(5)
   end
 end
