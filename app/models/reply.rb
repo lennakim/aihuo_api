@@ -20,7 +20,6 @@ class Reply < ActiveRecord::Base
   # callbacks .................................................................
   after_create :set_topic_id
   after_create :send_notice_msg
-  after_create :update_topic_status
   # scopes ....................................................................
   # default_scope { order("created_at DESC") }
   scope :to_me, ->(device_id) {
@@ -65,13 +64,5 @@ class Reply < ActiveRecord::Base
 
   def set_topic_id
     update_column(:topic_id, replyable_id) if replyable_type == "Topic"
-  end
-
-  # 需求变化，topics 排序不再考虑回复时间，而统一使用 topic 的 updated_at
-  # update_topic_status 可以酌情在2个迭代后删除
-  def update_topic_status
-    if replyable_type == 'Topic'
-      topic.update_column(:replied_at, Time.now) if topic.replies_count <= 50
-    end
   end
 end
