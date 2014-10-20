@@ -7,6 +7,7 @@ class Application < ActiveRecord::Base
   has_many :coupons
   has_many :resources, class_name: 'Resource'
   has_many :articles, through: :resources, source: :resable, source_type: "Article"
+  has_many :products, through: :resources, source: :resable, source_type: "Product"
   has_many :advertisement_settings
   has_many :tactics, through: :advertisement_settings
   # Remember to remove `adv_contents_applications` later.

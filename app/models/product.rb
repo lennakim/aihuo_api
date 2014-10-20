@@ -14,12 +14,11 @@ class Product < ActiveRecord::Base
   # callbacks .................................................................
   # scopes ....................................................................
   default_scope { order("products.out_of_stock, products.rank DESC") }
-
   scope :gifts, -> {
     select("products.id AS id").joins(:product_props).where(product_props: { sale_price: 0 })
       .group('products.id')
   }
-
+  scope :banner, -> { where(:banner => true) }
   scope :search, ->(keyword, date, today, match) {
     products =
       case keyword # was case keyword.class

@@ -5,6 +5,7 @@ module WelcomeHelper
     optional :register_date, type: String, desc: "Date looks like '20130401'."
     optional :filter, type: Symbol, values: [:healthy, :all], default: :all, desc: "Filtering for blacklist."
     optional :ref, type: String, desc: ""
+    optional :ver, type: String, desc: "version number."
   end
 
   params :channel do
@@ -40,7 +41,8 @@ module WelcomeHelper
   end
 
   def cacke_key
-    [:v2, :home, params[:api_key], params[:register_date], params[:filter], params[:ref], profile_number]
+    [:v2, :home, params[:api_key], params[:register_date],
+     params[:filter], params[:ref], params[:ver], profile_number]
   end
 
   def get_homepage_data
@@ -62,6 +64,12 @@ module WelcomeHelper
       else
         @application.articles.banner
       end
+    end
+
+    # 如果 ver 不为空，则返回的 banner 中可以有产品
+    if params[:ver]
+      banners = @application.products.banner
+      @banners += banners
     end
   end
 
