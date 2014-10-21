@@ -1,13 +1,26 @@
 json.banners @banners do |banner|
-  json.id banner.to_param
-  json.title banner.title
-  json.type banner.class.name
-  if banner.background
+  if banner.class == Hash
+    json.id nil
+    json.title banner[:title]
+    json.name banner[:name]
+    json.type banner[:type]
     json.background do
-      json.default banner.carrierwave_background(nil, :url)
-      json.ipad banner.carrierwave_background(:ipad, :url)
-      json.iphone banner.carrierwave_background(:iphone, :url)
-      json.android banner.carrierwave_background(:android, :url)
+      json.default banner[:background][:default]
+      json.ipad banner[:background][:ipad]
+      json.iphone banner[:background][:iphone]
+      json.android banner[:background][:android]
+    end
+  else
+    json.id banner.to_param
+    json.title banner.title
+    json.type banner.class.name
+    if banner.background
+      json.background do
+        json.default banner.carrierwave_background(nil, :url)
+        json.ipad banner.carrierwave_background(:ipad, :url)
+        json.iphone banner.carrierwave_background(:iphone, :url)
+        json.android banner.carrierwave_background(:android, :url)
+      end
     end
   end
 end
