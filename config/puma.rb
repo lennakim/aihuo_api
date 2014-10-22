@@ -9,7 +9,7 @@ require 'puma'
 #
 # The default is “development”.
 #
-environment = 'production'
+environment 'production'
 
 # ENV["BUNDLER_GEMFILE"] = "/var/www/api.aihuo360.com/Gemfile"
 # ENV["BUNDLE_GEMFILE"] = "/var/www/api.aihuo360.com/Gemfile"
