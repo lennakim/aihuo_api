@@ -1,5 +1,4 @@
 json.id topic.to_param
-json.node_id topic.node.to_param
 json.(topic, :body, :nickname)
 json.liked_count topic.likes_count
 json.disliked_count topic.unlikes_count
@@ -15,5 +14,10 @@ end
 if topic.topic_images.any?
   json.images topic.topic_images do |topic_image|
     json.partial! "topic_images/topic_image", topic_image: topic_image
+  end
+end
+if topic.node
+  json.node do
+    json.partial! "nodes/node", node: topic.node
   end
 end
