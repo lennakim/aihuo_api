@@ -15,9 +15,11 @@ class Tasks < Grape::API
     end
     post :complete, jbuilder: 'tasks/task' do
       if sign_approval? && authenticate?
-        mission = Task.find_by(name: params[:action])
-        @task = TaskLogging.new(task_id: mission.id, member_id: member_id)
-        error!(@task.errors[:task_id][0], 500) unless @task.save
+        missions = Task.where(name: params[:action])
+        missions.each do |mission|
+          @task = TaskLogging.new(task_id: mission.id, member_id: member_id)
+          error!(@task.errors[:task_id][0], 500) unless @task.save
+        end
       else
         error! "Access Denied", 401
       end

@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.4'
-gem 'grape', '0.7.0'
+gem 'rails', '4.1.6'
+gem 'grape'
 gem 'mysql2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
@@ -18,7 +18,7 @@ gem 'awesome_nested_set', '~> 3.0.0.rc.1'
 gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
 gem 'bluestorm_sms', '0.0.6', github: 'wjp2013/bluestorm_sms'
-gem 'dalli', github: 'flypiggy/dalli'
+gem 'dalli', github: 'mperham/dalli'
 gem 'igetui-ruby', '1.2.0', require: 'igetui'
 
 # Because activesupport doesn't encoding invalid code anymore.

@@ -1,7 +1,7 @@
 class TaskLogging < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
-  include CoinRule
+  include CoinRule, ScoreRule
   # relationships .............................................................
   belongs_to :task
   belongs_to :member
@@ -22,7 +22,7 @@ class TaskLogging < ActiveRecord::Base
   protected
 
   def run_task
-    send(task.action, task.value)
+    send(task.action, task.value) if self.respond_to?(task.action, true)
   end
   # private instance methods ..................................................
 end

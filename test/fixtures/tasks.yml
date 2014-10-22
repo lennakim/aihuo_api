@@ -9,7 +9,7 @@
 one:
   id: 1
   name: "login"
-  action: "increase"
+  action: "increase_coins"
   value: 10
   description: '登录送金币'
 
@@ -17,6 +17,6 @@ one:
 two:
   id: 2
   name: "test task"
-  action: "increase"
+  action: "increase_coins"
   value: 5
   description: '测试任务'
