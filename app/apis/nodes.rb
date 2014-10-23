@@ -7,7 +7,7 @@ class Nodes < Grape::API
       use :nodes
     end
     get "/", jbuilder: 'nodes/nodes' do
-      @nodes = Node.by_state(:public).by_filter(params[:filter], params[:member_id])
+      @nodes = Node.by_state(:public).by_filter(params[:filter], params[:member_id]).order("sort")
     end
 
     params do

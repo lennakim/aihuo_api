@@ -16,7 +16,7 @@ class Node < ActiveRecord::Base
   # class methods .............................................................
   def self.by_filter(filter, member_id)
     case filter
-    when :all then where(gender: 0)
+    when :all then where(gender: [0, 1, 2])
     when :male then where(gender: 1)
     when :female then where(gender: 2)
     when :joins
