@@ -16,9 +16,15 @@ class Node < ActiveRecord::Base
   # class methods .............................................................
   def self.by_filter(filter, member_id)
     case filter
-    when :all then where(gender: [0, 1, 2])
-    when :male then where(gender: 1)
-    when :female then where(gender: 2)
+    when :all
+      gender =  member_id ? ((member = Member.find(member_id)) ? member.gender : nil) : nil
+      case gender
+         when  true then where(gender: [1, 2]).reorder("gender ASC")
+         when  false then where(gender: [1, 2]).reorder("gender DESC")
+         else where(gender: [1, 2])
+      end
+    when :male then where(gender: 1, recommend: true)
+    when :female then where(gender: 2, recommend: true)
     when :joins
       if member_id
         member = Member.find(member_id)
@@ -36,6 +42,10 @@ class Node < ActiveRecord::Base
   def block_user(manager, user)
     blacklist = Blacklist.new({ device_id: user, node_id: self.id })
     manager_list.include?(manager) && blacklist.save
+  end
+
+  def do_not_have_member member_id
+    !self.member_ids.include? member_id.to_i
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

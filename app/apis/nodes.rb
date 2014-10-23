@@ -8,6 +8,9 @@ class Nodes < Grape::API
     end
     get "/", jbuilder: 'nodes/nodes' do
       @nodes = Node.by_state(:public).by_filter(params[:filter], params[:member_id]).order("sort")
+      if ([:male, :female].include?(params[:filter])) && params[:member_id]
+        @nodes = @nodes.select {|node| node.do_not_have_member(params[:member_id])}
+      end
     end
 
     params do
