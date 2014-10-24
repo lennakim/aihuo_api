@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141008021758) do
+ActiveRecord::Schema.define(version: 20141013022859) do
 
   create_table "account_bill_infos", force: true do |t|
     t.integer  "account_bill_id"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20141008021758) do
     t.string   "tag"
     t.string   "version_name"
     t.integer  "version_code"
+    t.boolean  "deleted",                                   default: false
   end
 
   create_table "adv_contents_applications", id: false, force: true do |t|
@@ -595,6 +596,7 @@ ActiveRecord::Schema.define(version: 20141008021758) do
     t.string   "icon"
     t.text     "rule"
     t.integer  "gender",       default: 0
+    t.boolean  "recommend",    default: false
   end
 
   create_table "notifications", force: true do |t|
@@ -1068,6 +1070,13 @@ ActiveRecord::Schema.define(version: 20141008021758) do
     t.text     "move_info"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "topic_images", force: true do |t|
+    t.integer  "topic_id"
+    t.string   "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "topics", force: true do |t|

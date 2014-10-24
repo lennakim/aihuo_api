@@ -71,4 +71,8 @@ module NodesHelper
     key.push(params[:device_id]) if [:mine, :followed].include? params[:filter]
     key
   end
+
+  def member_id
+    Member.decrypt(Member.encrypted_id_key, params[:member_id]) if params[:member_id]
+  end
 end

@@ -11,19 +11,24 @@ class Node < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { order("sort DESC") }
   scope :by_state, ->(state) { where(privated: state.to_sym != :public) }
+  scope :by_member_id, ->(member_id) {
+    joins(:members).where(members: {id: member_id})
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'bb2CJaHsHjEZhd2T'
   # class methods .............................................................
   def self.by_filter(filter, member_id)
     case filter
-    when :all then where(gender: [0, 1, 2])
-    when :male then where(gender: 1, recommend: true)
-    when :female then where(gender: 2, recommend: true)
+    when :all
+      where(gender: [0, 1, 2])
+    when :male
+      nodes = where(gender: 1, recommend: true)
+      nodes - by_member_id(member_id) if member_id # 不返回我已经加入的
+     when :female
+      nodes = where(gender: 2, recommend: true)
+      nodes - by_member_id(member_id) if member_id # 不返回我已经加入的
     when :joins
-      if member_id
-        member = Member.find(member_id)
-        member.nodes
-      end
+      by_member_id(member_id) if member_id
     end
   end
   # public instance methods ...................................................
@@ -36,10 +41,6 @@ class Node < ActiveRecord::Base
   def block_user(manager, user)
     blacklist = Blacklist.new({ device_id: user, node_id: self.id })
     manager_list.include?(manager) && blacklist.save
-  end
-
-  def do_not_have_member member_id
-    !self.member_ids.include? member_id.to_i
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

@@ -5,3 +5,11 @@ one:
 two:
   member_id: 2
   node_id: 1
+
+three:
+  member_id: 2
+  node_id: 2
+
+four:
+  member_id: 2
+  node_id: 3
