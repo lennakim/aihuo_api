@@ -16,13 +16,7 @@ class Node < ActiveRecord::Base
   # class methods .............................................................
   def self.by_filter(filter, member_id)
     case filter
-    when :all
-      gender =  member_id ? ((member = Member.find(member_id)) ? member.gender : nil) : nil
-      case gender
-         when  true then where(gender: [1, 2]).reorder("gender ASC")
-         when  false then where(gender: [1, 2]).reorder("gender DESC")
-         else where(gender: [1, 2])
-      end
+    when :all then where(gender: [0, 1, 2])
     when :male then where(gender: 1, recommend: true)
     when :female then where(gender: 2, recommend: true)
     when :joins
