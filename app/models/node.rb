@@ -22,10 +22,10 @@ class Node < ActiveRecord::Base
     when :all
       where(gender: [0, 1, 2])
     when :male
-      nodes = where(gender: 1, recommend: true)
+      nodes = where(gender: [0, 1], recommend: true)
       nodes_exclude_by_member_id(nodes, member_id)
      when :female
-      nodes = where(gender: 2, recommend: true)
+      nodes = where(gender: [0, 2], recommend: true)
       nodes_exclude_by_member_id(nodes, member_id)
     when :joins
       by_member_id(member_id) if member_id
