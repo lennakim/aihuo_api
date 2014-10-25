@@ -24,12 +24,12 @@ class MembersTest < ActiveSupport::TestCase
 
   def test_member_join_a_group
     @member_2.nodes << @node
-    assert_equal 1, @member_2.nodes.count
+    assert_equal 3, @member_2.nodes.count
   end
 
   def test_member_quit_a_group
     @member_2.nodes.delete @node
-    assert_equal 0, @member_2.nodes.count
+    assert_equal 2, @member_2.nodes.count
   end
 
   def test_member_points_to_next_level

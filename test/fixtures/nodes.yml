@@ -10,3 +10,18 @@ one:
   name: '两性乱侃区'
   privated: false
   gender: 1
+  recommend: true
+
+two:
+  id: 2
+  name: '悄悄话'
+  privated: false
+  gender: 1
+  recommend: true
+
+three:
+  id: 3
+  name: "哈哈乐"
+  privated: false
+  gender: 2
+  recommend: true
