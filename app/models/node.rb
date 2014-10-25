@@ -23,13 +23,17 @@ class Node < ActiveRecord::Base
       where(gender: [0, 1, 2])
     when :male
       nodes = where(gender: 1, recommend: true)
-      nodes - by_member_id(member_id) if member_id # 不返回我已经加入的
+      nodes_exclude_by_member_id(nodes, member_id)
      when :female
       nodes = where(gender: 2, recommend: true)
-      nodes - by_member_id(member_id) if member_id # 不返回我已经加入的
+      nodes_exclude_by_member_id(nodes, member_id)
     when :joins
       by_member_id(member_id) if member_id
     end
+  end
+
+  def self.nodes_exclude_by_member_id(nodes, member_id)
+    member_id.present? ? nodes - by_member_id(member_id) : nodes
   end
   # public instance methods ...................................................
   def manager_list
