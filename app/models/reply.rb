@@ -26,7 +26,7 @@ class Reply < ActiveRecord::Base
       "(replyable_id in (?) AND replyable_type = 'Topic')",
       "(replyable_id in (?) AND replyable_type = 'Reply')"
     ].join(" OR ")
-    where(condition, topics, replies).where.not(device_id: device_id).order("created_at DESC")
+    where(condition, topics, replies).where.not(device_id: device_id).reorder("created_at DESC")
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'vfKYGu3kbQ3skEWr'
