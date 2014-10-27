@@ -1,14 +1,11 @@
 class Topics < Grape::API
-  resources 'topics' do
+  helpers TopicsHelper
 
+  resources 'topics' do
     desc "Return topics list for all nodes."
     params do
-      optional :filter, type: Symbol, values: [:recommend, :best, :checking, :hot, :new, :mine, :followed], default: :mine, desc: "Filtering topics."
-      requires :device_id, type: String, desc: "Device ID."
-      optional :page, type: Integer, default: 1, desc: "Page number."
-      optional :per_page, type: Integer, default: 10, desc: "Per page value."
+      use :topics
     end
-
     get "/", jbuilder: 'topics/topics' do
       topics = Topic.scope_by_filter(params[:filter], params[:device_id])
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
@@ -16,8 +13,7 @@ class Topics < Grape::API
 
     desc "Delete multiplea topics."
     params do
-      requires :device_id, type: String, desc: "Device ID."
-      requires :topic_ids, type: Array, desc: "Topis IDs."
+      use :manage_multiplea_topics
     end
     delete "/" do
       @topics = Topic.with_deleted.find_by_encrypted_id(params[:topic_ids])
@@ -33,8 +29,7 @@ class Topics < Grape::API
 
     desc 'Unfollow multiplea topics.'
     params do
-      requires :device_id, type: String, desc: "Device ID."
-      requires :topic_ids, type: Array, desc: "Topis IDs."
+      use :manage_multiplea_topics
     end
     delete :unfollow do
       @topics = Topic.find(params[:topic_ids])
@@ -119,8 +114,7 @@ class Topics < Grape::API
       resources 'replies' do
         desc "Return a listing of replies for a topic."
         params do
-          optional :page, type: Integer, default: 1, desc: "Page number."
-          optional :per_page, type: Integer, default: 10, desc: "Per page value."
+          use :paginator
         end
         get "/", jbuilder: 'replies/replies' do
           @replies = paginate(@topic.replies)
@@ -128,14 +122,7 @@ class Topics < Grape::API
 
         desc "Create a reply to the topic."
         params do
-          requires :body, type: String, desc: "Reply content."
-          requires :nickname, type: String, desc: "User nickname."
-          requires :device_id, type: String, desc: "Deivce ID."
-          requires :sign, type: String, desc: "sign value."
-          optional :member, type: Hash do
-            requires :id, type: String, desc: "Member ID."
-            requires :password, type: String, desc: "Member password."
-          end
+          use :reply
         end
         post "/", jbuilder: 'replies/reply' do
           if sign_approval?
