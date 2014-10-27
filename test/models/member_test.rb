@@ -1,6 +1,6 @@
 require "test_helper"
 
-class MembersTest < ActiveSupport::TestCase
+class MemberTest < ActiveSupport::TestCase
 
   def setup
     @member_1 ||= Member.find_by(id: 1)

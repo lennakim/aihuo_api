@@ -13,7 +13,9 @@ class Coupon < ActiveRecord::Base
   scope :available, -> {
     enabled.where("start_time <= ? AND end_time >= ?", Time.now, Time.now)
   }
-  scope :by_sdk_ver, ->(ver) { where(application_ver: ver) }
+  scope :by_sdk_ver, ->(ver) {
+    ver ? where("application_ver > ?", ver) : Coupon.where(application_id: nil)
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'pVXy9ChXEe2Fmmfa'
   # class methods .............................................................
