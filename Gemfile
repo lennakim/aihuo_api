@@ -38,7 +38,7 @@ group :development do
   gem 'mina'
   # A robust Ruby code analyzer, based on the community Ruby style guide.
   # https://github.com/bbatsov/rubocop
-  gem 'rubocop', '~> 0.18.1'
+  gem 'rubocop', require: false
   gem 'guard'
   gem 'guard-minitest'
 end

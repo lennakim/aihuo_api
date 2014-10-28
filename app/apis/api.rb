@@ -19,9 +19,9 @@ class API < Grape::API
     end
 
     def current_application
-      api_key = request.headers["Apikey"] || params[:api_key]
+      api_key = request.headers['Apikey'] || params[:api_key]
       @application = Application.where(api_key: api_key).first
-      error!({error: "unknown api key"}, 500) unless @application
+      error!({ error: 'Unknown API KEY' }, 500) unless @application
     end
 
     def current_device
@@ -29,10 +29,10 @@ class API < Grape::API
     end
 
     def flatten_hash(hash)
-      hash.collect do |k, v|
+      hash.map do |k, v|
         if v.is_a?(Hash)
           # When upload a file, make tempfile and other params out of hash.
-          v.has_key?("tempfile") ? "#{k}=#{v['filename']}" : flatten_hash(v)
+          v.key?('tempfile') ? "#{k}=#{v['filename']}" : flatten_hash(v)
         else
           "#{k}=#{v}"
         end
@@ -40,23 +40,22 @@ class API < Grape::API
     end
 
     def url_encode(s)
-      s.to_s.dup.force_encoding("ASCII-8BIT").gsub(/[^a-zA-Z0-9_\-.\*]/) {
-        sprintf("%%%02X", $&.unpack("C")[0])
-      }
+      s.to_s.dup.force_encoding('ASCII-8BIT').gsub(/[^a-zA-Z0-9_\-.\*]/) do
+        sprintf('%%%02X', $&.unpack('C')[0])
+      end
+    end
+
+    def print_sign(string)
+      log.info "string: #{string}"
+      log.info "sign: #{Digest::MD5.hexdigest(url_encode(string))}"
     end
 
     def sign(hash_signature, signature_keys)
       # Remove the "sign" entry
-      signature_keys.each do |signature_key|
-        hash_signature.delete(signature_key.to_s)
-        hash_signature.delete(signature_key.to_sym)
-      end
+      signature_keys.each { |key| hash_signature.delete(key) }
 
-      calculated_signature = flatten_hash(hash_signature)
-      calculated_signature = calculated_signature.flatten.sort.join
+      calculated_signature = flatten_hash(hash_signature).flatten.sort.join
 
-      # example:
-      # url += "GEThttp://api.aihuo360.com/api/v2/home"
       base_url = request.request_method
       base_url += "#{request.scheme}://#{request.host}#{request.path_info}"
 
@@ -67,18 +66,17 @@ class API < Grape::API
 
       # Final calculated_signature to compare against
       string = base_url + calculated_signature + secret_key
-      log.info "string: #{string}"
-      log.info "sign: #{Digest::MD5.hexdigest(url_encode(string))}"
+      print_sign(string)
       Digest::MD5.hexdigest(url_encode(string))
     end
 
-    def sign_approval?(signature_keys = ['sign'])
+    def sign_approval?(signature_keys = ['sign', :sign])
       hash_signature = declared(params, include_missing: false)
       sign(hash_signature, signature_keys).eql? params[:sign]
     end
 
     def verify_sign
-      error!("Access Denied", 401) unless sign_approval?
+      error!('Access Denied', 401) unless sign_approval?
     end
 
     def authenticate?

@@ -273,6 +273,6 @@ DEPENDENCIES
   puma
   rails (= 4.1.6)
   rest-client
-  rubocop (~> 0.18.1)
+  rubocop
   spring
   sqlite3
