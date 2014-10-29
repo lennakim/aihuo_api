@@ -55,7 +55,7 @@ class Notification < ActiveRecord::Base
   end
 
   def self.send_msg(device_id, options = {})
-    device_info = DeviceInfo.find_by(device_id: device_id)
+    device_info = DeviceInfo.where(device_id: device_id).first
     return unless device_info
     options.merge!({
       application_id: device_info.application_id,
