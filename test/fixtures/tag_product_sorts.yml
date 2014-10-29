@@ -1,0 +1,6 @@
+fix_1:
+  tag_id: 1
+  product_id: 3
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
