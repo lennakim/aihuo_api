@@ -45,11 +45,11 @@ class Products < Grape::API
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get "/", jbuilder: 'products/products' do
-      @products =
-        paginate(
-          Product.search(query_params, date_param, Date.today, params[:match])
-            .price_between(params[:min_price], params[:max_price])
-        )
+      products =
+        Product.search(query_params, date_param, Date.today, params[:match])
+          .price_between(params[:min_price], params[:max_price])
+      products = products.sorted_by_tag(params[:tag]) if params[:tag]
+      @products = paginate(products)
     end
 
     params do
