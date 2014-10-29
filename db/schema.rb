@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013022859) do
+ActiveRecord::Schema.define(version: 20141027112720) do
 
   create_table "account_bill_infos", force: true do |t|
     t.integer  "account_bill_id"
@@ -61,6 +61,12 @@ ActiveRecord::Schema.define(version: 20141013022859) do
 
   add_index "adv_application_reports", ["application_id"], name: "index_adv_application_reports_on_application_id", using: :btree
 
+  create_table "adv_content_account_notifies", force: true do |t|
+    t.integer "adv_content_id"
+    t.date    "start_date"
+    t.date    "end_date"
+  end
+
   create_table "adv_contents", force: true do |t|
     t.string   "title"
     t.string   "description"
@@ -81,6 +87,7 @@ ActiveRecord::Schema.define(version: 20141013022859) do
     t.string   "tag"
     t.string   "version_name"
     t.integer  "version_code"
+    t.boolean  "trash",                                     default: false
     t.boolean  "deleted",                                   default: false
   end
 
@@ -828,6 +835,7 @@ ActiveRecord::Schema.define(version: 20141013022859) do
     t.boolean  "out_of_stock",                                               default: false
     t.string   "itemsn"
     t.boolean  "auto_pick_up",                                               default: true
+    t.string   "video"
   end
 
   add_index "products", ["brand_id"], name: "index_products_on_brand_id", using: :btree
@@ -1009,6 +1017,14 @@ ActiveRecord::Schema.define(version: 20141013022859) do
 
   create_table "suppliers", force: true do |t|
     t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tag_product_sorts", force: true do |t|
+    t.integer  "tag_id"
+    t.integer  "product_id"
+    t.integer  "positoin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

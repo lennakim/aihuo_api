@@ -1,0 +1,5 @@
+<% 1.upto(100) do |i| %>
+fix_<%= i %>:
+  id: <%= i %>
+  created_at: <%= (i).days.ago(Time.now) %>
+<% end %>

@@ -72,11 +72,22 @@ class Product < ActiveRecord::Base
       .group('taggings.taggable_id')
   }
 
+  scope :sort_by_tag, ->(tag) {
+    joins("LEFT JOIN tag_product_sorts on products.id = tag_product_sorts.product_id")
+      .where(tag_product_sorts: {tag_id: tag.id})
+      .reorder("tag_product_sorts.positoin ASC, products.out_of_stock, products.rank DESC")
+  }
+
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'XRbLEgrUCLHh94qG'
   # class methods .............................................................
+  def self.sorted_by_tag(tag_name)
+    tag = Tag.find_by(name: tag_name)
+    return self unless tag
+    ids = sort_by_tag(tag).pluck(:id) + pluck(:id)
+    reorder("FIELD(products.id", ids.uniq.join(","), "0)")
+  end
   # public instance methods ...................................................
-
   # 市场价（原价）显示SKU市场价的最高值
   def market_price
     product_props.reorder("original_price DESC").first.original_price

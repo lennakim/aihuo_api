@@ -1,0 +1,15 @@
+# https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+AllCops:
+  Includes:
+    - Rakefile
+    - config.ru
+  Excludes:
+    - db/**
+    - config/**
+    - script/**
+Documentation:
+  Enabled: false
+
+# https://github.com/ryshinoz/rubocop_sample/blob/master/README.md
+AsciiComments:
+  Enabled: false
