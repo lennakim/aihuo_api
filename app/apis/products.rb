@@ -7,13 +7,13 @@ class Products < Grape::API
       use :products
     end
     get "/", jbuilder: 'products/products' do
-      cache(key: products_cache_key, expires_in: 2.hours) do
+      # cache(key: products_cache_key, expires_in: 2.hours) do
         products =
           Product.search(query_params, date_param, Date.today, params[:match])
             .price_between(params[:min_price], params[:max_price])
         products = products.sorted_by_tag(params[:tag]) if params[:tag]
         @products = paginate(products)
-      end
+      # end
     end
 
     params do
