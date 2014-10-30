@@ -38,9 +38,7 @@ class Product < ActiveRecord::Base
         end
       when String # keyword is a tag or word.
         products = tagged_with(keyword, any: true).distinct
-        if products.blank? || products.size.zero?
-          products = where("products.title like ?", "%#{keyword}%")
-        end
+        products = where("products.title like ?", "%#{keyword}%") if products.blank?
         products
       when NilClass # keyword is nil, return all the products
         self
@@ -83,7 +81,7 @@ class Product < ActiveRecord::Base
   # class methods .............................................................
   def self.sorted_by_tag(tag_name)
     tag = Tag.find_by(name: tag_name)
-    return self unless tag
+    return unless tag
     ids = sort_by_tag(tag).pluck(:id) + pluck(:id)
     reorder("FIELD(products.id", ids.uniq.join(","), "0)")
   end
