@@ -51,10 +51,10 @@ module ProductsHelper
   def products_cache_key
     [:v2, :products, params[:id], params[:tag], params[:tags], params[:match],
     params[:min_price], params[:max_price], params[:register_date],
-    params[:sku_visible], params[:page], params[:per_page]]
+    params[:sku_visible], params[:page], params[:per_page]].join("-")
   end
 
   def trades_cache_key
-    [:v2, :product, params[:id], :trades, params[:page], params[:per_page]]
+    [:v2, :product, params[:id], :trades, params[:page], params[:per_page]].join("-")
   end
 end

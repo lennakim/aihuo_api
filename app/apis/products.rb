@@ -7,13 +7,12 @@ class Products < Grape::API
       use :products
     end
     get "/", jbuilder: 'products/products' do
-      # cache(key: products_cache_key, expires_in: 2.hours) do
-        products =
-          Product.search(query_params, date_param, Date.today, params[:match])
-            .price_between(params[:min_price], params[:max_price])
-        products = products.sorted_by_tag(params[:tag]) if params[:tag]
-        @products = paginate(products)
-      # end
+      products = Rails.cache.fetch(products_cache_key, expires_in: 2.hours) do
+        products = Product.search(query_params, date_param, Date.today, params[:match])
+        products = products.price_between(params[:min_price], params[:max_price])
+        products.sorted_by_tag(params[:tag])
+      end
+      @products = products ? paginate(products) : products
     end
 
     params do
@@ -32,10 +31,11 @@ class Products < Grape::API
         use :trades
       end
       get :trades, jbuilder: 'trades/trades' do
-        cache(key: trades_cache_key, expires_in: 2.hours) do
+        trades = Rails.cache.fetch(key: trades_cache_key, expires_in: 2.hours) do
           product = Product.find(params[:id])
-          @trades = paginate(product.orders.by_filter(params[:filter]).distinct.order("created_at DESC"))
+          product.orders.by_filter(params[:filter]).distinct.order("created_at DESC")
         end
+        @products = trades ? paginate(trades) : trades
       end
     end
 
