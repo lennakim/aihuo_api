@@ -29,6 +29,8 @@ class Node < ActiveRecord::Base
       nodes_exclude_by_member_id(nodes, member_id)
     when :joins
       by_member_id(member_id) if member_id
+    when :recommend
+      where(gender: 0, recommend: true)
     end
   end
 

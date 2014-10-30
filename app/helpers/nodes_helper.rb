@@ -2,7 +2,7 @@ module NodesHelper
   extend Grape::API::Helpers
 
   params :nodes do
-    optional :filter, type: Symbol, values: [:male, :female, :all, :joins], default: :all, desc: "Filtering topics."
+    optional :filter, type: Symbol, values: [:male, :female, :all, :joins, :recommend], default: :all, desc: "Filtering topics."
     optional :member_id, type: String, desc: "Member ID."
     optional :page, type: Integer, default: 1, desc: "Page number."
     optional :per_page, type: Integer, default: 10, desc: "Per page value."
