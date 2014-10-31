@@ -43,6 +43,7 @@ module ScoreRule
   end
 
   def maximum_points_for_level(level)
+    # same as: level * (level + 1) / 2 * 10
     (0..level).inject(0) { |sum, level| sum + level * 10 }
   end
 
