@@ -31,7 +31,7 @@ class Advertisement < ActiveRecord::Base
   end
 
   def self.increase_view_count
-    all.map(&:increase_view_count)
+    all.map(&:increase_view_count_to_cache)
   end
 
   def self.collection_advertisement_ids(tactics, control_volume)
@@ -48,10 +48,21 @@ class Advertisement < ActiveRecord::Base
   end
 
   # public instance methods ...................................................
-  def increase_view_count
+  def increase_view_count_to_cache
+    key = "#{self.id}"
+    Rails.cache.dalli.with do |client|
+      if client.add(key, 1, 0, raw: true)
+        client.append('advertisement_ids', ",#{key}") unless client.add('advertisement_ids', key, 0, raw: true)
+      else
+        client.incr key
+      end
+    end
+  end
+
+  def increase_view_count_from_cache(count)
     update_columns({
-      today_view_count: today_view_count + 1,
-      total_view_count: total_view_count + 1
+      today_view_count: today_view_count + count,
+      total_view_count: total_view_count + count
     })
   end
 
