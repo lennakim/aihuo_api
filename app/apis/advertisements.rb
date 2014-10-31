@@ -1,4 +1,6 @@
 class Advertisements < Grape::API
+  helpers MemcachedHelper
+
   resources 'advertisements' do
     params do
       requires :id, type: String, desc: "Advertisement ID."
@@ -12,13 +14,7 @@ class Advertisements < Grape::API
       put "/" do
         current_application
         key = "#{Date.today}:#{@application.id}:#{params[:id]}:#{params[:action]}"
-        Rails.cache.dalli.with do |client|
-          if client.add(key, 1, 0, raw: true)
-            client.append('statistic_keys', ",#{key}") unless client.add('statistic_keys', key, 0, raw: true)
-          else
-            client.incr key
-          end
-        end
+        incr_value_in_memcached('statistic_keys', key)
         status 200
       end
     end

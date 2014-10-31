@@ -40,7 +40,7 @@ namespace :cache do
           advertisement = Advertisement.find(id)
           result = advertisement.increase_view_count_from_cache(count)
           if result == true
-            p "同步成功 advertisement #{id}"
+            p "同步成功 advertisement #{id}, #{count}"
           else
             p "同步失败 advertisement #{id}"
           end

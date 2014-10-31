@@ -2,6 +2,7 @@ class Advertisement < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
   include CarrierWaveMini
+  include MemcachedHelper
   # relationships .............................................................
   has_many :adv_statistics, foreign_key: "adv_content_id"
   # validations ...............................................................
@@ -49,14 +50,7 @@ class Advertisement < ActiveRecord::Base
 
   # public instance methods ...................................................
   def increase_view_count_to_cache
-    key = "#{self.id}"
-    Rails.cache.dalli.with do |client|
-      if client.add(key, 1, 0, raw: true)
-        client.append('advertisement_ids', ",#{key}") unless client.add('advertisement_ids', key, 0, raw: true)
-      else
-        client.incr key
-      end
-    end
+    incr_value_in_memcached('advertisement_ids', id.to_s)
   end
 
   def increase_view_count_from_cache(count)
