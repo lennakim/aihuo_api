@@ -5,7 +5,7 @@ module ForumValidations
     validates_presence_of :body
 
     validate on: :create do
-      error_msg = "您已被禁言，有问题请去版务区发帖申诉"
+      error_msg = "您因违规，已被禁言，请到商城答疑小组找管理员申诉。"
       errors.add(:device_id, error_msg) if Blacklist.available.find_by(device_id: device_id, node_id: 0)
       errors.add(:device_id, error_msg) if Blacklist.find_by(device_id: device_id, node_id: node_id)
     end
