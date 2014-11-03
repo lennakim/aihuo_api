@@ -76,15 +76,16 @@ class Product < ActiveRecord::Base
       .reorder("tag_product_sorts.positoin ASC, products.out_of_stock, products.rank DESC")
   }
 
-  # additional config (i.e. accepts_nested_attribute_for etc...) ..............
-  encrypted_id key: 'XRbLEgrUCLHh94qG'
-  # class methods .............................................................
-  def self.sorted_by_tag(tag_name)
+  scope :sorted_by_tag, ->(tag_name) {
     tag = Tag.find_by(name: tag_name)
     return unless tag
     ids = sort_by_tag(tag).pluck(:id) + pluck(:id)
     reorder("FIELD(products.id", ids.uniq.join(","), "0)")
-  end
+  }
+
+  # additional config (i.e. accepts_nested_attribute_for etc...) ..............
+  encrypted_id key: 'XRbLEgrUCLHh94qG'
+  # class methods .............................................................
   # public instance methods ...................................................
   # 市场价（原价）显示SKU市场价的最高值
   def market_price
