@@ -2,6 +2,7 @@ class Advertisement < ActiveRecord::Base
   # extends ...................................................................
   # includes ..................................................................
   include CarrierWaveMini
+  include MemcachedHelper
   # relationships .............................................................
   has_many :adv_statistics, foreign_key: "adv_content_id"
   # validations ...............................................................
@@ -31,7 +32,7 @@ class Advertisement < ActiveRecord::Base
   end
 
   def self.increase_view_count
-    all.map(&:increase_view_count)
+    all.map(&:increase_view_count_to_cache)
   end
 
   def self.collection_advertisement_ids(tactics, control_volume)
@@ -48,10 +49,14 @@ class Advertisement < ActiveRecord::Base
   end
 
   # public instance methods ...................................................
-  def increase_view_count
+  def increase_view_count_to_cache
+    incr_value_in_memcached('advertisement_ids', id.to_s)
+  end
+
+  def increase_view_count_from_cache(count)
     update_columns({
-      today_view_count: today_view_count + 1,
-      total_view_count: total_view_count + 1
+      today_view_count: today_view_count + count,
+      total_view_count: total_view_count + count
     })
   end
 
