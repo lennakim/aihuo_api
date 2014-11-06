@@ -86,6 +86,7 @@ class API < Grape::API
   end
 
   after do
+    # http://codetunes.com/2014/grape-part-II/
     log_foramt = "[#{status}] - "
     log_foramt += "#{request.request_method} \"#{request.fullpath}\" - "
     log_foramt += "#{request.env['HTTP_APIKEY']} - "
