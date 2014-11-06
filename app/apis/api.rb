@@ -13,7 +13,7 @@ class API < Grape::API
 
   helpers do
     # example:
-    # log.info "something" can be found in log/api_puma.out.log
+    # log.info "something" can be found in log/puma.out.log
     def log
       API.logger
     end
@@ -83,6 +83,14 @@ class API < Grape::API
       member = Member.find params[:member_id]
       member && member.authenticate?(params[:password])
     end
+  end
+
+  after do
+    log_foramt = "[#{status}] - "
+    log_foramt += "#{request.request_method} \"#{request.fullpath}\" - "
+    log_foramt += "#{request.env['HTTP_APIKEY']} - "
+    log_foramt += "#{request.env['HTTP_DEVICE_ID']}"
+    log.info log_foramt
   end
 
   mount ::Welcome
