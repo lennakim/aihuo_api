@@ -31,9 +31,9 @@ module WelcomeHelper
   end
 
   def profile_number
-    if "0930" < hours_now && hours_now < "1830" # 上午9:30-下午6:30
+    if "0900" < hours_now && hours_now < "1900" # 上午9-下午7
       "1"
-    elsif "1830" <= hours_now || hours_now <= "0930" # 下午6:30-早上9:30
+    elsif "1900" <= hours_now || hours_now <= "0900" # 下午7-早上9
       "2"
     else
       "0"
