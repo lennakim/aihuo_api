@@ -14,7 +14,7 @@ module TouchTopic
       when Topic then self
       end
 
-    if object.created_at > 5.days.ago(Date.today)
+    if object && object.created_at > 5.days.ago(Date.today)
       object.updated_at = Time.now
       object.save(validate: false)
     end
