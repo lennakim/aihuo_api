@@ -40,4 +40,17 @@ class TopicsTest < ActiveSupport::TestCase
     old_topic.forward
     refute_equal Date.today.strftime('%Y-%m-%d'), old_topic.updated_at.strftime('%Y-%m-%d')
   end
+
+  # 测试顶，踩，转发
+  def test_like_should_change_likes_count
+    assert_equal 100, topic.likes_count
+    topic.liked
+    assert_equal 101, topic.likes_count
+  end
+
+  def test_forward_should_change_forward_count
+    assert_equal 50, topic.forward_count
+    topic.forward
+    assert_equal 51, topic.forward_count
+  end
 end
