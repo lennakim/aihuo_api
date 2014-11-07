@@ -13,6 +13,8 @@ one:
   device_id: '1234'
   approved: true
   member_id: 1
+  likes_count: 100
+  forward_count: 50
   created_at: <%= 3.day.ago(Time.now) %>
   updated_at: <%= 2.day.ago(Time.now) %>
 
