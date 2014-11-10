@@ -37,5 +37,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Use a different cache store in production.
+  config.action_controller.perform_caching = true
   config.cache_store = :dalli_store, 'localhost:11211'
 end

@@ -30,7 +30,7 @@ module ShouquApi
 
     config.active_record.default_timezone = :local
 
-    config.cache_store = :file_store, "tmp/cache"
+    # config.cache_store = :file_store, "tmp/cache"
 
     # Config minitest-rails
     # https://github.com/blowmage/minitest-rails#usage
