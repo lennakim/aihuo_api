@@ -70,6 +70,18 @@ module WelcomeHelper
     if params[:ver]
       banners = @application.products.banner
       @banners += banners
+      # 双 11 活动
+      @banners += [
+        { id: "", title: "双11五折场" , name: "双11五折场", type: "Tag",
+          background: {
+            default: "http://image.yepcolor.com/images/20141110/banner_5.jpg",
+            ipad: "http://image.yepcolor.com/images/20141110/banner_5.jpg",
+            iphone: "http://image.yepcolor.com/images/20141110/banner_5.jpg",
+            android: "http://image.yepcolor.com/images/20141110/banner_5.jpg"
+          }
+        }
+      ]
+
     end
   end
 
