@@ -11,17 +11,7 @@ require 'mina/rvm'    # for rvm support. (http://rvm.io)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-#
-# mina deploy to=s1
-case ENV['to']
-when 's1'
-  set :domain, '115.29.164.196' # production 1
-when 's2'
-  set :domain, '115.29.4.146' # production 2
-end
-
 set :domains, ['115.29.164.196', '115.29.4.146']
-
 set :deploy_to, '/var/www/api.aihuo360.com'
 set :repository, 'git@bitbucket.org:Xiaopuzhu/adultshop_new.git'
 set :branch, 'master'
@@ -31,7 +21,28 @@ set :rails_env, :production
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
-set :shared_paths, ['config/database.yml', 'config/newrelic.yml', 'config/secrets.yml', 'log', 'tmp']
+set :shared_paths, ['config/database.yml', 'config/newrelic.yml', 'config/secrets.yml', 'config/puma.rb', 'log', 'tmp']
+
+# mina deploy to=s1
+case ENV['to']
+when 's1'
+  set :domain, '115.29.164.196' # production 1
+when 's2'
+  set :domain, '115.29.4.146' # production 2
+when 's3'
+  set :domain, '114.215.180.151' # staging
+  set :shared_paths, ['config/database.yml', 'config/newrelic.yml', 'config/secrets.yml', 'config/puma.rb', 'config/environments/production.rb', 'log', 'tmp']
+end
+
+case ENV['for']
+when 'master'
+  set :branch, 'master'
+  set :deploy_to, '/var/www/api.master'
+when 'develop'
+  set :branch, 'develop'
+  set :deploy_to, '/var/www/api.develop'
+end
+
 
 # Optional settings:
 set :user, 'root'    # Username in the server to SSH to.
@@ -74,9 +85,17 @@ task :setup => :environment do
 
   queue! %[touch "#{deploy_to}/shared/config/newrelic.yml"]
   queue  %[echo "-----> Be sure to edit 'shared/config/newrelic.yml'."]
+
+  queue! %[touch "#{deploy_to}/shared/config/secrets.yml"]
+  queue  %[echo "-----> Be sure to edit 'shared/config/secrets.yml'."]
+
+  queue! %[touch "#{deploy_to}/shared/config/puma.rb"]
+  queue  %[echo "-----> Be sure to edit 'shared/config/puma.rb'."]
 end
 
 # mina deploy:force_unlock deploy
+# How to use: mina deploy to=s3 for=develop
+# How to use: mina deploy to=s3 for=master
 desc "Deploys the current version to the server."
 task :deploy => :environment do
   deploy do
