@@ -12,7 +12,7 @@ class Node < ActiveRecord::Base
   default_scope { order("sort DESC") }
   scope :by_state, ->(state) { where(privated: state.to_sym != :public) }
   scope :by_member_id, ->(member_id) {
-    joins(:members).where(members: {id: member_id})
+    joins(:members).where(members: {id: member_id}).distinct
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'bb2CJaHsHjEZhd2T'
