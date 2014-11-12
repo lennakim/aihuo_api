@@ -89,8 +89,10 @@ class API < Grape::API
     # http://codetunes.com/2014/grape-part-II/
     log_foramt = "[#{status}] - "
     log_foramt += "#{request.request_method} \"#{request.fullpath}\" - "
-    log_foramt += "#{request.env['HTTP_APIKEY']} - "
-    log_foramt += "#{request.env['HTTP_DEVICE_ID']}"
+    # log_foramt += "#{request.env['HTTP_APIKEY']} - "
+    # log_foramt += "#{request.env['HTTP_DEVICE_ID']}"
+    log_foramt += "#{request.headers['Apikey']} - "
+    log_foramt += "#{request.headers['Device-Id']}"
     log.info log_foramt
   end
 
