@@ -21,7 +21,7 @@ set :rails_env, :production
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
-set :shared_paths, ['config/database.yml', 'config/newrelic.yml', 'config/secrets.yml', 'config/puma.rb', 'log', 'tmp']
+set :shared_paths, ['config/database.yml', 'config/newrelic.yml', 'config/secrets.yml', 'log', 'tmp']
 
 # mina deploy to=s1
 case ENV['to']
