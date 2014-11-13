@@ -67,9 +67,12 @@ module WelcomeHelper
     end
 
     # 如果 ver 不为空，则返回的 banner 中可以有产品
+    #banner中可以有tag
     if params[:ver]
       banners = @application.products.banner
+      bannersTags = @application.tags.banner
       @banners += banners
+      @banners += bannersTags
     end
   end
 
