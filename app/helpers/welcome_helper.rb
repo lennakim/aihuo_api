@@ -68,11 +68,13 @@ module WelcomeHelper
 
     # 如果 ver 不为空，则返回的 banner 中可以有产品
     #banner中可以有tag
+    #banner的顺序1：tag 2：product 3：article
     if params[:ver]
       banners = @application.products.banner
-      bannersTags = @application.tags.banner
+      banners_tags = @application.tags.banner
       @banners += banners
-      @banners += bannersTags
+      @banners += banners_tags
+      @banners.reverse!
     end
   end
 
