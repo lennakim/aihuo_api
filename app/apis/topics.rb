@@ -114,7 +114,7 @@ class Topics < Grape::API
       resources 'replies' do
         desc "Return a listing of replies for a topic."
         params do
-          use :paginator
+          use :replies
         end
         get "/", jbuilder: 'replies/replies' do
           @replies = paginate(@topic.replies)
@@ -125,22 +125,15 @@ class Topics < Grape::API
           use :reply
         end
         post "/", jbuilder: 'replies/reply' do
-          if sign_approval?
-            @reply = @topic.replies.new({
-                       body: params[:body],
-                       nickname: params[:nickname],
-                       device_id: params[:device_id]
-                     })
-            if params[:member]
-              @reply.relate_to_member_with_authenticate(
-                params[:member][:id],
-                params[:member][:password]
-              )
-            end
-            status 422 unless @reply.save
-          else
-            error! "Access Denied", 401
+          verify_sign
+          @reply = @topic.replies.new(reply_params)
+          if params[:member]
+            @reply.relate_to_member_with_authenticate(
+              params[:member][:id],
+              params[:member][:password]
+            )
           end
+          status 422 unless @reply.save
         end
       end
 
