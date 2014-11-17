@@ -28,3 +28,4 @@ three:
   depth: 2
   lft: 2
   rgt: 1
+  banner: true
