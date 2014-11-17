@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141027112720) do
+ActiveRecord::Schema.define(version: 20141113021142) do
 
   create_table "account_bill_infos", force: true do |t|
     t.integer  "account_bill_id"
@@ -26,13 +26,19 @@ ActiveRecord::Schema.define(version: 20141027112720) do
 
   create_table "account_bills", force: true do |t|
     t.integer  "amount"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
-    t.decimal  "balance",    precision: 8, scale: 2, default: 0.0
+    t.datetime "created_at",                                                     null: false
+    t.datetime "updated_at",                                                     null: false
+    t.decimal  "balance",                precision: 8, scale: 2, default: 0.0
     t.integer  "user_id"
     t.string   "company"
     t.string   "state"
     t.string   "details"
+    t.decimal  "after_tax_balance",      precision: 8, scale: 2, default: 0.0
+    t.decimal  "tax",                    precision: 6, scale: 2, default: 0.0
+    t.boolean  "is_public",                                      default: false
+    t.string   "pay_money_pic"
+    t.date     "expect_to_account_date"
+    t.integer  "invoice_state",                                  default: 0
   end
 
   create_table "adultshop_configs", force: true do |t|
@@ -203,6 +209,16 @@ ActiveRecord::Schema.define(version: 20141027112720) do
   end
 
   add_index "articles", ["title"], name: "index_articles_on_title", using: :btree
+
+  create_table "asks", force: true do |t|
+    t.text     "question"
+    t.text     "answer"
+    t.boolean  "imp",        default: false
+    t.integer  "user_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "product_id"
+  end
 
   create_table "block_lists", force: true do |t|
     t.string   "device_id"
@@ -1056,6 +1072,10 @@ ActiveRecord::Schema.define(version: 20141027112720) do
     t.integer "rank"
     t.boolean "visible",        default: true
     t.integer "taggings_count", default: 0
+    t.string  "description"
+    t.string  "background"
+    t.boolean "banner",         default: false
+    t.boolean "eailv_banner",   default: false
   end
 
   add_index "tags", ["category"], name: "index_tags_on_category", using: :btree
