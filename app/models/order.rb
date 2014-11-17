@@ -229,9 +229,9 @@ class Order < ActiveRecord::Base
     end
   end
 
-  # "订单已下，等待确认" 的订单可以取消
+  # "订单已下，等待确认" 并且支付价格是 0 的订单可以取消
   def can_cancel?
-    state == NEWLY_STATE
+    state == NEWLY_STATE && payment_total == 0
   end
 
   # 包含 "取消" 关键字的订单可以取消
