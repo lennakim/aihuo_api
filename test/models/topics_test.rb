@@ -61,10 +61,12 @@ class TopicsTest < ActiveSupport::TestCase
   end
 
   def test_topic_replies_asc
-    replies = topic.replies.sort
+    replies = topic.replies
+    assert_equal 30, replies.count
     assert replies.first.created_at < replies.second.created_at
 
     replies = topic.replies.sort("asc")
+    assert_equal 30, replies.count
     assert replies.first.created_at < replies.second.created_at
   end
 

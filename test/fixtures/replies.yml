@@ -10,3 +10,17 @@ fix_<%= i %>:
   replyable_type: Topic
 <% end %>
 
+<% 30.upto(59) do |i| %>
+fix_<%= i %>:
+  id: <%= i %>
+  topic_id: 2
+  body: <%= i %> + "body"
+  nickname: Ember
+  created_at: <%= (i).days.ago(Time.now) %>
+  updated_at: <%= (i).days.ago(Time.now) %>
+  replyable_id: 2
+  replyable_type: Topic
+<% end %>
+
+
+
