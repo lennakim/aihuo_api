@@ -16,6 +16,7 @@ module TopicsHelper
   params :replies do
     optional :page, type: Integer, default: 1, desc: "Page number."
     optional :per_page, type: Integer, default: 10, desc: "Per page value."
+    optional :sort, type: Symbol, values: [:asc, :desc], default: :asc, desc: "Sort value."
   end
 
   params :reply do
