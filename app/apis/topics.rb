@@ -114,10 +114,13 @@ class Topics < Grape::API
       resources 'replies' do
         desc "Return a listing of replies for a topic."
         params do
+          optional :sort, type: String
           use :replies
         end
         get "/", jbuilder: 'replies/replies' do
-          @replies = paginate(@topic.replies)
+
+          replies = (params[:sort] == "desc"  ? @topic.replies.reorder("created_at DESC") : @topic.replies)
+          @replies = paginate(replies)
         end
 
         desc "Create a reply to the topic."
