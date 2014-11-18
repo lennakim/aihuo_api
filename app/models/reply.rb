@@ -28,17 +28,10 @@ class Reply < ActiveRecord::Base
     ].join(" OR ")
     where(condition, topics, replies).where.not(device_id: device_id).reorder("created_at DESC")
   }
+  scope :sort, ->(sort) { reorder("created_at DESC") if sort.to_sym == :desc }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'vfKYGu3kbQ3skEWr'
   # class methods .............................................................
-  def self.sort(sort = "asc")
-    case sort.to_sym
-    when :desc
-      reorder("created_at DESC")
-    else
-      self
-    end
-  end
   # public instance methods ...................................................
   def relate_to_member_with_authenticate(member_id, password)
     member = Member.find(member_id) if member_id
