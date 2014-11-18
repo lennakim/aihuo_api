@@ -31,11 +31,12 @@ class Reply < ActiveRecord::Base
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'vfKYGu3kbQ3skEWr'
   # class methods .............................................................
-  def self.sort(sort)
+  def self.sort(sort = "asc")
     case sort.to_sym
     when :desc
       reorder("created_at DESC")
     else
+      self
     end
   end
   # public instance methods ...................................................

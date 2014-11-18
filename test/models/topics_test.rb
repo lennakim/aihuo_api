@@ -60,6 +60,14 @@ class TopicsTest < ActiveSupport::TestCase
     assert topic.replies.first.created_at < topic.replies.second.created_at
   end
 
+  def test_topic_replies_asc
+    replies = topic.replies.sort
+    assert replies.first.created_at < replies.second.created_at
+
+    replies = topic.replies.sort("asc")
+    assert replies.first.created_at < replies.second.created_at
+  end
+
   # 测试回复按创建时间倒序排序
   def test_topic_replies_desc
     replies = topic.replies.sort("desc")
