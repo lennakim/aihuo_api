@@ -31,6 +31,13 @@ class Reply < ActiveRecord::Base
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'vfKYGu3kbQ3skEWr'
   # class methods .............................................................
+  def self.sort(sort)
+    case sort.to_sym
+    when :desc
+      reorder("created_at DESC")
+    else
+    end
+  end
   # public instance methods ...................................................
   def relate_to_member_with_authenticate(member_id, password)
     member = Member.find(member_id) if member_id

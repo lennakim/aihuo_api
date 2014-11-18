@@ -53,4 +53,16 @@ class TopicsTest < ActiveSupport::TestCase
     topic.forward
     assert_equal 51, topic.forward_count
   end
+
+  # 测试回复默认排序
+  def test_topic_replies_asc_is_default
+    assert_equal 30, topic.replies.count
+    assert topic.replies.first.created_at < topic.replies.second.created_at
+  end
+
+  # 测试回复按创建时间倒序排序
+  def test_topic_replies_desc
+    replies = topic.replies.sort("desc")
+    assert replies.first.created_at > replies.second.created_at
+  end
 end
