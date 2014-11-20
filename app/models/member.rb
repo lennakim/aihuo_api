@@ -91,6 +91,15 @@ class Member < ActiveRecord::Base
   def next_level
     level + 1
   end
+
+  def handled_nickname
+    i_nickname = "*" * 5
+    if nickname
+      i_nickname[0] = nickname[0]
+      i_nickname[-1] = nickname[-1]
+    end
+    i_nickname
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
