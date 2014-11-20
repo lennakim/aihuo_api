@@ -13,9 +13,10 @@ module TopicsHelper
     requires :topic_ids, type: Array, desc: "Topis IDs."
   end
 
-  params :paginator do
+  params :replies do
     optional :page, type: Integer, default: 1, desc: "Page number."
     optional :per_page, type: Integer, default: 10, desc: "Per page value."
+    optional :sort, type: Symbol, values: [:asc, :desc], default: :asc, desc: "Sort value."
   end
 
   params :reply do
@@ -27,6 +28,17 @@ module TopicsHelper
       requires :id, type: String, desc: "Member ID."
       requires :password, type: String, desc: "Member password."
     end
+  end
+
+  def reply_params
+    params[:reply] = Hash.new
+    params[:reply][:body] = params[:body]
+    params[:reply][:nickname] = params[:nickname]
+    params[:reply][:device_id] = params[:device_id]
+    # params[:topic].class is Hashie::Mash,
+    # and therefore triggering this behavior in ForbiddenAttributesProtection
+    # so we make it as standard Hash.
+    params[:reply].to_h
   end
 
 end
