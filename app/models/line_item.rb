@@ -7,6 +7,7 @@ class LineItem < ActiveRecord::Base
   belongs_to :cart, :touch => true
   belongs_to :product
   belongs_to :product_prop
+  has_one :comment, as: :commable
   # validations ...............................................................
   validates :product_id, presence: true, numericality: true
   validates :product_prop_id, presence: true, numericality: true
