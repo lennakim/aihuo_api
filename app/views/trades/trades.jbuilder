@@ -7,4 +7,7 @@ json.trades @trades do |trade|
   unless trade.comments.size.zero?
     json.partial! "trades/comment", comment: trade.comments.first
   end
+  if trade.order_comment
+    json.partial! "trades/comment", {comment: trade.comments.first, logistics_value: trade.order_comment.score}
+  end
 end
