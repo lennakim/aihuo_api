@@ -255,6 +255,10 @@ class Order < ActiveRecord::Base
       false
     end
   end
+
+  def comment_by_product_id product_id
+    self.line_items.where(product_id: product_id).first.comment
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
   private

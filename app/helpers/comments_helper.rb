@@ -2,7 +2,7 @@ module CommentsHelper
   extend Grape::API::Helpers
 
   def current_member
-    @member = Member.find_by_id(params[:member_id]) if params[:member_id]
+    @member = Member.find(params[:member_id]) if params[:member_id]
     @device = Device.where(device_id: params[:device_id]).first if params[:device_id]
     @member ||= Member.where(id: @device.member_id).first if @device
     @member
@@ -27,16 +27,21 @@ module CommentsHelper
 
   def get_comment order_or_item
     if comment_hash = order_or_item[:line_item]
-      line_item = LineItem.find_by_id comment_hash[:id]
+      line_item = LineItem.find params[:id]
       params_validates line_item
-      result_hash = combine_comment_of_line_item order_or_item
+      #组装数据
+      combine_comment_of_line_item(comment_hash, line_item, )
 
-      result_hash = turn_string_to_sym_hash(result_hash)
-      line_item.create_comment(result_hash[:id] = order_or_item[:id])
+      # comment_hash[:id] = order_or_item[:id]
+      result_hash = turn_string_to_sym_hash(comment_hash)
+      line_item.create_comment(result_hash)
 
     elsif order_hash = order_or_item[:order]
-      order = Order.find_by_id params[:id]
+      order = Order.find params[:id]
       params_validates order
+
+      combine_comment_of_line_item(comment_hash, order)
+
       order_hash = turn_string_to_sym_hash(order_hash)
       order.create_order_comment order_hash
     end
@@ -55,13 +60,27 @@ module CommentsHelper
   end
 
   #组合 line_itme 生成评论需要的 hash 数值
-  def combine_comment_of_line_item hash
-    comment_hash[:product_id] = line_item.product.id
-    comment_hash[:order_id] = line_item.order.id
-    comment_hash[:name] = @member.handled_nickname
+  def combine_comment_of_line_item(comment_hash, line_item)
+    if line_item.is_a? LineItem
+      comment_hash[:product_id] = line_item.product.try(:id)
+      comment_hash[:order_id] = line_item.order.try(:id)
+      comment_hash[:name] = @member.handled_nickname
+      comment_hash[:comment_at] = Time.now
+      comment_hash[:device_id] = line_item.order.try(:device_id)
+      comment_hash
+    elsif line_item.is_a? Order
+      comment_hash[:comment_at] = Time.now
+      comment_hash[:device_id] = order.try(:device_id)
+      comment_hash
+    end
   end
 
   def turn_string_to_sym_hash hash
     hash.each_with_object({}){|(key, value), hash| hash[key.to_sym] = value}
+  end
+
+  def combine_comment_public(comment_hash, device_id)
+    comment_hash[:comment_at] = Time.now
+    comment_hash[:device_id] = device_id
   end
 end

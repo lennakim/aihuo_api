@@ -26,21 +26,21 @@ class Comments < Grape::API
     #   @comments = (comments.is_a?(Comment) ? comments : paginate(comments))
     # end
 
-
+# http://localhost:3000/v2/comments/create_comment?line_item[score]=1&line_item[content]="name is"&id=177782&member_id=1
     desc 'create comments with id of order or product'
     params do
       optional :order, type: Hash do
-        requires :score, type: Integer, desc: "score"
+        requires :score, type: Integer, desc: "score", values: (0..5).to_a, default: 5
       end
       optional :line_item, type: Hash do
-        requires :score, type: Integer, desc: "score"
+        requires :score, type: Integer, desc: "score", values: (0..5).to_a, default: 5
         requires :content, type: String, desc: "comments content"
       end
       use :comment_member_relate
       requires :id, type: Integer, desc: "id of order or line_item"
     end
 
-    get ':create_comment', jbuilder: 'comments/comments' do
+    post ':create_comment', jbuilder: 'comments/comments' do
       @comments = get_comment(params)
       status 500 unless @comments
     end
