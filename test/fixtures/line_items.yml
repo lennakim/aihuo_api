@@ -1,0 +1,29 @@
+<% 1.upto(10) do |i| %>
+fix_<%= i %>:
+  id: <%= i %>
+  order_id: <%= i %>
+  product_id: <%= i %>
+  quantity: <%= i %>
+  created_at: <%= (i).days.ago(Time.now) %>
+
+fix_<%= i + 10 %>:
+  id: <%= i + 10 %>
+  order_id: <%= i %>
+  product_id: <%= i + 10 %>
+  quantity: <%= i %>
+  created_at: <%= (i).days.ago(Time.now) %>
+
+fix_<%= i + 20 %>:
+  id: <%= i + 20 %>
+  order_id: <%= i %>
+  product_id: <%= i + 20 %>
+  quantity: <%= i %>
+  created_at: <%= (i).days.ago(Time.now) %>
+
+fix_<%= i + 30 %>:
+  id: <%= i + 30 %>
+  order_id: <%= i %>
+  product_id: <%= i + 30 %>
+  quantity: <%= i %>
+  created_at: <%= (i).days.ago(Time.now) %>
+<% end %>

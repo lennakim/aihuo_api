@@ -2,9 +2,9 @@ class Product < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
   acts_as_taggable_on :tags
+  acts_as_taggable_on :recommends
   # includes ..................................................................
-  include EncryptedId
-  include CarrierWaveMini
+  include EncryptedId, CarrierWaveMini, RecommendProduct
   # relationships .............................................................
   has_many :product_props
   has_many :photos
@@ -19,7 +19,7 @@ class Product < ActiveRecord::Base
       .group('products.id')
   }
   scope :banner, -> { where(:banner => true) }
-  scope :search, ->(keyword, date, today, match) {
+  scope :serach_by_keyword, ->(keyword, match) {
     products =
       case keyword # was case keyword.class
       when Array
@@ -46,12 +46,22 @@ class Product < ActiveRecord::Base
     # 只显示打了 tag 的产品
     tagging_ids = self.with_tagging.pluck(:id)
     products = products.where(id: tagging_ids)
+  }
+  scope :search, ->(keyword, date, today, match) {
+    products = serach_by_keyword(keyword, match)
     # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购
     if date.blank? || date && today && date < 2.days.ago(today)
       gifts_ids = self.gifts.pluck(:id)
       products = products.where.not(id: gifts_ids)
     end
     products
+  }
+  scope :order_by_sales_volumes, -> {
+    # TODO: 这里可以移动到缓存中, 因为每天只生成一次
+    product_ids = LineItem.sales_volumes_by_this_week.inject([]) do |sum, item|
+      sum.push item.product_id
+    end
+    reorder("FIELD(products.id", product_ids.join(","), "0)")
   }
 
   # Example: scope through associations :joins or :includes.

@@ -31,7 +31,6 @@ class Order < ActiveRecord::Base
   scope :with_comments, -> { joins(:comments) }
   scope :newly, -> { where(state: NEWLY_STATE) }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
-
   # +pay_type+ attribute according to the following logic:
   #
   # 0 means '先付款后发货'
@@ -45,6 +44,9 @@ class Order < ActiveRecord::Base
         'paid',
         'credit_owed'
       )
+  }
+  scope :by_this_week, -> {
+    where(orders: { created_at: 1.weeks.ago(Date.today)..Date.today })
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'bYqILlFMZn3xd8Cy'
