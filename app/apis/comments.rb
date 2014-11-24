@@ -5,20 +5,22 @@ class Comments < Grape::API
     desc 'create comments with id of order or product'
     params do
       optional :order, type: Hash do
-        requires :score, type: Integer, desc: "order's score", values: (0..5).to_a, default: 5
+        requires :score, type: Integer, desc: "order's score", values: (0..5).to_a
       end
       optional :line_item, type: Hash do
-        requires :score, type: Integer, desc: "line_item's score", values: (0..5).to_a, default: 5
-        requires :content, type: String, desc: "comments content"
+        requires :product_id, type: String, desc: "help to find line_item"
+        requires :score, type: Integer, desc: "line_item's score", values: (0..5).to_a
+        optional :content, type: String, desc: "comments content"
       end
       use :comment_member_relate
       requires :sign, type: String, desc: "Sign value"
-      requires :id, type: Integer, desc: "id of order or line_item"
+      requires :id, type: String, desc: "id of order or line_item"
     end
-    get ':create_comment', jbuilder: 'comments/comments' do
+    post ':create_comment', jbuilder: 'orders/order' do
       verify_sign
-      @comments = get_comment(params)
-      status 500 unless @comments
+      @comment = get_comment(params)
+      @order = Order.find params[:id]
+      status 500 unless @comment && @order
     end
   end
 end

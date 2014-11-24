@@ -4,8 +4,10 @@ json.trades @trades do |trade|
   json.city trade.shipping_city
   json.district trade.shipping_district
   json.created_at trade.commented_at
-  comment = trade.comment_by_product_id(params[:id])
+  comment = trade.comment_by_product_id(@product_id)
   comment ||= trade.comments.try(:first)
-  json.partial! "trades/comment", comment: comment if comment
-  json.logistics (trade.order_comment ? trade.order_comment.handled_score : Comment::DEFAULT_SCORE)
+  if comment
+    json.partial! "trades/comment", comment: comment
+    json.logistics (trade.order_comment ? trade.order_comment.handled_score : Comment::DEFAULT_SCORE)
+  end
 end

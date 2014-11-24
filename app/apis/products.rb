@@ -35,6 +35,7 @@ class Products < Grape::API
           product = Product.find(params[:id])
           product.orders.by_filter(params[:filter]).distinct.order("created_at DESC")
         end
+        @product_id = Product.decrypt(Product.encrypted_id_key, params[:id])
         @trades = trades ? paginate(trades) : trades
       end
     end

@@ -12,8 +12,4 @@ if line_item.product.image
     json.grid line_item.product.carrierwave_image(:grid, :url)
   end
 end
-if line_item.comment
-  json.can_create_comment true
-else
-  json.can_create_comment false
-end
+json.can_create_comment (line_item.comment ? false : true)
