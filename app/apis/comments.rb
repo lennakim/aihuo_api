@@ -8,7 +8,7 @@ class Comments < Grape::API
     end
     post '/', jbuilder: 'orders/order' do
       verify_sign
-      @comment, @order= create_comment_and_get_order(params)
+      @comment, @order = create_comment_and_get_order(params)
       status 500 unless @comment
       status 202 unless @order
     end
