@@ -11,4 +11,4 @@ end
 json.line_items @order.line_items do |item|
   json.partial! "line_items/line_item", line_item: item
 end
-json.logistics_score (@order.order_comment ? @order.order_comment.score : -1)
+json.logistics_score @order.logistics_score

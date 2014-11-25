@@ -24,15 +24,14 @@ module CommentsHelper
     result_hash = turn_string_to_sym_hash(public_params)
     #根据不同参数类型，调用不同的组合关系
     if order_or_item_params[:type] == "order"
-      object.create_order_comment(result_hash)
+      [object.create_order_comment(result_hash), object]
     elsif order_or_item_params[:type] == "line_item"
-      object.create_comment(result_hash)
+      [object.create_comment(result_hash), object.order]
     end
   end
 
   def have_this_order? order
-    error!("用户订单不符", 401) unless order && (order.device_id == params[:device_id])
-    true
+    true if order && (order.device_id == params[:device_id])
   end
 
   def params_validates order_or_item

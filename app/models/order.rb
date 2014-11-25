@@ -30,7 +30,8 @@ class Order < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { order("id DESC") }
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : all }
-  scope :with_comments, -> { joins(:comments) }
+  scope :with_comments, -> { includes(:line_item_commments, :comments) }
+  # scope :with_comments, -> { joins(:comments) }
   scope :newly, -> { where(state: NEWLY_STATE) }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
 
@@ -257,8 +258,8 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def comment_by_product_id product_id
-    self.line_items.where(product_id: product_id).first.comment
+  def logistics_score
+    order_comment ? order_comment.score : -1
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

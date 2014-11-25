@@ -15,7 +15,7 @@ class Comment < ActiveRecord::Base
 
   DEFAULT_SCORE = 5
   # class methods .............................................................
-  after_save :update_the_comment_time
+  after_initialize :set_comment_time
   # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................
@@ -24,8 +24,8 @@ class Comment < ActiveRecord::Base
     score || DEFAULT_SCORE
   end
 
-  def update_the_comment_time
-    update_columns(comment_at: Time.now)
+  def set_comment_time
+    self.comment_at = Time.now
   end
 
   #组合 line_itme 生成评论需要的 hash 数值
@@ -43,5 +43,13 @@ class Comment < ActiveRecord::Base
       comment_hash[:device_id] = line_item_or_order.try(:device_id)
     end
     comment_hash
+  end
+
+  def commented
+    comment ? false : true
+  end
+
+  def product_quality_score
+    score || DEFAULT_SCORE
   end
 end

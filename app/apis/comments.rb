@@ -8,9 +8,9 @@ class Comments < Grape::API
     end
     post ':create_comment', jbuilder: 'orders/order' do
       verify_sign
-      @comment = create_comment(params)
-      @order = Order.find params[:id]
-      status 500 unless @comment && @order
+      @comment, @order= create_comment(params)
+      status 500 unless @comment
+      status 202 unless @order
     end
   end
 end
