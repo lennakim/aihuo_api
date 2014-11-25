@@ -34,16 +34,20 @@ class Topic < ActiveRecord::Base
   accepts_nested_attributes_for :topic_images
   # class methods .............................................................
   def self.scope_by_filter(filter, device_id = nil)
+    is_apple = is_apple_device?(device_id)
     case filter
     when :recommend
       approved.recommend
     when :best
+      return get_certain_topics("best") if is_apple
       approved.excellent
     when :checking
       checking
     when :hot
+      return get_certain_topics("hot") if is_apple
       approved.latest
     when :new
+      return get_certain_topics("new") if is_apple
       approved.newly
     when :mine
       with_deleted.by_device(device_id)
@@ -72,8 +76,36 @@ class Topic < ActiveRecord::Base
 
   # protected instance methods ................................................
   # private instance methods ..................................................
+  
+  #judge device is or not a apple device
+  def self.is_apple_device?(device_id)
+    device = Device.find_by_device_id(device_id)
+    return false if device.nil?
+    model_ver = device.modle_ver
+    manufacture = device.manufacture
+    modle_ver = model_ver.downcase!
+    manufacture = manufacture.downcase!
+    return true if (modle_ver && (modle_ver.include?("iphone") || modle_ver.include?("ipad"))) || (manufacture && manufacture.include?("apple"))
+  end
+  #if a device is apple device then return specially topics
+  def self.get_certain_topics(filter)
+    #最新最热
+    arr_new_hot = [47691,47689,47568,47567,47560,47559,47557,47556,47555,47554,47547,47546,47541,47540,
+                    47537,47536,47535,47535,47534,47531,47529,47526,47526,47524,47519,47519,47517,47517,47517,47499,
+                    47498,47493,47492,47490,47366,47365,47362]
+    #精华
+    arr_best = [448805,450732,449322,446267,343706,336486,437793,436224,434326,433839,425285,417109,415408,
+                416855,411890,409370,409071,408443,409080,407885]
+    if "best" == filter
+      #Topic.find(arr_best)
+      Topic.where(id: arr_best)
+    else
+      #Topic.find(arr_new_hot)
+      Topic.where(id: arr_new_hot)
+    end
+  end
   private
-
+  
   def set_approved_status
     self.approved = false if new_record?
   end
