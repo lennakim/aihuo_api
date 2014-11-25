@@ -33,21 +33,20 @@ class Topic < ActiveRecord::Base
   encrypted_id key: '36aAoQHCaJKETWHR'
   accepts_nested_attributes_for :topic_images
   # class methods .............................................................
-  def self.scope_by_filter(filter, device_id = nil)
-    is_apple = is_apple_device?(device_id)
+  def self.scope_by_filter(filter, device_id = nil , apple = false)
     case filter
     when :recommend
       approved.recommend
     when :best
-      return get_certain_topics("best") if is_apple
+      return get_certain_topics("best") if apple
       approved.excellent
     when :checking
       checking
     when :hot
-      return get_certain_topics("hot") if is_apple
+      return get_certain_topics("hot") if apple
       approved.latest
     when :new
-      return get_certain_topics("new") if is_apple
+      return get_certain_topics("new") if apple
       approved.newly
     when :mine
       with_deleted.by_device(device_id)
@@ -77,16 +76,6 @@ class Topic < ActiveRecord::Base
   # protected instance methods ................................................
   # private instance methods ..................................................
   
-  #judge device is or not a apple device
-  def self.is_apple_device?(device_id)
-    device = Device.find_by_device_id(device_id)
-    return false if device.nil?
-    model_ver = device.modle_ver
-    manufacture = device.manufacture
-    modle_ver = model_ver.downcase!
-    manufacture = manufacture.downcase!
-    return true if (modle_ver && (modle_ver.include?("iphone") || modle_ver.include?("ipad"))) || (manufacture && manufacture.include?("apple"))
-  end
   #if a device is apple device then return specially topics
   def self.get_certain_topics(filter)
     #最新最热

@@ -7,7 +7,10 @@ class Topics < Grape::API
       use :topics
     end
     get "/", jbuilder: 'topics/topics' do
-      topics = Topic.scope_by_filter(params[:filter], params[:device_id])
+      #判断是否为apple设备
+      api_key = request.headers['Apikey'] || params[:api_key]
+      apple = true if "31cbdb3c" == api_key
+      topics = Topic.scope_by_filter(params[:filter], params[:device_id], apple)
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
 
