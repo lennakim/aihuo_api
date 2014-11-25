@@ -21,7 +21,7 @@ class Comment < ActiveRecord::Base
   # private instance methods ..................................................
 
   def handled_score
-    score ? score : DEFAULT_SCORE
+    score || DEFAULT_SCORE
   end
 
   def update_the_comment_time
@@ -34,12 +34,12 @@ class Comment < ActiveRecord::Base
       comment_hash[:product_id] = line_item_or_order.product.try(:id)
       comment_hash[:order_id] = line_item_or_order.order.try(:id)
       order_member_name = line_item_or_order.order.try(:name)
-      comment_hash[:name] = Member::handled_nickname(order_member_name)
+      comment_hash[:name] = Member::masked_nickname(order_member_name)
       comment_hash[:device_id] = line_item_or_order.order.try(:device_id)
     elsif line_item_or_order.is_a? Order
       comment_hash[:order_id] = line_item_or_order.try(:id)
       order_member_name = line_item_or_order.try(:name)
-      comment_hash[:name] = Member::handled_nickname(order_member_name)
+      comment_hash[:name] = Member::masked_nickname(order_member_name)
       comment_hash[:device_id] = line_item_or_order.try(:device_id)
     end
     comment_hash

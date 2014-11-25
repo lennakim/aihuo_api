@@ -1,6 +1,16 @@
 module CommentsHelper
   extend Grape::API::Helpers
 
+  params :comment do
+    requires :device_id, type: String, desc: "if have the device info"
+    requires :sign, type: String, desc: "Sign value"
+    requires :id, type: String, desc: "id of order or line_item"
+    requires :type, type: String, desc: "decide is the order or line_item"
+    requires :score, type: Integer, desc: "comment score", values: (0..5).to_a
+    optional :content, type: String, desc: "comments content"
+  end
+
+
   def create_comment order_or_item_params
     object_class_name = params[:type].split("_").inject(""){|combine_str, i_str| combine_str << i_str.capitalize}
     #获得相应对象

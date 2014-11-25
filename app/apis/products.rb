@@ -33,7 +33,7 @@ class Products < Grape::API
       get :trades, jbuilder: 'trades/trades' do
         trades = Rails.cache.fetch(key: trades_cache_key, expires_in: 2.hours) do
           product = Product.find(params[:id])
-          product.orders.by_filter(params[:filter]).distinct.order("created_at DESC")
+          product.orders.includes(:line_item_commments, :comments).by_filter(params[:filter]).distinct.order("created_at DESC")
         end
         @product_id = @product.id
         @trades = trades ? paginate(trades) : trades

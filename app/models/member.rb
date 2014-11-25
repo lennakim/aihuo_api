@@ -92,13 +92,9 @@ class Member < ActiveRecord::Base
     level + 1
   end
 
-  def self.handled_nickname nick_name
-    i_nickname = "*" * 5
-    if nick_name
-      i_nickname[0] = nick_name[0]
-      i_nickname[-1] = nick_name[-1]
-    end
-    i_nickname
+  def self.masked_nickname nick_name
+    nick_name ||= "*" * 2
+    [nick_name[0], *, *, * nick_name[-1]]
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

@@ -9,11 +9,12 @@ class Order < ActiveRecord::Base
   has_many :line_items
   has_many :gift_items, -> { where(sale_price: 0) }, class_name: "LineItem"
   has_many :comments
-  has_one :order_comment, class_name: 'Comment', as: :commable
   has_many :orderlogs
   has_many :short_messages
   has_many :payments
   has_and_belongs_to_many :coupons
+  has_one :order_comment, class_name: 'Comment', as: :commable
+  has_many :line_item_commments, source: :comment, through: :line_items
   # validations ...............................................................
   validates :device_id, presence: true
   validates :name, presence: true

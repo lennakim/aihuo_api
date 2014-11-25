@@ -3,7 +3,8 @@ class LineItem < ActiveRecord::Base
   acts_as_paranoid
   # includes ..................................................................
   include EncryptedId
-  encrypted_id key: 'bYqILlFMZn3xd8Cy'
+  encrypted_id key: 'W0lJzCPt7911c2FC'
+
   # relationships .............................................................
   belongs_to :order, :touch => true
   belongs_to :cart, :touch => true
