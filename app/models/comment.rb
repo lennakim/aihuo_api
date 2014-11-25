@@ -33,11 +33,13 @@ class Comment < ActiveRecord::Base
     if line_item_or_order.is_a? LineItem
       comment_hash[:product_id] = line_item_or_order.product.try(:id)
       comment_hash[:order_id] = line_item_or_order.order.try(:id)
-      comment_hash[:name] = @member.try(:handled_nickname)
+      order_member_name = line_item_or_order.order.try(:name)
+      comment_hash[:name] = Member::handled_nickname(order_member_name)
       comment_hash[:device_id] = line_item_or_order.order.try(:device_id)
     elsif line_item_or_order.is_a? Order
       comment_hash[:order_id] = line_item_or_order.try(:id)
-      comment_hash[:name] = @member.try(:handled_nickname)
+      order_member_name = line_item_or_order.try(:name)
+      comment_hash[:name] = Member::handled_nickname(order_member_name)
       comment_hash[:device_id] = line_item_or_order.try(:device_id)
     end
     comment_hash
