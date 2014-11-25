@@ -2,11 +2,15 @@ class LineItem < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
   # includes ..................................................................
+  include EncryptedId
+  encrypted_id key: 'W0lJzCPt7911c2FC'
+
   # relationships .............................................................
   belongs_to :order, :touch => true
   belongs_to :cart, :touch => true
   belongs_to :product
   belongs_to :product_prop
+  has_one :comment, as: :commable
   # validations ...............................................................
   validates :product_id, presence: true, numericality: true
   validates :product_prop_id, presence: true, numericality: true
@@ -20,6 +24,10 @@ class LineItem < ActiveRecord::Base
   # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................
+  def commented
+    comment ? false : true
+  end
+
   private
 
   def update_product_prop_info
