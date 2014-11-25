@@ -267,7 +267,7 @@ class Order < ActiveRecord::Base
   end
 
   def comment_by_product(product)
-    comment = line_item_commments.find_by(product_id: @product_id)
+    comment = line_item_commments.find_by(product_id: product.id)
     comment ||= comments.try(:first)
   end
   # protected instance methods ................................................
