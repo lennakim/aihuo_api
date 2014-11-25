@@ -11,7 +11,7 @@ module CommentsHelper
   end
 
 
-  def create_comment order_or_item_params
+  def create_comment_and_get_order order_or_item_params
     object_class_name = params[:type].split("_").inject(""){|combine_str, i_str| combine_str << i_str.capitalize}
     #获得相应对象
     object =  object_class_name.constantize.find params[:id]
@@ -30,15 +30,11 @@ module CommentsHelper
     end
   end
 
-  def have_this_order? order
-    true if order && (order.device_id == params[:device_id])
-  end
-
   def params_validates order_or_item
     if order_or_item.is_a? LineItem
-      error!('不能提供修改评论功能', 401) unless order_or_item && (!order_or_item.comment) && have_this_order?(order_or_item.order)
+      error!('不能提供修改评论功能', 401) unless order_or_item && (!order_or_item.comment) && (order_or_item.order.try(:belongs_to_device?, params[:device_id]))
     elsif order_or_item.is_a? Order
-      error!('不能提供修改评论功能', 401) unless order_or_item && (!order_or_item.order_comment) && have_this_order?(order_or_item)
+      error!('不能提供修改评论功能', 401) unless order_or_item && (!order_or_item.order_comment) && order_or_item.belongs_to_device?(params[:device_id])
     else
        error!('不能提供修改评论功能', 401)
     end

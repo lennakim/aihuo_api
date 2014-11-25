@@ -45,10 +45,6 @@ class Comment < ActiveRecord::Base
     comment_hash
   end
 
-  def commented
-    comment ? false : true
-  end
-
   def product_quality_score
     score || DEFAULT_SCORE
   end

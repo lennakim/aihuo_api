@@ -24,6 +24,10 @@ class LineItem < ActiveRecord::Base
   # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................
+  def commented
+    comment ? false : true
+  end
+
   private
 
   def update_product_prop_info

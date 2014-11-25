@@ -6,15 +6,15 @@ class Order < ActiveRecord::Base
   include MergePendingOrder
   # relationships .............................................................
   belongs_to :express, foreign_key: "shippingorder_id"
+  has_one :order_comment, class_name: 'Comment', as: :commable
   has_many :line_items
+  has_many :line_item_commments, source: :comment, through: :line_items
   has_many :gift_items, -> { where(sale_price: 0) }, class_name: "LineItem"
   has_many :comments
   has_many :orderlogs
   has_many :short_messages
   has_many :payments
   has_and_belongs_to_many :coupons
-  has_one :order_comment, class_name: 'Comment', as: :commable
-  has_many :line_item_commments, source: :comment, through: :line_items
   # validations ...............................................................
   validates :device_id, presence: true
   validates :name, presence: true
@@ -31,7 +31,6 @@ class Order < ActiveRecord::Base
   default_scope { order("id DESC") }
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : all }
   scope :with_comments, -> { includes(:line_item_commments, :comments) }
-  # scope :with_comments, -> { joins(:comments) }
   scope :newly, -> { where(state: NEWLY_STATE) }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
 
@@ -258,8 +257,18 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def logistics_score
-    order_comment ? order_comment.score : -1
+  def express_score
+    order_comment ? order_comment.handled_score : nil
+  end
+
+
+  def belongs_to_device? device_id
+    true if device_id == device_id
+  end
+
+  def comment_by_product(product)
+    comment = line_item_commments.find_by(product_id: @product_id)
+    comment ||= comments.try(:first)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

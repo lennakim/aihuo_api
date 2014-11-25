@@ -35,7 +35,6 @@ class Products < Grape::API
           product = Product.find(params[:id])
           trades = product.orders.with_comments.by_filter(params[:filter]).distinct.order("created_at DESC")
         end
-        @product_id = @product.id
         @trades = trades ? paginate(trades) : trades
       end
     end

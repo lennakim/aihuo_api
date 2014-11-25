@@ -6,9 +6,9 @@ class Comments < Grape::API
     params do
       use :comment
     end
-    post ':create_comment', jbuilder: 'orders/order' do
+    post '/', jbuilder: 'orders/order' do
       verify_sign
-      @comment, @order= create_comment(params)
+      @comment, @order= create_comment_and_get_order(params)
       status 500 unless @comment
       status 202 unless @order
     end
