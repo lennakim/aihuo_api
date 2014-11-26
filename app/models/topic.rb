@@ -33,20 +33,21 @@ class Topic < ActiveRecord::Base
   encrypted_id key: '36aAoQHCaJKETWHR'
   accepts_nested_attributes_for :topic_images
   # class methods .............................................................
-  def self.scope_by_filter(filter, device_id = nil , apple = false)
+  def self.scope_by_filter(filter, device_id = nil , app = nil)
+    is_apple = true if app && "31cbdb3c" == app.api_key
     case filter
     when :recommend
       approved.recommend
     when :best
-      return get_certain_topics("best") if apple
+      return get_certain_topics("best") if is_apple
       approved.excellent
     when :checking
       checking
     when :hot
-      return get_certain_topics("hot") if apple
-      approved.latest
+      return where(id: [1,2,3,4]) if is_apple
+      #approved.latest
     when :new
-      return get_certain_topics("new") if apple
+      return get_certain_topics("new") if is_apple
       approved.newly
     when :mine
       with_deleted.by_device(device_id)
@@ -86,10 +87,9 @@ class Topic < ActiveRecord::Base
     arr_best = [448805,450732,449322,446267,343706,336486,437793,436224,434326,433839,425285,417109,415408,
                 416855,411890,409370,409071,408443,409080,407885]
     if "best" == filter
-      #Topic.find(arr_best)
       Topic.where(id: arr_best)
     else
-      #Topic.find(arr_new_hot)
+      #hot和new返回的数据一样，因此写入else中
       Topic.where(id: arr_new_hot)
     end
   end
