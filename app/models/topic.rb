@@ -34,22 +34,39 @@ class Topic < ActiveRecord::Base
   accepts_nested_attributes_for :topic_images
   # class methods .............................................................
   def self.scope_by_filter(filter, device_id = nil , app = nil)
-    is_apple = true if (app && "31cbdb3c" == app.api_key)
-    apple_switch = is_switch_open?("ios_topic_switch")
+    return safe_content_by_filter(filter) if (app && "31cbdb3c" == app.api_key) && is_switch_open?
     case filter
     when :recommend
       approved.recommend
     when :best
-      return get_certain_topics("best") if is_apple && (is_switch_open?("ios_best_topic_switch") || apple_switch)
       approved.excellent
     when :checking
       checking
     when :hot
-      return get_certain_topics("hot") if is_apple && (is_switch_open?("ios_hot_topic_switch") || apple_switch)
       approved.latest
     when :new
-      return get_certain_topics("new") if is_apple && (is_switch_open?("ios_new_topic_switch") || apple_switch)
       approved.newly
+    when :mine
+      with_deleted.by_device(device_id)
+    when :followed
+      favorites_by_device(device_id)
+    when :all
+      self
+    end
+  end
+  #iOS应用，并且打开了安全开关
+  def self.safe_content_by_filter(filter)
+    case filter
+    when :recommend
+      approved.recommend
+    when :best
+      get_certain_topics(:best)
+    when :checking
+      checking
+    when :hot
+      get_certain_topics(:hot)
+    when :new
+      get_certain_topics(:new)
     when :mine
       with_deleted.by_device(device_id)
     when :followed
@@ -77,30 +94,15 @@ class Topic < ActiveRecord::Base
 
   # protected instance methods ................................................
   # private instance methods ..................................................
-  def self.is_switch_open?(name)
-    val = Setting.find_by_name(name).value
-    return true if "on" == val
-    false
+  def self.is_switch_open?()
+    val = Setting.find_by_name("ios_topic_switch").try(:value)
+    "on" == val
   end
   
   #if a device is apple device then return specially topics
   def self.get_certain_topics(filter)
-    #最新最热
-    arr_new_hot = [47691,47689,47568,47567,47560,47559,47557,47556,47555,47554,47547,47546,47541,47540,
-                    47537,47536,47535,47535,47534,47531,47529,47526,47526,47524,47519,47519,47517,47517,47517,47499,
-                    47498,47493,47492,47490,47366,47365,47362]
-    #精华
-    arr_best = [448805,450732,449322,446267,343706,336486,437793,436224,434326,433839,425285,417109,415408,
-                416855,411890,409370,409071,408443,409080,407885]
-    if "best" == filter
-      Topic.where(id: arr_best)
-    elsif "new" == filter
-      Topic.where(id: arr_new_hot)
-    elsif "hot" == filter
-      Topic.where(id: arr_new_hot)
-    else
-      Topic.where(id: arr_new_hot)
-    end
+    arr = Setting.find_by_name("ios_topic_#{filter}").try(:value).split("|")
+    Topic.where(id: arr)
   end
   private
   
