@@ -34,7 +34,7 @@ class Topic < ActiveRecord::Base
   accepts_nested_attributes_for :topic_images
   # class methods .............................................................
   def self.scope_by_filter(filter, device_id = nil , app = nil)
-    is_apple = true if app && "31cbdb3c" == app.api_key
+    is_apple = true if (app && "31cbdb3c" == app.api_key)
     case filter
     when :recommend
       approved.recommend
@@ -44,8 +44,8 @@ class Topic < ActiveRecord::Base
     when :checking
       checking
     when :hot
-      return where(id: [1,2,3,4]) if is_apple
-      #approved.latest
+      return get_certain_topics("hot") if is_apple
+      approved.latest
     when :new
       return get_certain_topics("new") if is_apple
       approved.newly
