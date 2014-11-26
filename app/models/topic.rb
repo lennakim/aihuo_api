@@ -102,6 +102,9 @@ class Topic < ActiveRecord::Base
   #if a device is apple device then return specially topics
   def self.get_certain_topics(filter)
     arr = Setting.find_by_name("ios_topic_#{filter}").try(:value).split("|")
+    arr.each do |id|
+      arr.delete(id) if id != id.strip
+    end
     Topic.where(id: arr)
   end
   private
