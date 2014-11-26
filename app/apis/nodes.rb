@@ -80,8 +80,7 @@ class Nodes < Grape::API
         end
         get "/", jbuilder: 'topics/topics' do
           cache(key: cacke_key, expires_in: 1.minutes) do
-            @application = current_application
-            topics = @node.topics.scope_by_filter(params[:filter], params[:device_id], @application)
+            topics = @node.topics.scope_by_filter(params[:filter], params[:device_id], current_application)
             @topics = paginate(topics.order("top DESC, updated_at DESC"))
           end
         end

@@ -35,19 +35,20 @@ class Topic < ActiveRecord::Base
   # class methods .............................................................
   def self.scope_by_filter(filter, device_id = nil , app = nil)
     is_apple = true if (app && "31cbdb3c" == app.api_key)
+    apple_switch = is_switch_open?("ios_topic_switch")
     case filter
     when :recommend
       approved.recommend
     when :best
-      return get_certain_topics("best") if is_apple
+      return get_certain_topics("best") if is_apple && (is_switch_open?("ios_best_topic_switch") || apple_switch)
       approved.excellent
     when :checking
       checking
     when :hot
-      return get_certain_topics("hot") if is_apple
+      return get_certain_topics("hot") if is_apple && (is_switch_open?("ios_hot_topic_switch") || apple_switch)
       approved.latest
     when :new
-      return get_certain_topics("new") if is_apple
+      return get_certain_topics("new") if is_apple && (is_switch_open?("ios_new_topic_switch") || apple_switch)
       approved.newly
     when :mine
       with_deleted.by_device(device_id)
@@ -76,6 +77,11 @@ class Topic < ActiveRecord::Base
 
   # protected instance methods ................................................
   # private instance methods ..................................................
+  def self.is_switch_open?(name)
+    val = Setting.find_by_name(name).value
+    return true if "on" == val
+    false
+  end
   
   #if a device is apple device then return specially topics
   def self.get_certain_topics(filter)
@@ -88,8 +94,11 @@ class Topic < ActiveRecord::Base
                 416855,411890,409370,409071,408443,409080,407885]
     if "best" == filter
       Topic.where(id: arr_best)
+    elsif "new" == filter
+      Topic.where(id: arr_new_hot)
+    elsif "hot" == filter
+      Topic.where(id: arr_new_hot)
     else
-      #hot和new返回的数据一样，因此写入else中
       Topic.where(id: arr_new_hot)
     end
   end

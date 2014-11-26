@@ -7,8 +7,7 @@ class Topics < Grape::API
       use :topics
     end
     get "/", jbuilder: 'topics/topics' do
-      @application = current_application
-      topics = Topic.scope_by_filter(params[:filter], params[:device_id], @application)
+      topics = Topic.scope_by_filter(params[:filter], params[:device_id], current_application)
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
     end
 
