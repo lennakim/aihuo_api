@@ -94,13 +94,13 @@ class Topic < ActiveRecord::Base
 
   # protected instance methods ................................................
   # private instance methods ..................................................
-  def self.is_switch_open?()
-    val = Setting.find_by_name("ios_topic_switch").try(:value)
-    "on" == val
+  def self.is_switch_open?
+    "on" == Setting.find_by_name("ios_topic_switch").try(:value)
   end
   
   #if a device is apple device then return specially topics
   def self.get_certain_topics(filter)
+    return [] unless [:best, :new, :hot].include?(filter)
     arr = Setting.find_by_name("ios_topic_#{filter}").try(:value).split("|")
     arr.each do |id|
       arr.delete(id) if id != id.strip

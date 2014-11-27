@@ -84,7 +84,7 @@ class TopicsTest < ActiveSupport::TestCase
     assert replies.first.created_at > replies.second.created_at
   end
   
-  #情景iOS版
+#iOS版上架--因APP审核问题，在上架之前要配合扫黄审查，因此在审查期间打开过滤黄色配置
   # 情景1:iOS应用请求最新帖子时会返回指定id的帖子：47691
   def test_iso_get_new_topics
     assert_equal 47691, Topic.scope_by_filter(:new, "1212", ios_app)[0].id
