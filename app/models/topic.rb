@@ -33,7 +33,8 @@ class Topic < ActiveRecord::Base
   encrypted_id key: '36aAoQHCaJKETWHR'
   accepts_nested_attributes_for :topic_images
   # class methods .............................................................
-  def self.scope_by_filter(filter, device_id = nil)
+  def self.scope_by_filter(filter, device_id = nil , app = nil)
+    return safe_content_by_filter(filter) if (app && "31cbdb3c" == app.api_key) && is_switch_open?
     case filter
     when :recommend
       approved.recommend
@@ -45,6 +46,27 @@ class Topic < ActiveRecord::Base
       approved.latest
     when :new
       approved.newly
+    when :mine
+      with_deleted.by_device(device_id)
+    when :followed
+      favorites_by_device(device_id)
+    when :all
+      self
+    end
+  end
+  #iOS应用，并且打开了安全开关
+  def self.safe_content_by_filter(filter)
+    case filter
+    when :recommend
+      approved.recommend
+    when :best
+      get_certain_topics(:best)
+    when :checking
+      checking
+    when :hot
+      get_certain_topics(:hot)
+    when :new
+      get_certain_topics(:new)
     when :mine
       with_deleted.by_device(device_id)
     when :followed
@@ -72,8 +94,21 @@ class Topic < ActiveRecord::Base
 
   # protected instance methods ................................................
   # private instance methods ..................................................
+  def self.is_switch_open?
+    "on" == Setting.find_by_name("ios_topic_switch").try(:value)
+  end
+  
+  #if a device is apple device then return specially topics
+  def self.get_certain_topics(filter)
+    return [] unless [:best, :new, :hot].include?(filter)
+    arr = Setting.find_by_name("ios_topic_#{filter}").try(:value).split("|")
+    arr.each do |id|
+      arr.delete(id) if id != id.strip
+    end
+    Topic.where(id: arr)
+  end
   private
-
+  
   def set_approved_status
     self.approved = false if new_record?
   end

@@ -37,3 +37,14 @@ three:
   getui_app_id: 'r4vsDdC0If7HLgCMcNhyLA'
   getui_app_key: 'ZrSPSE91SK9bRcoYa2UoV4'
   getui_master_secret: '3xz86XnQxJ6LQQMjiDikg6'
+
+four:
+  id: 4
+  name: '首趣商城iOS'
+  api_key: '31cbdb3c'
+  secret_key: '6d599b83dc0ca97fcf7ff19c0e959f6a'
+  user_id: 2
+  display_advertising: 1
+  getui_app_id: 'r4vsDdC0If7HLgCMcNhyLA'
+  getui_app_key: 'ZrSPSE91SK9bRcoYa2UoV4'
+  getui_master_secret: '3xz86XnQxJ6LQQMjiDikg6'
