@@ -92,10 +92,6 @@ class Member < ActiveRecord::Base
     level + 1
   end
 
-  def self.masked_nickname nick_name
-    nick_name ||= "*" * 2
-    [nick_name[0], "*", "*", "*", nick_name[-1]].join
-  end
   # protected instance methods ................................................
   # private instance methods ..................................................
   private

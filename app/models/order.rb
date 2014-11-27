@@ -2,11 +2,9 @@ class Order < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
   # includes ..................................................................
-  include EncryptedId
-  include MergePendingOrder
+  include EncryptedId, MergePendingOrder, Commable
   # relationships .............................................................
   belongs_to :express, foreign_key: "shippingorder_id"
-  has_one :order_comment, class_name: 'Comment', as: :commable
   has_many :line_items
   has_many :line_item_commments, source: :comment, through: :line_items
   has_many :gift_items, -> { where(sale_price: 0) }, class_name: "LineItem"
@@ -30,7 +28,7 @@ class Order < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { order("id DESC") }
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : all }
-  scope :with_comments, -> { includes(:line_item_commments, :comments) }
+  # scope :with_comments, -> { includes(:line_item_commments, :comments) }
   scope :newly, -> { where(state: NEWLY_STATE) }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
 
@@ -257,18 +255,8 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def express_score
-    order_comment ? order_comment.handled_score : nil
-  end
-
-
-  def belongs_to_device? device_id
-    true if device_id == device_id
-  end
-
   def comment_by_product(product)
-    comment = line_item_commments.find_by(product_id: product.id)
-    comment ||= comments.try(:first)
+    line_item_commments.find_by(product_id: product.id) || comments.try(:first)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

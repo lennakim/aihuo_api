@@ -48,6 +48,10 @@ module ProductsHelper
     date.to_date if date
   end
 
+  def product_cache_key
+    [:v2, :product, params[:id]].join("-")
+  end
+
   def products_cache_key
     [:v2, :products, params[:id], params[:tag], params[:tags], params[:match],
     params[:min_price], params[:max_price], params[:register_date],

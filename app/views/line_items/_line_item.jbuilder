@@ -1,5 +1,6 @@
-json.product_id line_item.product.to_param
+json.ignore_nil!
 json.id line_item.to_param
+json.product_id line_item.product.to_param
 json.product_prop_id line_item.product_prop.to_param
 json.title line_item.product.title
 json.market_price line_item.purchase_price.to_f
@@ -13,4 +14,4 @@ if line_item.product.image
     json.grid line_item.product.carrierwave_image(:grid, :url)
   end
 end
-json.commented line_item.commented
+json.commented line_item.commented?

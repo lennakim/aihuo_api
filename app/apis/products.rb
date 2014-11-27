@@ -19,10 +19,16 @@ class Products < Grape::API
       requires :id, type: String, desc: "Product ID."
     end
     route_param :id do
+      before do
+        @product = Rails.cache.fetch(key: product_cache_key, expires_in: 1.hours) do
+          Product.find(params[:id])
+        end
+      end
+
       desc "Return a product."
       get "/", jbuilder: 'products/product' do
-        cache(key: [:v2, :product, params[:id]], expires_in: 4.hours) do
-          @product = Product.find(params[:id])
+        cache(key: [:v2, :product, params[:id]], expires_in: 1.hours) do
+          @product
         end
       end
 
@@ -31,9 +37,8 @@ class Products < Grape::API
         use :trades
       end
       get :trades, jbuilder: 'trades/trades' do
-        trades = Rails.cache.fetch(key: trades_cache_key, expires_in: 2.hours) do
-          product = Product.find(params[:id])
-          trades = product.orders.with_comments.by_filter(params[:filter]).distinct.order("created_at DESC")
+        trades = Rails.cache.fetch(key: trades_cache_key, expires_in: 1.hours) do
+          @product.orders.by_filter(params[:filter]).distinct.order("created_at DESC")
         end
         @trades = trades ? paginate(trades) : trades
       end
