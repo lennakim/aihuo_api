@@ -7,11 +7,11 @@ module CommentsHelper
   end
 
   params :comment do
+    optional :api_key, type: String, desc: "Application API Key"
     requires :sign, type: String, desc: "Sign value"
     group :comment, type: Hash do
       requires :score, type: Integer, values: (0..5).to_a, default: 5, desc: "comment score"
       optional :content, type: String, desc: "comments content"
-      optional :name, type: String, default: '匿名用户', desc: "comments content"
       optional :device_id, type: String, desc: "Device ID"
       optional :order_id, type: String, desc: "Order ID"
     end
