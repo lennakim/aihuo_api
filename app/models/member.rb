@@ -91,6 +91,7 @@ class Member < ActiveRecord::Base
   def next_level
     level + 1
   end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
   private

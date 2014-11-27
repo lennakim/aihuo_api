@@ -9,4 +9,15 @@
 one:
   name: "ban_words"
   value: ''
-
+two:
+  name: "ios_topic_switch"
+  value: 'on'
+three:
+  name: "ios_topic_hot"
+  value: '47691|4768'
+four:
+  name: "ios_topic_new"
+  value: '47691|4768'
+five:
+  name: "ios_topic_best"
+  value: '448805|4768'
