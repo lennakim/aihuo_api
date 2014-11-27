@@ -24,7 +24,7 @@ module CommentsHelper
   end
 
   def find_or_create_comment(obj)
-    obj.comment || obj.create_comment(comment_params)
+    obj.review || obj.create_review(comment_params)
   end
 
 end

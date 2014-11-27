@@ -6,6 +6,7 @@ class Comment < ActiveRecord::Base
   # relationships .............................................................
   belongs_to :order
   belongs_to :commable, polymorphic: true
+  belongs_to :line_item, foreign_type: 'commable_type', foreign_key: 'commable_id'
   # validations ...............................................................
   # callbacks .................................................................
   after_initialize :set_comment_time
@@ -19,7 +20,7 @@ class Comment < ActiveRecord::Base
   # class methods .............................................................
   # public instance methods ...................................................
   def express_score
-    order.comment.score || DEFAULT_SCORE
+    order.review.score || DEFAULT_SCORE
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
@@ -27,5 +28,6 @@ class Comment < ActiveRecord::Base
 
   def set_comment_time
     self.comment_at = Time.now
+    self.product_id = line_item.product_id if self.line_item
   end
 end
