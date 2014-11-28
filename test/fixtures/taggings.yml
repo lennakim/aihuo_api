@@ -1,3 +1,4 @@
+# tag 1 关联上 50 件产品, 产品id 1 - 50
 <% 1.upto(50) do |i| %>
 fix_<%= i %>:
   id: <%= i %>
@@ -7,6 +8,7 @@ fix_<%= i %>:
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>
 
+# tag 2 关联上 20 件产品, 产品id 51 - 70
 <% 1.upto(20) do |i| %>
 fix_<%= i + 50 %>:
   id: <%= i + 50 %>

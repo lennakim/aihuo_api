@@ -29,3 +29,19 @@ three:
   lft: 2
   rgt: 1
   banner: true
+
+four:
+  id: 4
+  name: '玩具'
+  parent_id: 0
+  depth: 1
+  lft: 1
+  rgt: 3
+
+five:
+  id: 5
+  name: '食品'
+  parent_id: 0
+  depth: 1
+  lft: 1
+  rgt: 3

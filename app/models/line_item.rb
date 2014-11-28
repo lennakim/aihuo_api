@@ -15,9 +15,7 @@ class LineItem < ActiveRecord::Base
   # callbacks .................................................................
   after_create :update_product_prop_info
   # scopes ....................................................................
-  scope :by_this_week, -> {
-    joins(:order).merge(Order.by_this_week)
-  }
+  scope :by_this_week, -> { joins(:order).merge(Order.by_this_week) }
   scope :sort_by_sales_volumes, -> {
     by_this_week
       .select("line_items.*, SUM(line_items.quantity) AS qt")
