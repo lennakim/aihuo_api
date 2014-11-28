@@ -114,4 +114,5 @@ class API < Grape::API
   mount ::Contents
   mount ::Advertisements
   mount ::Tasks
+  mount ::Comments
 end

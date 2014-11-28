@@ -2,11 +2,11 @@ class Order < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
   # includes ..................................................................
-  include EncryptedId
-  include MergePendingOrder
+  include EncryptedId, MergePendingOrder, Commable
   # relationships .............................................................
   belongs_to :express, foreign_key: "shippingorder_id"
   has_many :line_items
+  has_many :line_item_commments, source: :review, through: :line_items
   has_many :gift_items, -> { where(sale_price: 0) }, class_name: "LineItem"
   has_many :comments
   has_many :orderlogs
@@ -31,7 +31,6 @@ class Order < ActiveRecord::Base
   scope :with_comments, -> { joins(:comments) }
   scope :newly, -> { where(state: NEWLY_STATE) }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
-
   # +pay_type+ attribute according to the following logic:
   #
   # 0 means '先付款后发货'
@@ -253,6 +252,10 @@ class Order < ActiveRecord::Base
     else
       false
     end
+  end
+
+  def comment_by_product(product)
+    line_item_commments.find_by(product_id: product.id) || comments.try(:first)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
