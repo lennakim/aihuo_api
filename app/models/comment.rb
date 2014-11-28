@@ -9,7 +9,7 @@ class Comment < ActiveRecord::Base
   belongs_to :line_item, foreign_type: 'commable_type', foreign_key: 'commable_id'
   # validations ...............................................................
   # callbacks .................................................................
-  after_initialize :set_comment_time
+  after_initialize :set_default_attributes
   # scopes ....................................................................
   default_scope { where(:enabled => true).order("id DESC") }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
@@ -25,9 +25,9 @@ class Comment < ActiveRecord::Base
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
-
-  def set_comment_time
+  def set_default_attributes
     self.comment_at = Time.now
+    self.name = "匿名用户"
     self.product_id = line_item.product_id if self.line_item
   end
 end
