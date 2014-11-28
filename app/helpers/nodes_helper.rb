@@ -65,9 +65,11 @@ module NodesHelper
 
   def cacke_key
     key = [
-      :v2, :node, params[:api_key], params[:id], :topics, params[:filter],
+      :v2, :node, params[:id], :topics, params[:filter],
       params[:page], params[:per_page]
     ]
+    key.push(params[:device_id]) if [:mine, :followed].include? params[:filter]
+    key.push(request.headers['Apikey']) if "31cbdb3c" == request.headers['Apikey']
     key.push(params[:device_id]) if [:mine, :followed].include? params[:filter]
     key
   end
