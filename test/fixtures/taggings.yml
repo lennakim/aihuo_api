@@ -5,6 +5,7 @@ fix_<%= i %>:
   tag_id: 1
   taggable_id: <%= i %>
   taggable_type: 'Product'
+  context: 'tags'
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>
 
@@ -15,14 +16,39 @@ fix_<%= i + 50 %>:
   tag_id: 2
   taggable_id: <%= i + 50 %>
   taggable_type: 'Product'
+  context: 'tags'
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>
 
+# tag 3 关联上 10 件产品, 产品id 71 - 80
 <% 1.upto(10) do |i| %>
 fix_<%= i + 70 %>:
   id: <%= i + 70 %>
   tag_id: 3
   taggable_id: <%= i + 70 %>
   taggable_type: 'Product'
+  context: 'tags'
+  created_at: <%= (i).days.ago(Time.now) %>
+<% end %>
+
+# tag 4 关联上 10 件产品, 产品id 71 - 80
+<% 1.upto(10) do |i| %>
+fix_<%= i + 80 %>:
+  id: <%= i + 80 %>
+  tag_id: 4
+  taggable_id: <%= i + 70 %>
+  taggable_type: 'Product'
+  context: 'recommends'
+  created_at: <%= (i).days.ago(Time.now) %>
+<% end %>
+
+# tag 5 关联上 8 件产品, 产品id 71 - 78
+<% 1.upto(8) do |i| %>
+fix_<%= i + 90 %>:
+  id: <%= i + 90 %>
+  tag_id: 5
+  taggable_id: <%= i + 70 %>
+  taggable_type: 'Product'
+  context: 'recommends'
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>

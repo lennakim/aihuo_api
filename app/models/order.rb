@@ -45,7 +45,7 @@ class Order < ActiveRecord::Base
         'credit_owed'
       )
   }
-  scope :by_this_week, -> {
+  scope :in_a_week, -> {
     where(orders: { created_at: 1.weeks.ago(Date.today)..Date.today })
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............

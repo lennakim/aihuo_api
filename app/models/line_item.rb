@@ -15,15 +15,20 @@ class LineItem < ActiveRecord::Base
   # callbacks .................................................................
   after_create :update_product_prop_info
   # scopes ....................................................................
-  scope :by_this_week, -> { joins(:order).merge(Order.by_this_week) }
-  scope :sort_by_sales_volumes, -> {
-    by_this_week
+  scope :in_a_week, -> { joins(:order).merge(Order.in_a_week) }
+  scope :sort_by_sales_volumes_in_a_week, -> {
+    in_a_week
       .select("line_items.*, SUM(line_items.quantity) AS qt")
       .group("product_id")
       .reorder("qt DESC")
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
+
+  # TODO: 这里可以移动到缓存中, 因为每天只生成一次
+  def self.collect_product_ids_by_sales_volumes_in_a_week
+    sort_by_sales_volumes_in_a_week.inject([]) { |sum, li| sum << li.product_id }
+  end
   # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................

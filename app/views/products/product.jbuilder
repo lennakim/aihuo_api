@@ -6,3 +6,8 @@ end
 json.photos @product.photos do |photo|
   json.partial! "products/photo", photo: photo
 end
+if @product.recommend_list
+  json.recommends @product.recommend_products do |product|
+    json.partial! "products/product", product: product
+  end
+end

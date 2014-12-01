@@ -31,6 +31,7 @@ class Product < ActiveRecord::Base
           when "any" # keyword is array of tags
             tagged_with(keyword, any: true).distinct
           when "match_all" # keyword is array of categories and brands
+            # TODO: fix thie method
             keyword.inject(self) {
               |mem, k| mem.tagged_with(k, any: true).distinct
             }
@@ -57,10 +58,7 @@ class Product < ActiveRecord::Base
     products
   }
   scope :order_by_sales_volumes, -> {
-    # TODO: 这里可以移动到缓存中, 因为每天只生成一次
-    product_ids = LineItem.sales_volumes_by_this_week.inject([]) do |sum, item|
-      sum.push item.product_id
-    end
+    product_ids = LineItem.collect_product_ids_by_sales_volumes_in_a_week
     reorder("FIELD(products.id", product_ids.join(","), "0)")
   }
 

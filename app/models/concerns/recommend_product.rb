@@ -13,7 +13,7 @@ module RecommendProduct
     recommends = product_lists.inject(product_lists.first) do |result, list|
       result = result.zip(list)
     end
-    recommends.flatten.uniq[0, length]
+    Product.where(id: recommends.flatten.uniq[0, length]) if recommends
   end
 
   private
@@ -22,7 +22,7 @@ module RecommendProduct
     tags = recommend_tag_with_children
 
     tags.inject([]) do |product_lists, tag_array|
-      products = Product.serach_by_keyword(tag_array, "match_all").order_by_sales_volumes.pluck(:id)
+      products = Product.serach_by_keyword(tag_array, "any").order_by_sales_volumes.pluck(:id)
       product_lists << products unless products.empty?
       product_lists
     end
