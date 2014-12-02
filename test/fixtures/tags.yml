@@ -10,7 +10,7 @@ one:
   name: '男用'
   parent_id: 0
   depth: 1
-  lft: 3
+  lft: 1
   rgt: 2
 
 two:
@@ -18,14 +18,46 @@ two:
   name: '女用'
   parent_id: 0
   depth: 1
-  lft: 1
-  rgt: 3
+  lft: 3
+  rgt: 6
 
 three:
   id: 3
   name: '情趣内衣'
   parent_id: 2
   depth: 2
-  lft: 2
-  rgt: 1
+  lft: 4
+  rgt: 5
   banner: true
+
+four:
+  id: 4
+  name: '玩具'
+  parent_id: 0
+  depth: 1
+  lft: 7
+  rgt: 12
+
+five:
+  id: 5
+  name: '食品'
+  parent_id: 0
+  depth: 1
+  lft: 13
+  rgt: 14
+
+six:
+  id: 6
+  name: '电动飞机'
+  parent_id: 4
+  depth: 2
+  lft: 8
+  rgt: 9
+
+seven:
+  id: 7
+  name: '电动汽车'
+  parent_id: 4
+  depth: 2
+  lft: 10
+  rgt: 11
