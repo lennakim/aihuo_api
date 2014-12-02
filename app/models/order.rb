@@ -28,7 +28,7 @@ class Order < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { order("id DESC") }
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : all }
-  scope :with_comments, -> { joins(:comments) }
+  scope :with_comments, -> { joins(:comments).where("comments.content IS NOT NULL") }
   scope :newly, -> { where(state: NEWLY_STATE) }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
   # +pay_type+ attribute according to the following logic:
