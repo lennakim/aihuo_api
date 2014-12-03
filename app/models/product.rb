@@ -18,6 +18,7 @@ class Product < ActiveRecord::Base
     select("products.id AS id").joins(:product_props).where(product_props: { sale_price: 0 })
       .group('products.id')
   }
+  scope :healthy, -> { tagged_with("配合扫黄", any: true) }
   scope :banner, -> { where(:banner => true) }
   scope :search, ->(keyword, date, today, match) {
     products =
