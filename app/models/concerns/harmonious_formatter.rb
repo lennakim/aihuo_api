@@ -17,7 +17,12 @@ module HarmoniousFormatter
   def nickname
     if self.attributes.include?("nickname")
       content = self[:nickname]
-      content.gsub!(/\d+/, '*') if content
+      str = "操、插、逼、尻、吸、舔、肏、日、草、鸡、屄、骚、阴唇、阴蒂、阴毛、鸡吧、鸡巴、兼职、诚聘、QQ、微信、代理、招商、商城、淘宝、天猫、成人用品、约炮、一夜情、文爱、图爱、裸聊、棒棒、肉棒、艹尼玛、jj、\\d+"
+      reg_str = str.split("、").join("|")
+      reg_str.insert(0, "(")
+      reg_str.insert(-1, ")")
+      reg = Regexp.new(reg_str)
+      content.gsub!(reg, '*') if content
       content
     else
       raise NoMethodError.new("undefined method `nickname' for #{self}")
