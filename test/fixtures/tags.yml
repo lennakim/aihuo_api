@@ -29,3 +29,6 @@ three:
   lft: 2
   rgt: 1
   banner: true
+four:
+  id: 4
+  name: '配合扫黄'

@@ -18,4 +18,8 @@ class ProductTest < ActiveSupport::TestCase
   #   products = Product.search("男用", nil, Date.today, "any")
   #   assert_equal 3, products.sorted_by_tag("男用").first.id
   # end
+  #测试product banner传入安全参数后返回健康内容
+  def test_product_banners_healthy
+    assert_equal 5, Product.healthy.banner.length
+  end
 end
