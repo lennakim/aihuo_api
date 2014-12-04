@@ -42,4 +42,8 @@ class MemberTest < ActiveSupport::TestCase
   #   assert result[:success]
   # end
 
+  def test_nick_name
+    member = Member.where(nickname: 'Ha111111nMeiMei').first
+    assert_equal member.nickname, "Ha*nMeiMei"
+  end
 end

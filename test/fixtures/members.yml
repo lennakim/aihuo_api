@@ -53,3 +53,15 @@ five:
   gender: true
   phone: '13522412871'
   captcha: '123456'
+
+
+
+
+six:
+  id: 6
+  nickname: 'Ha111111nMeiMei'
+  coin_total: 20
+  verified: true
+  gender: true
+  phone: '13522412871'
+  captcha: '123456'
