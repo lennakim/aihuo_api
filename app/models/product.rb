@@ -2,9 +2,9 @@ class Product < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
   acts_as_taggable_on :tags
+  acts_as_taggable_on :recommends
   # includes ..................................................................
-  include EncryptedId
-  include CarrierWaveMini
+  include EncryptedId, CarrierWaveMini, RecommendProduct
   # relationships .............................................................
   has_many :product_props
   has_many :photos
@@ -20,7 +20,7 @@ class Product < ActiveRecord::Base
   }
   scope :healthy, -> { tagged_with("配合扫黄", any: true) }
   scope :banner, -> { where(:banner => true) }
-  scope :search, ->(keyword, date, today, match) {
+  scope :serach_by_keyword, ->(keyword, match) {
     products =
       case keyword # was case keyword.class
       when Array
@@ -32,6 +32,7 @@ class Product < ActiveRecord::Base
           when "any" # keyword is array of tags
             tagged_with(keyword, any: true).distinct
           when "match_all" # keyword is array of categories and brands
+            # TODO: fix thie method
             keyword.inject(self) {
               |mem, k| mem.tagged_with(k, any: true).distinct
             }
@@ -47,12 +48,19 @@ class Product < ActiveRecord::Base
     # 只显示打了 tag 的产品
     tagging_ids = self.with_tagging.pluck(:id)
     products = products.where(id: tagging_ids)
+  }
+  scope :search, ->(keyword, date, today, match) {
+    products = serach_by_keyword(keyword, match)
     # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购
     if date.blank? || date && today && date < 2.days.ago(today)
       gifts_ids = self.gifts.pluck(:id)
       products = products.where.not(id: gifts_ids)
     end
     products
+  }
+  scope :order_by_sales_volumes, -> {
+    product_ids = LineItem.collect_product_ids_by_sales_volumes_in_a_week
+    reorder("FIELD(products.id", product_ids.join(","), "0)")
   }
 
   # Example: scope through associations :joins or :includes.

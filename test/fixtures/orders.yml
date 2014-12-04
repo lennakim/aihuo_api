@@ -1,0 +1,26 @@
+# 从昨天到10天前，创建30张订单。
+<% 1.upto(10) do |i| %>
+fix_<%= i %>:
+  id: <%= i %>
+  device_id: <%= "#{i}#{rand(10)}#{rand(10)}" %>
+  name: 'tester'
+  phone: <%= '13211111' + rand(10).to_s + rand(10).to_s %>
+  shipping_charge: 20
+  created_at: <%= (i).days.ago(Time.now) %>
+
+fix_<%= i + 10 %>:
+  id: <%= i + 10 %>
+  device_id: <%= "#{i}#{rand(10)}#{rand(10)}" %>
+  name: 'tester'
+  phone: <%= '13211111' + rand(10).to_s + rand(10).to_s %>
+  shipping_charge: 20
+  created_at: <%= (i).days.ago(Time.now) %>
+
+fix_<%= i + 20 %>:
+  id: <%= i + 20 %>
+  device_id: <%= "#{i}#{rand(10)}#{rand(10)}" %>
+  name: 'tester'
+  phone: <%= '13211111' + rand(10).to_s + rand(10).to_s %>
+  shipping_charge: 20
+  created_at: <%= (i).days.ago(Time.now) %>
+<% end %>

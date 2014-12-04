@@ -45,6 +45,9 @@ class Order < ActiveRecord::Base
         'credit_owed'
       )
   }
+  scope :in_a_week, -> {
+    where(orders: { created_at: 1.weeks.ago(Date.today)..Date.today })
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'bYqILlFMZn3xd8Cy'
   delegate :extra_order_id, to: :express
