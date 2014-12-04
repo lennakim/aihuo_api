@@ -69,6 +69,8 @@ module NodesHelper
       params[:page], params[:per_page]
     ]
     key.push(params[:device_id]) if [:mine, :followed].include? params[:filter]
+    key.push(request.headers['Apikey']) if "31cbdb3c" == request.headers['Apikey']
+    key.push(params[:device_id]) if [:mine, :followed].include? params[:filter]
     key
   end
 

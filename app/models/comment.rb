@@ -5,14 +5,29 @@ class Comment < ActiveRecord::Base
   include EncryptedId
   # relationships .............................................................
   belongs_to :order
+  belongs_to :commable, polymorphic: true
+  belongs_to :line_item, foreign_type: 'commable_type', foreign_key: 'commable_id'
   # validations ...............................................................
   # callbacks .................................................................
+  after_initialize :set_default_attributes
   # scopes ....................................................................
   default_scope { where(:enabled => true).order("id DESC") }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'vL6dUuuJn0yLMdYd'
+  DEFAULT_SCORE = 5
+
+  alias_attribute :product_quality_score, :score
   # class methods .............................................................
   # public instance methods ...................................................
+  def express_score
+    order.try(:review).try(:score) || DEFAULT_SCORE
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
+  private
+  def set_default_attributes
+    self.comment_at = Time.now
+    self.name = "匿名用户"
+    self.product_id = line_item.product_id if self.line_item
+  end
 end
