@@ -17,11 +17,12 @@ module HarmoniousFormatter
   def nickname
     if self.attributes.include?("nickname")
       content = self[:nickname]
-      #从数据库中去除和谐关键字， 4小时更新一次
-      keyword = Rails.cache.fetch("nickname_key_word_harmonious", expires_in: 2.hours) do
-         Setting.find_by_name("nickname_key_word_harmonious").try(:value)
+      #从数据库中去除和谐关键字， 2小时更新一次
+      reg = Rails.cache.fetch("nickname_key_word_harmonious", expires_in: 2.hours) do
+        keyword = Setting.find_by_name("nickname_key_word_harmonious").try(:value)
+        Regexp.new(keyword) if keyword
       end
-      reg = Regexp.new(keyword)
+
       content.gsub!(reg, '*') if content && reg
       content
     else

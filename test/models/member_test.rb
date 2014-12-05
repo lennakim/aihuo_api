@@ -45,9 +45,9 @@ class MemberTest < ActiveSupport::TestCase
   def test_nick_name
     # member = Member.where(nickname: 'Ha111111nMeiMei').first
     member = Member.find_by_id(6)
-    assert_equal member.nickname, "Ha*nMeiMei"
+    assert_equal "Ha***nMei**Me*i", member.nickname
 
     member = Member.find_by_id(7)
-    assert_equal member.nickname, "*HanMeiMei*nmnnasndfa一夜"
+    assert_equal "*HanMeiMei*nmnnasndfa一夜", member.nickname
   end
 end
