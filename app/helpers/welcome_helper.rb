@@ -62,8 +62,7 @@ module WelcomeHelper
         @banners += banners
       end
     when :all
-    @banners =
-      if hide_gift_products?
+      @banners = if hide_gift_products?
         @application.articles.banner.without_gifts
       else
         @application.articles.banner
