@@ -93,6 +93,7 @@ class API < Grape::API
     # log_foramt += "#{request.env['HTTP_DEVICE_ID']}"
     log_foramt += "#{request.headers['Apikey']} - "
     log_foramt += "#{request.headers['Device-Id']}"
+    log_foramt += "-----#{params.inspect}"
     log.info log_foramt
   end
 
