@@ -29,7 +29,6 @@ three:
   lft: 4
   rgt: 5
   banner: true
-
 four:
   id: 4
   name: '玩具'
@@ -61,3 +60,6 @@ seven:
   depth: 2
   lft: 10
   rgt: 11
+eight:
+  id: 8
+  name: '配合扫黄'
