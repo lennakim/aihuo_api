@@ -50,8 +50,12 @@ class GetuiPusher < Notification
     client = IGeTui::Client.new(args[:user_id])
 
     # 发送一条通知到指定的客户端
-    ret = pusher.push_message_to_single(single_message, client)
-    ret["result"] == "ok"
+    begin
+      ret = pusher.push_message_to_single(single_message, client)
+      ret["result"] == "ok"
+    rescue Exception => e
+      logger.error e.message
+    end
   end
   # public instance methods ...................................................
   # protected instance methods ................................................
