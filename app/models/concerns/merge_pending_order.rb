@@ -36,6 +36,7 @@ module MergePendingOrder
     item_total =
       line_items.inject(0){ |sum, item| sum + item.sale_price * item.quantity }
     update({item_total: item_total})
+
     # 更新支付状态
     update_payment_state
     # 重新计算运费, 包邮逻辑放在其他 concerns 中

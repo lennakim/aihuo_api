@@ -53,3 +53,21 @@ five:
   gender: true
   phone: '13522412871'
   captcha: '123456'
+
+six:
+  id: 6
+  nickname: 'Ha11111操1nMei操1122Me222i'
+  coin_total: 20
+  verified: true
+  gender: true
+  phone: '13522412871'
+  captcha: '123456'
+
+seven:
+  id: 7
+  nickname: '操HanMeiMei一夜情nmnnasndfa一夜'
+  coin_total: 20
+  verified: true
+  gender: true
+  phone: '13522412871'
+  captcha: '123456'
