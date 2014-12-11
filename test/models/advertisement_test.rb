@@ -10,6 +10,11 @@ class AdvertisementTest < ActiveSupport::TestCase
     assert_equal 2, adv_contents(:one).adv_statistics.today.count
   end
 
+  def test_default_scope
+    advertisements = Advertisement.all
+    assert_equal(4, advertisements.size)
+  end
+
 
   # we use memcached client dalli, so break this test.
   # def test_all_advertisements_can_increase_view_count
