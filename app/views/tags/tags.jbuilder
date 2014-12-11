@@ -4,5 +4,5 @@ if @tag
   json.prices @tag.value.split("/")[2].split("|") if @tag.value.split("/")[2]
 end
 if @tabs
-	json.tabs @tabs, :id, :type, :title, :name, :image
+  json.tabs @tabs, :id, :type, :title, :name, :image
 end

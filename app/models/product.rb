@@ -91,20 +91,30 @@ class Product < ActiveRecord::Base
     ids = sort_by_tag(tag).pluck(:id) + pluck(:id)
     reorder("FIELD(products.id", ids.uniq.join(","), "0)")
   }
+  scope :sorted_by_order, ->(order) {
+    case order
+    when :desc
+      joins("LEFT JOIN (select product_props.*,min(product_props.sale_price) as minprice from product_props group by product_props.product_id) as pp on products.id = pp.product_id")
+      .unscope(:group).reorder("minprice desc")
+    when :asc
+      joins("LEFT JOIN (select product_props.*,min(product_props.sale_price) as minprice from product_props group by product_props.product_id) as pp on products.id = pp.product_id")
+      .unscope(:group).reorder("minprice asc")
+    end
+  }
+  scope :sorted_tab_or_tag, ->(sort_params) {
+    #params[:sort]不能有默认值。否则else永远不能执行
+    if sort_params[:sort]
+      sorted_by_sort_order(sort_params[:sort], sort_params[:order])
+    else
+      sorted_by_tag(sort_params[:tag])
+    end
+  }  
   scope :sorted_by_sort_order, ->(sort, order) {
     case sort
     when :rank
       unscope(:group).reorder("rank desc")
     when :price
-      case order
-      when :desc
-      #.unscope(:group)
-        joins("LEFT JOIN (select product_props.*,max(product_props.rzx_stock) as maxrzx from product_props group by product_props.product_id) as pp on products.id = pp.product_id")
-        .reorder("pp.sale_price desc")
-      when :asc
-        joins("LEFT JOIN product_props on products.id = product_props.product_id")
-        .unscope(:group).reorder("sale_price asc")
-      end
+      sorted_by_order(order)
     when :volume
       order_by_sales_volumes
     when :newly
@@ -124,7 +134,9 @@ class Product < ActiveRecord::Base
 
   # 零售价（现价）显示SKU零售价的最低值
   def retail_price
-    product_props.first.sale_price
+    #product_props.first.sale_price
+    #old:显示库存最大的规格商品价格 new:显示商品规格sale_price最小的
+    product_props.reorder("sale_price ASC").first.sale_price
   rescue
     'No SKU'
   end
