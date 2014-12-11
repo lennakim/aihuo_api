@@ -32,7 +32,7 @@ class Product < ActiveRecord::Base
           when "any" # keyword is array of tags
             tagged_with(keyword, any: true).distinct
           when "match_all" # keyword is array of categories and brands
-            # TODO: fix thie method
+            # TODO: fix this method
             keyword.inject(self) {
               |mem, k| mem.tagged_with(k, any: true).distinct
             }
@@ -79,16 +79,16 @@ class Product < ActiveRecord::Base
       .group('taggings.taggable_id')
   }
 
-  scope :sort_by_tag, ->(tag) {
+  scope :sort_by_tag_id, ->(tag_id) {
     joins("LEFT JOIN tag_product_sorts on products.id = tag_product_sorts.product_id")
-      .where(tag_product_sorts: {tag_id: tag.id})
+      .where(tag_product_sorts: {tag_id: tag_id})
       .reorder("tag_product_sorts.positoin ASC, products.out_of_stock, products.rank DESC")
   }
 
-  scope :sorted_by_tag, ->(tag_name) {
+  scope :sort_by_tag_name, ->(tag_name) {
     tag = Tag.find_by(name: tag_name)
     return unless tag
-    ids = sort_by_tag(tag).pluck(:id) + pluck(:id)
+    ids = sort_by_tag_id(tag.id).pluck(:id) + pluck(:id)
     reorder("FIELD(products.id", ids.uniq.join(","), "0)")
   }
 
