@@ -12,11 +12,8 @@ json.banners @banners do |banner|
     end
   else
     json.id banner.to_param
-    if "Tag" == banner.class.name
-    	json.name banner.name
-    else
-    	json.title banner.title
-    end
+    json.name banner.try(:name)
+    json.title banner.title
     json.type banner.class.name
     if banner.background
       json.background do
