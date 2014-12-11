@@ -91,7 +91,26 @@ class Product < ActiveRecord::Base
     ids = sort_by_tag(tag).pluck(:id) + pluck(:id)
     reorder("FIELD(products.id", ids.uniq.join(","), "0)")
   }
-
+  scope :sorted_by_sort_order, ->(sort, order) {
+    case sort
+    when :rank
+      unscope(:group).reorder("rank desc")
+    when :price
+      case order
+      when :desc
+      #.unscope(:group)
+        joins("LEFT JOIN (select product_props.*,max(product_props.rzx_stock) as maxrzx from product_props group by product_props.product_id) as pp on products.id = pp.product_id")
+        .reorder("pp.sale_price desc")
+      when :asc
+        joins("LEFT JOIN product_props on products.id = product_props.product_id")
+        .unscope(:group).reorder("sale_price asc")
+      end
+    when :volume
+      order_by_sales_volumes
+    when :newly
+      unscope(:group).reorder("created_at desc")
+    end
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'XRbLEgrUCLHh94qG'
   # class methods .............................................................

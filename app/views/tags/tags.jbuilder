@@ -3,3 +3,6 @@ if @tag
   json.brands @tag.value.split("/")[1].split("|") if @tag.value.split("/")[1]
   json.prices @tag.value.split("/")[2].split("|") if @tag.value.split("/")[2]
 end
+if @tabs
+	json.tabs @tabs, :id, :type, :title, :name, :image
+end
