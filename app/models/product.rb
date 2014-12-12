@@ -2,9 +2,9 @@ class Product < ActiveRecord::Base
   # extends ...................................................................
   acts_as_paranoid
   acts_as_taggable_on :tags
+  acts_as_taggable_on :recommends
   # includes ..................................................................
-  include EncryptedId
-  include CarrierWaveMini
+  include EncryptedId, CarrierWaveMini, RecommendProduct
   # relationships .............................................................
   has_many :product_props
   has_many :photos
@@ -18,8 +18,9 @@ class Product < ActiveRecord::Base
     select("products.id AS id").joins(:product_props).where(product_props: { sale_price: 0 })
       .group('products.id')
   }
+  scope :healthy, -> { tagged_with("配合扫黄", any: true) }
   scope :banner, -> { where(:banner => true) }
-  scope :search, ->(keyword, date, today, match) {
+  scope :serach_by_keyword, ->(keyword, match) {
     products =
       case keyword # was case keyword.class
       when Array
@@ -31,6 +32,7 @@ class Product < ActiveRecord::Base
           when "any" # keyword is array of tags
             tagged_with(keyword, any: true).distinct
           when "match_all" # keyword is array of categories and brands
+            # TODO: fix thie method
             keyword.inject(self) {
               |mem, k| mem.tagged_with(k, any: true).distinct
             }
@@ -46,12 +48,19 @@ class Product < ActiveRecord::Base
     # 只显示打了 tag 的产品
     tagging_ids = self.with_tagging.pluck(:id)
     products = products.where(id: tagging_ids)
+  }
+  scope :search, ->(keyword, date, today, match) {
+    products = serach_by_keyword(keyword, match)
     # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购
     if date.blank? || date && today && date < 2.days.ago(today)
       gifts_ids = self.gifts.pluck(:id)
       products = products.where.not(id: gifts_ids)
     end
     products
+  }
+  scope :order_by_sales_volumes, -> {
+    product_ids = LineItem.collect_product_ids_by_sales_volumes_in_a_week
+    reorder("FIELD(products.id", product_ids.join(","), "0)")
   }
 
   # Example: scope through associations :joins or :includes.
@@ -82,7 +91,43 @@ class Product < ActiveRecord::Base
     ids = sort_by_tag(tag).pluck(:id) + pluck(:id)
     reorder("FIELD(products.id", ids.uniq.join(","), "0)")
   }
-
+  scope :sort_by_price, ->(order) {
+    case order
+    when :desc
+      joins("LEFT JOIN (select tmp.*,max(tmp.rzx_stock) as maxstock from (select * from product_props order by rzx_stock desc ,sale_price asc) as tmp group by tmp.product_id) as pp on products.id = pp.product_id")
+      .unscope(:group).reorder("sale_price desc")
+    when :asc
+      joins("LEFT JOIN (select tmp.*,max(tmp.rzx_stock) as maxstock from (select * from product_props order by rzx_stock desc ,sale_price asc) as tmp group by tmp.product_id) as pp on products.id = pp.product_id")
+      .unscope(:group).reorder("sale_price asc")
+    end
+  }
+  scope :sort_by_rank, ->(order) {
+    :desc == order  ? reorder("rank desc") : reorder("rank asc")
+  }
+  scope :sort_by_newly, ->(order) {
+    :desc == order  ? reorder("created_at desc") : reorder("created_at asc")
+  }
+  scope :sorted_tab_or_tag, ->(sort_params) {
+    #params[:sort]不能有默认值。否则else永远不能执行
+    if sort_params[:sort]
+      sorted_by_sort_order(sort_params[:sort], sort_params[:order])
+    else
+      #兼容以前逻辑
+      sorted_by_tag(sort_params[:tag])
+    end
+  }  
+  scope :sorted_by_sort_order, ->(sort, order) {
+    case sort
+    when :rank
+      unscope(:group).sort_by_rank(order)
+    when :price
+      sort_by_price(order)
+    when :volume
+      order_by_sales_volumes
+    when :newly
+      unscope(:group).sort_by_newly(order)
+    end
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'XRbLEgrUCLHh94qG'
   # class methods .............................................................
@@ -96,7 +141,7 @@ class Product < ActiveRecord::Base
 
   # 零售价（现价）显示SKU零售价的最低值
   def retail_price
-    product_props.first.sale_price
+    product_props.reorder("rzx_stock DESC ,sale_price ASC").first.sale_price
   rescue
     'No SKU'
   end

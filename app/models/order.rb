@@ -6,7 +6,7 @@ class Order < ActiveRecord::Base
   # relationships .............................................................
   belongs_to :express, foreign_key: "shippingorder_id"
   has_many :line_items
-  has_many :line_item_commments, source: :comment, through: :line_items
+  has_many :line_item_commments, source: :review, through: :line_items
   has_many :gift_items, -> { where(sale_price: 0) }, class_name: "LineItem"
   has_many :comments
   has_many :orderlogs
@@ -28,10 +28,9 @@ class Order < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { order("id DESC") }
   scope :by_filter, ->(filter) { filter == :rated ? with_comments : all }
-  # scope :with_comments, -> { includes(:line_item_commments, :comments) }
+  scope :with_comments, -> { joins(:comments).where("comments.content IS NOT NULL") }
   scope :newly, -> { where(state: NEWLY_STATE) }
   scope :done, -> { where("state = ? OR state = ? OR state like ?", "客户拒签，原件返回", "客户签收，订单完成", "%取消%") }
-
   # +pay_type+ attribute according to the following logic:
   #
   # 0 means '先付款后发货'
@@ -45,6 +44,9 @@ class Order < ActiveRecord::Base
         'paid',
         'credit_owed'
       )
+  }
+  scope :in_a_week, -> {
+    where(orders: { created_at: 1.weeks.ago(Date.today)..Date.today })
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'bYqILlFMZn3xd8Cy'

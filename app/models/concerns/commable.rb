@@ -2,10 +2,11 @@ module Commable
   extend ActiveSupport::Concern
 
   included do
-    has_one :comment, class_name: 'Comment', as: :commable
+    # We can not use comment, because the orders table has save column name.
+    has_one :review, class_name: 'Comment', as: :commable
   end
 
   def commented?
-    comment.present?
+    review.present?
   end
 end
