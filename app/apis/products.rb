@@ -7,11 +7,10 @@ class Products < Grape::API
       use :products
     end
     get "/", jbuilder: 'products/products' do
-       products = Rails.cache.fetch(products_cache_key, expires_in: 2.hours) do
+      products = Rails.cache.fetch(products_cache_key, expires_in: 2.hours) do
         products = Product.search(query_params, date_param, Date.today, params[:match])
         products = products.price_between(params[:min_price], params[:max_price])
-        #最后一行赋值不能省，省略的话sql语句异常
-        products = products.sorted_tab_or_tag(sort_params)
+        products.sorted_tab_or_tag(sort_params)
       end
       @products = products ? paginate(products) : products
     end

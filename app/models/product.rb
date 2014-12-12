@@ -91,34 +91,41 @@ class Product < ActiveRecord::Base
     ids = sort_by_tag(tag).pluck(:id) + pluck(:id)
     reorder("FIELD(products.id", ids.uniq.join(","), "0)")
   }
-  scope :sorted_by_order, ->(order) {
+  scope :sort_by_price, ->(order) {
     case order
     when :desc
-      joins("LEFT JOIN (select product_props.*,min(product_props.sale_price) as minprice from product_props group by product_props.product_id) as pp on products.id = pp.product_id")
-      .unscope(:group).reorder("minprice desc")
+      joins("LEFT JOIN (select tmp.*,max(tmp.rzx_stock) as maxstock from (select * from product_props order by rzx_stock desc ,sale_price asc) as tmp group by tmp.product_id) as pp on products.id = pp.product_id")
+      .unscope(:group).reorder("sale_price desc")
     when :asc
-      joins("LEFT JOIN (select product_props.*,min(product_props.sale_price) as minprice from product_props group by product_props.product_id) as pp on products.id = pp.product_id")
-      .unscope(:group).reorder("minprice asc")
+      joins("LEFT JOIN (select tmp.*,max(tmp.rzx_stock) as maxstock from (select * from product_props order by rzx_stock desc ,sale_price asc) as tmp group by tmp.product_id) as pp on products.id = pp.product_id")
+      .unscope(:group).reorder("sale_price asc")
     end
+  }
+  scope :sort_by_rank, ->(order) {
+    :desc == order  ? reorder("rank desc") : reorder("rank asc")
+  }
+  scope :sort_by_newly, ->(order) {
+    :desc == order  ? reorder("created_at desc") : reorder("created_at asc")
   }
   scope :sorted_tab_or_tag, ->(sort_params) {
     #params[:sort]不能有默认值。否则else永远不能执行
     if sort_params[:sort]
       sorted_by_sort_order(sort_params[:sort], sort_params[:order])
     else
+      #兼容以前逻辑
       sorted_by_tag(sort_params[:tag])
     end
   }  
   scope :sorted_by_sort_order, ->(sort, order) {
     case sort
     when :rank
-      unscope(:group).reorder("rank desc")
+      unscope(:group).sort_by_rank(order)
     when :price
-      sorted_by_order(order)
+      sort_by_price(order)
     when :volume
       order_by_sales_volumes
     when :newly
-      unscope(:group).reorder("created_at desc")
+      unscope(:group).sort_by_newly(order)
     end
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
@@ -134,9 +141,7 @@ class Product < ActiveRecord::Base
 
   # 零售价（现价）显示SKU零售价的最低值
   def retail_price
-    #product_props.first.sale_price
-    #old:显示库存最大的规格商品价格 new:显示商品规格sale_price最小的
-    product_props.reorder("sale_price ASC").first.sale_price
+    product_props.reorder("rzx_stock DESC ,sale_price ASC").first.sale_price
   rescue
     'No SKU'
   end

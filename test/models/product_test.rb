@@ -45,4 +45,26 @@ class ProductTest < ActiveSupport::TestCase
   def test_product_banners_healthy
     assert_equal 5, Product.healthy.banner.length
   end
+#以下为新功能tab页测试
+  #测试rank排序
+  def test_sorted_by_sort_order_rank
+    products = Product.search("情趣内衣", nil, Date.today, "any").sorted_by_sort_order(:rank, :desc)
+    a,b = rand(products.length-1),rand(products.length-1)
+    a,b = b,a if a > b
+    assert_equal true, products[a].rank >= products[b].rank
+  end
+  #测试上架时间created_at排序
+  def test_sorted_by_sort_order_newly
+    products = Product.search("情趣内衣", nil, Date.today, "any").sorted_by_sort_order(:newly, :desc)
+    a,b = rand(products.length-1),rand(products.length-1)
+    a,b = b,a if a > b
+    assert_equal true, products[a].created_at >= products[b].created_at
+  end
+  #测试价格price排序
+  def test_sorted_by_sort_order_price
+    products = Product.search("情趣内衣", nil, Date.today, "any").sorted_by_sort_order(:price, :desc)
+    a,b = rand(products.length-1),rand(products.length-1)
+    a,b = b,a if a > b
+    assert_equal true, products[a].retail_price.to_i >= products[b].retail_price.to_i
+  end
 end
