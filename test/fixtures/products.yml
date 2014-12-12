@@ -11,3 +11,10 @@ fix_<%= i %>:
   banner: true
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>
+
+<% 101.upto(105) do |i| %>
+fix_<%= i %>:
+  id: <%= i %>
+  banner: true
+  created_at: <%= (i).days.ago(Time.now) %>
+<% end %>
