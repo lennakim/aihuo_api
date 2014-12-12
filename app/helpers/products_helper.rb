@@ -13,7 +13,7 @@ module ProductsHelper
     optional :page, type: Integer, desc: "Page number."
     optional :per_page, type: Integer, default: 10, desc: "Per page value."
     optional :sort, type: Symbol, values: [:rank, :volume, :price, :newly]
-    optional :order, type: Symbol, values: [:desc, :asc], default: :desc
+    optional :order, type: Symbol, values: [:desc, :asc]
   end
 
   params :trades do

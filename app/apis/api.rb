@@ -110,6 +110,7 @@ class API < Grape::API
   mount ::Members
   mount ::Coupons
   mount ::Tags
+  mount ::Tabs
   mount ::PrivateMessages
   mount ::Contents
   mount ::Advertisements

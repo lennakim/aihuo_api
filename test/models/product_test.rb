@@ -67,4 +67,11 @@ class ProductTest < ActiveSupport::TestCase
     a,b = b,a if a > b
     assert_equal true, products[a].retail_price.to_i >= products[b].retail_price.to_i
   end
+  # 无法测试，因为 order by field 是一个 mysql 函数
+  #测试周销量排序
+  # def test_sorted_by_sort_order_price
+    # products = Product.search("情趣内衣", nil, Date.today, "any").sorted_by_sort_order(:volume, :desc)
+    # a,b = rand(products.length-1),rand(products.length-1)
+    # a,b = b,a if a > b
+  # end
 end
