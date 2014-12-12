@@ -17,7 +17,13 @@ module HarmoniousFormatter
   def nickname
     if self.attributes.include?("nickname")
       content = self[:nickname]
-      content.gsub!(/\d+/, '*') if content
+      #从数据库中去除和谐关键字， 2小时更新一次
+      reg = Rails.cache.fetch("nickname_key_word_harmonious", expires_in: 2.hours) do
+        keyword = Setting.find_by_name("nickname_key_word_harmonious").try(:value)
+        Regexp.new(keyword) if keyword
+      end
+
+      content.force_encoding("UTF-8").gsub!(reg, '*') if content && reg
       content
     else
       raise NoMethodError.new("undefined method `nickname' for #{self}")
