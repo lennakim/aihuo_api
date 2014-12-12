@@ -12,6 +12,9 @@ class Homepage < ActiveRecord::Base
     homepages = where(application_id: app.id)
     homepages.count.zero? ? where(application_id: 0) : homepages
   }
+  scope :for_app_tabs, ->(app) {
+    where("label = 'tab' and application_id = ?", app.id).first
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
   # public instance methods ...................................................

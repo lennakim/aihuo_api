@@ -141,7 +141,7 @@ class Product < ActiveRecord::Base
 
   # 零售价（现价）显示SKU零售价的最低值
   def retail_price
-    product_props.reorder("rzx_stock DESC ,sale_price ASC").first.sale_price
+    product_props.retail_price
   rescue
     'No SKU'
   end

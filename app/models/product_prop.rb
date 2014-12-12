@@ -17,4 +17,9 @@ class ProductProp < ActiveRecord::Base
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
+  #市场价格
+  scope :retail_price, -> {
+    #如果库存相同优先展示价格低的
+    reorder("rzx_stock DESC, sale_price ASC").first.sale_price
+  }
 end
