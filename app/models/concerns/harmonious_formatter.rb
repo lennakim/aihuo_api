@@ -23,7 +23,7 @@ module HarmoniousFormatter
         Regexp.new(keyword) if keyword
       end
 
-      content.gsub!(reg, '*') if content && reg
+      content.force_encoding("UTF-8").gsub!(reg, '*') if content && reg
       content
     else
       raise NoMethodError.new("undefined method `nickname' for #{self}")
