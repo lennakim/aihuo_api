@@ -84,11 +84,14 @@ class ShortMessage < ActiveRecord::Base
       order.short_messages.make_as_sended if type == :update
       prepend_text = type == :merge ? "订单已合并，" : ""
       if order.shipping_address.blank? && order.name.blank?
-        "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。回复您的具体地址省市区县街道和姓名 立刻发货，电话：4007065868【首趣商城】"
+        # "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。回复您的具体地址省市区县街道和姓名 立刻发货，电话：4007065868【首趣商城】"
+        "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。请将您的具体地址省市区县街道和姓名发送至 15301145681 立刻发货【首趣商城】"
       elsif order.shipping_address.blank?
-        "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道) 立刻发货，电话：4007065868【首趣商城】"
+        # "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。回复您的具体地址(省市区县街道) 立刻发货，电话：4007065868【首趣商城】"
+        "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。请将您的具体地址(省市区县街道) 发至 15301145681 立刻发货【首趣商城】"
       else
-        "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。回复数字1立刻发货，2-4天送达。有疑问请联系电话：4007065868【首趣商城】"
+        # "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。回复数字1立刻发货，2-4天送达。有疑问请联系电话：4007065868【首趣商城】"
+        "您好，#{prepend_text}物品加运费共#{order.total}元，保密包装。发送1至15301145681立刻发货。有疑问请联系电话：4007065868【首趣商城】"
       end
     end
   end
