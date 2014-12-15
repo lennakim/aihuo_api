@@ -95,10 +95,10 @@ class Product < ActiveRecord::Base
     case order
     when :desc
       joins("LEFT JOIN (select tmp.*,max(tmp.rzx_stock) as maxstock from (select * from product_props order by rzx_stock desc ,sale_price asc) as tmp group by tmp.product_id) as pp on products.id = pp.product_id")
-      .unscope(:group).reorder("sale_price desc")
+      .reorder("sale_price desc")
     when :asc
       joins("LEFT JOIN (select tmp.*,max(tmp.rzx_stock) as maxstock from (select * from product_props order by rzx_stock desc ,sale_price asc) as tmp group by tmp.product_id) as pp on products.id = pp.product_id")
-      .unscope(:group).reorder("sale_price asc")
+      .reorder("sale_price asc")
     end
   }
   scope :sort_by_rank, ->(order) {
@@ -119,13 +119,13 @@ class Product < ActiveRecord::Base
   scope :sort_by_sort_order, ->(sort, order) {
     case sort
     when :rank
-      unscope(:group).sort_by_rank(order)
+      sort_by_rank(order)
     when :price
       sort_by_price(order)
     when :volume
       order_by_sales_volumes
     when :newly
-      unscope(:group).sort_by_newly(order)
+      sort_by_newly(order)
     end
   }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
