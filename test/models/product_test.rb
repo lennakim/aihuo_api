@@ -39,7 +39,7 @@ class ProductTest < ActiveSupport::TestCase
   # 无法测试，因为 order by field 是一个 mysql 函数
   # def test_sort_by_tag
   #   products = Product.search("男用", nil, Date.today, "any")
-  #   assert_equal 3, products.sorted_by_tag("男用").first.id
+  #   assert_equal 3, products.sort_by_tag_name("男用").first.id
   # end
   #测试product banner传入安全参数后返回健康内容
   def test_product_banners_healthy
