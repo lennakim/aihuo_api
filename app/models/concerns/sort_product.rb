@@ -44,10 +44,10 @@ module SortProduct
       order_by_type(:product_ids, order, product_ids)
     }
 
-    scope :order_by_type, ->(type, order, product_ids = []) {
+    scope :order_by_type, ->(type, order, ids = []) {
       case type
       when :product_ids
-        ids = order == :desc ? ids.uniq.join(",") : ids.uniq.reverse.join(",")
+        ids = (order == :desc ? ids.uniq : ids.uniq.reverse).join(",")
         reorder("FIELD(products.id", ids, "0)")
       else
         reorder("#{type} #{order}")
