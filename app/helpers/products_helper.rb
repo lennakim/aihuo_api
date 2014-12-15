@@ -12,6 +12,8 @@ module ProductsHelper
     optional :sku_visible, type: Virtus::Attribute::Boolean, default: false, desc: "Return skus or not."
     optional :page, type: Integer, desc: "Page number."
     optional :per_page, type: Integer, default: 10, desc: "Per page value."
+    optional :sort, type: Symbol, values: [:rank, :volume, :price, :newly]
+    optional :order, type: Symbol, values: [:desc, :asc]
   end
 
   params :trades do
@@ -47,7 +49,9 @@ module ProductsHelper
     date = request.headers["Registerdate"] || params[:register_date]
     date.to_date if date
   end
-
+  def sort_params
+    {:tag => params[:tag], :sort => params[:sort], :order => params[:order]}
+  end
   def product_cache_key
     [:v2, :product, params[:id]].join("-")
   end
@@ -55,7 +59,7 @@ module ProductsHelper
   def products_cache_key
     [:v2, :products, params[:id], params[:tag], params[:tags], params[:match],
     params[:min_price], params[:max_price], params[:register_date],
-    params[:sku_visible], params[:page], params[:per_page]].join("-")
+    params[:sku_visible], params[:page], params[:per_page], params[:sort], params[:order]].join("-")
   end
 
   def trades_cache_key

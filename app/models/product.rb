@@ -91,7 +91,43 @@ class Product < ActiveRecord::Base
     ids = sort_by_tag_id(tag.id).pluck(:id) + pluck(:id)
     reorder("FIELD(products.id", ids.uniq.join(","), "0)")
   }
-
+  scope :sort_by_price, ->(order) {
+    case order
+    when :desc
+      joins("LEFT JOIN (select tmp.*,max(tmp.rzx_stock) as maxstock from (select * from product_props order by rzx_stock desc ,sale_price asc) as tmp group by tmp.product_id) as pp on products.id = pp.product_id")
+      .unscope(:group).reorder("sale_price desc")
+    when :asc
+      joins("LEFT JOIN (select tmp.*,max(tmp.rzx_stock) as maxstock from (select * from product_props order by rzx_stock desc ,sale_price asc) as tmp group by tmp.product_id) as pp on products.id = pp.product_id")
+      .unscope(:group).reorder("sale_price asc")
+    end
+  }
+  scope :sort_by_rank, ->(order) {
+    :desc == order  ? reorder("rank desc") : reorder("rank asc")
+  }
+  scope :sort_by_newly, ->(order) {
+    :desc == order  ? reorder("created_at desc") : reorder("created_at asc")
+  }
+  scope :sort_by_tab_or_tag, ->(sort_params) {
+    #params[:sort]不能有默认值。否则else永远不能执行
+    if sort_params[:sort]
+      sort_by_sort_order(sort_params[:sort], sort_params[:order])
+    else
+      #兼容以前逻辑
+      sort_by_tag_name(sort_params[:tag])
+    end
+  }  
+  scope :sort_by_sort_order, ->(sort, order) {
+    case sort
+    when :rank
+      unscope(:group).sort_by_rank(order)
+    when :price
+      sort_by_price(order)
+    when :volume
+      order_by_sales_volumes
+    when :newly
+      unscope(:group).sort_by_newly(order)
+    end
+  }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'XRbLEgrUCLHh94qG'
   # class methods .............................................................
@@ -105,7 +141,7 @@ class Product < ActiveRecord::Base
 
   # 零售价（现价）显示SKU零售价的最低值
   def retail_price
-    product_props.first.sale_price
+    product_props.retail_price
   rescue
     'No SKU'
   end
