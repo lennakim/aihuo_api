@@ -107,16 +107,16 @@ class Product < ActiveRecord::Base
   scope :sort_by_newly, ->(order) {
     :desc == order  ? reorder("created_at desc") : reorder("created_at asc")
   }
-  scope :sorted_tab_or_tag, ->(sort_params) {
+  scope :sort_by_tab_or_tag, ->(sort_params) {
     #params[:sort]不能有默认值。否则else永远不能执行
     if sort_params[:sort]
-      sorted_by_sort_order(sort_params[:sort], sort_params[:order])
+      sort_by_sort_order(sort_params[:sort], sort_params[:order])
     else
       #兼容以前逻辑
-      sorted_by_tag(sort_params[:tag])
+      sort_by_tag_name(sort_params[:tag])
     end
   }  
-  scope :sorted_by_sort_order, ->(sort, order) {
+  scope :sort_by_sort_order, ->(sort, order) {
     case sort
     when :rank
       unscope(:group).sort_by_rank(order)

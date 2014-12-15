@@ -10,7 +10,7 @@ class Products < Grape::API
       products = Rails.cache.fetch(products_cache_key, expires_in: 2.hours) do
         products = Product.search(query_params, date_param, Date.today, params[:match])
         products = products.price_between(params[:min_price], params[:max_price])
-        products.sorted_tab_or_tag(sort_params)
+        products.sort_by_tab_or_tag(sort_params)
       end
       @products = products ? paginate(products) : products
     end
