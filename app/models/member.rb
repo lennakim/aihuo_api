@@ -103,7 +103,8 @@ class Member < ActiveRecord::Base
     end
     if content
       sender_id ||= Member::CUSTOMER_ID
-      PrivateMessage.create({receiver_id: member.id, sender_id: sender_id, body: content})
+      message = PrivateMessage.new({receiver_id: member.id, sender_id: sender_id, body: content})
+      logger.error message.errors.messages unless message.save
     else
       logger.error "缺少必要的纸条内容"
     end
