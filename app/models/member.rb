@@ -98,15 +98,15 @@ class Member < ActiveRecord::Base
     content = Rails.cache.fetch("private_message_send_for_register_member", expires_in: 1.hours) do
       Setting.find_by_name("private_message_send_for_register_member")
     end
-    member_id = Rails.cache.fetch("private_message_send_for_register_member_robot_id", expires_in: 1.hours) do
+    sender_id = Rails.cache.fetch("private_message_send_for_register_member_robot_id", expires_in: 1.hours) do
       Setting.find_by_name("private_message_send_for_register_member_robot_id")
     end
-
-    customer_member = Member.find_by_id(member_id)
-    receiver_id = member.to_param
-    sender_id = customer_member.to_param
-
-    PrivateMessage.new({receiver_id: receiver_id, sender_id: sender_id, body: content}).save
+    if content
+      sender_id ||= Member::CUSTOMER_ID
+      PrivateMessage.new({receiver_id: member.id, sender_id: sender_id, body: content}).save
+    else
+      logger.error "缺少必要的纸条内容"
+    end
   end
 
   # protected instance methods ................................................

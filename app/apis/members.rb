@@ -30,6 +30,7 @@ class Members < Grape::API
         begin
           Member.send_private_message(@member)
         rescue Exception => e
+          logger.error e.message
         end
         @member.relate_to_device(params[:device_id])
       else
