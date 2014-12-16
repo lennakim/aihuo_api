@@ -31,7 +31,7 @@ class Members < Grape::API
         begin
           Member.send_private_message(@member)
         rescue Exception => e
-          logger.error e.message
+          log.error e.message
         end
       else
         error!(@member.errors.full_messages.join, 500)
