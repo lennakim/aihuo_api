@@ -28,8 +28,7 @@ class Members < Grape::API
       @member = Member.new(member_params)
       if @member.save
         begin
-          customer_member = Member.find_by_id(Member::CUSTOMER_ID)
-          customer_member.try(:send_private_message, member)
+          Member.send_private_message(@member)
         rescue Exception => e
         end
         @member.relate_to_device(params[:device_id])

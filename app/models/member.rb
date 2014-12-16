@@ -94,10 +94,17 @@ class Member < ActiveRecord::Base
     level + 1
   end
 
-  def send_private_message member
-    receiver_id = to_param
-    sender_id = member.to_param
-    content = Setting.find_by_name("private_message_send_for_register_member")
+  def self.send_private_message member
+    content = Rails.cache.fetch("private_message_send_for_register_member", expires_in: 1.hours) do
+      Setting.find_by_name("private_message_send_for_register_member")
+    end
+    member_id = Rails.cache.fetch("private_message_send_for_register_member_robot_id", expires_in: 1.hours) do
+      Setting.find_by_name("private_message_send_for_register_member_robot_id")
+    end
+
+    customer_member = Member.find_by_id(member_id)
+    receiver_id = member.to_param
+    sender_id = customer_member.to_param
 
     PrivateMessage.new({receiver_id: receiver_id, sender_id: sender_id, body: content}).save
   end

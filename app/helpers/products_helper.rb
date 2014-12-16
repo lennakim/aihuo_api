@@ -49,9 +49,7 @@ module ProductsHelper
     date = request.headers["Registerdate"] || params[:register_date]
     date.to_date if date
   end
-  def sort_params
-    {:tag => params[:tag], :sort => params[:sort], :order => params[:order]}
-  end
+
   def product_cache_key
     [:v2, :product, params[:id]].join("-")
   end
