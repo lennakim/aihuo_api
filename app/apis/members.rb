@@ -27,6 +27,11 @@ class Members < Grape::API
       verify_sign
       @member = Member.new(member_params)
       if @member.save
+        begin
+          Member.send_private_message(@member)
+        rescue Exception => e
+          logger.error e.message
+        end
         @member.relate_to_device(params[:device_id])
       else
         error!(@member.errors.full_messages.join, 500)

@@ -1,0 +1,8 @@
+<% 1.upto(200) do |i| %>
+fix_<%= i %>:
+  id: <%= i %>
+  product_id: <%= rand(100) %>
+  sale_price: <%= rand(50)+1 %>
+  rzx_stock: <%= rand(100) %>
+  created_at: <%= (i).days.ago(Time.now) %>
+<% end %>

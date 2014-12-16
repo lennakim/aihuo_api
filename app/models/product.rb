@@ -4,7 +4,7 @@ class Product < ActiveRecord::Base
   acts_as_taggable_on :tags
   acts_as_taggable_on :recommends
   # includes ..................................................................
-  include EncryptedId, CarrierWaveMini, RecommendProduct
+  include EncryptedId, CarrierWaveMini, RecommendProduct, SortProduct
   # relationships .............................................................
   has_many :product_props
   has_many :photos
@@ -58,10 +58,6 @@ class Product < ActiveRecord::Base
     end
     products
   }
-  scope :order_by_sales_volumes, -> {
-    product_ids = LineItem.collect_product_ids_by_sales_volumes_in_a_week
-    reorder("FIELD(products.id", product_ids.join(","), "0)")
-  }
 
   # Example: scope through associations :joins or :includes.
   # scope :without_children, -> {
@@ -79,19 +75,6 @@ class Product < ActiveRecord::Base
       .group('taggings.taggable_id')
   }
 
-  scope :sort_by_tag_id, ->(tag_id) {
-    joins("LEFT JOIN tag_product_sorts on products.id = tag_product_sorts.product_id")
-      .where(tag_product_sorts: {tag_id: tag_id})
-      .reorder("tag_product_sorts.positoin ASC, products.out_of_stock, products.rank DESC")
-  }
-
-  scope :sort_by_tag_name, ->(tag_name) {
-    tag = Tag.find_by(name: tag_name)
-    return unless tag
-    ids = sort_by_tag_id(tag.id).pluck(:id) + pluck(:id)
-    reorder("FIELD(products.id", ids.uniq.join(","), "0)")
-  }
-
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'XRbLEgrUCLHh94qG'
   # class methods .............................................................
@@ -105,7 +88,7 @@ class Product < ActiveRecord::Base
 
   # 零售价（现价）显示SKU零售价的最低值
   def retail_price
-    product_props.first.sale_price
+    product_props.retail_price
   rescue
     'No SKU'
   end

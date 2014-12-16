@@ -19,6 +19,8 @@ class Member < ActiveRecord::Base
   encrypted_id key: 'uwGeTjFYo9z9NpoN'
   delegate :device_id, to: :device, allow_nil: true
   attr_reader :password
+
+  CUSTOMER_ID = 30834
   # class methods .............................................................
   def self.encrypt_password(password, salt)
     Digest::SHA2.hexdigest(password + "yepcolor" + salt)
@@ -90,6 +92,22 @@ class Member < ActiveRecord::Base
 
   def next_level
     level + 1
+  end
+
+  def self.send_private_message member
+    content = Rails.cache.fetch("private_message_send_for_register_member", expires_in: 1.hours) do
+      Setting.find_by_name("private_message_send_for_register_member").try(:value)
+    end
+    sender_id = Rails.cache.fetch("private_message_send_for_register_member_robot_id", expires_in: 1.hours) do
+      Setting.find_by_name("private_message_send_for_register_member_robot_id").try(:value)
+    end
+    if content
+      sender_id ||= Member::CUSTOMER_ID
+      message = PrivateMessage.new({receiver_id: member.id, sender_id: sender_id, body: content})
+      logger.error message.errors.messages unless message.save
+    else
+      logger.error "缺少必要的纸条内容"
+    end
   end
 
   # protected instance methods ................................................
