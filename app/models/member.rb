@@ -104,7 +104,7 @@ class Member < ActiveRecord::Base
     if content
       sender_id ||= Member::CUSTOMER_ID
       message = PrivateMessage.new({receiver_id: member.id, sender_id: sender_id, body: content})
-      logger.error message.errors.messages unless message.save
+      logger.error message.errors.messages unless message.save && Notification.send_reply_message_msg(member.devices.first.device_id)
     else
       logger.error "缺少必要的纸条内容"
     end
