@@ -19,6 +19,8 @@ class Member < ActiveRecord::Base
   encrypted_id key: 'uwGeTjFYo9z9NpoN'
   delegate :device_id, to: :device, allow_nil: true
   attr_reader :password
+
+  CUSTOMER_ID = 30834
   # class methods .............................................................
   def self.encrypt_password(password, salt)
     Digest::SHA2.hexdigest(password + "yepcolor" + salt)
@@ -90,6 +92,14 @@ class Member < ActiveRecord::Base
 
   def next_level
     level + 1
+  end
+
+  def send_private_message member
+    receiver_id = to_param
+    sender_id = member.to_param
+    content = Setting.find_by_name("private_message_send_for_register_member")
+
+    PrivateMessage.new({receiver_id: receiver_id, sender_id: sender_id, body: content}).save
   end
 
   # protected instance methods ................................................
