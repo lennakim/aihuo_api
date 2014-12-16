@@ -29,7 +29,8 @@ class Members < Grape::API
       if @member.save
         @member.relate_to_device(params[:device_id])
         begin
-          Member.send_private_message(@member)
+          PrivateMessage.send_wx_message(@member, params[:device_id])
+          # Member.send_private_message(@member)
         rescue Exception => e
           log.error e.message
         end
