@@ -98,10 +98,7 @@ class Order < ActiveRecord::Base
     number = express ? extra_order_id : delivery_no
     number.strip if number
   end
-  # 运单类型
-  def express_company
-    (express.company.nil? || "" == express.company) ?  judge_express_company(express.extra_order_id) : express.company
-  end
+
   # 满就包邮
   def calculate_shipping_charge
     if pay_type == 0 && item_total >= 79 || pay_type == 1 && item_total >= 199
@@ -266,23 +263,6 @@ class Order < ActiveRecord::Base
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
-  
-   #根据订单号判断属于那家公司订单
-  def judge_express_company(extra_order_id)
-    reg_ems = /^D(\d){9}$/
-    reg_yuan = /^(\d){10}$/
-    reg_yuan_12 = /^d(\d){11}$/
-    reg_feng = /^(\d){12}$/
-    if reg_yuan =~ extra_order_id || reg_yuan_12 =~ extra_order_id
-      "圆通快递"
-    elsif reg_ems =~ extra_order_id
-      "邮政ems"
-    elsif reg_feng =~ extra_order_id
-      "顺丰快递"
-    else
-      "圆通快递"
-    end
-  end
   
   def round_money(n)
     (n * 100).round / 100.0

@@ -5,7 +5,7 @@ json.total order.total
 json.state order.state
 json.operation_code order.operation_code
 json.express_number order.express_number if order.express_number.present?
-json.express_company order.express_company if order.express_company.present?
+json.express_company order.express.company if order.express.present? && order.express.company.present?
 json.zero_msg order.message if order.message.present?
 # json.created_at order.created_at.strftime("%F %T")
 json.created_at order.created_at

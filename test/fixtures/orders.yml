@@ -24,20 +24,3 @@ fix_<%= i + 20 %>:
   shipping_charge: 20
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>
-
-fix_31:
-  id: 31
-  device_id: "863175020054249"
-  name: 'shippingordertest'
-  phone: <%= '13211111' + rand(10).to_s + rand(10).to_s %>
-  shipping_charge: 15
-  shippingorder_id: 1
-  created_at: <%= Time.now %>
-fix_32:
-  id: 32
-  device_id: "863175020054249"
-  name: 'shippingordertest'
-  phone: <%= '13211111' + rand(10).to_s + rand(10).to_s %>
-  shipping_charge: 15
-  shippingorder_id: 2
-  created_at: <%= Time.now %>
