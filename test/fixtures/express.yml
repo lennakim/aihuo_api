@@ -1,0 +1,9 @@
+one:
+  id: 1
+  company: '圆通快递'
+  extra_order_id: 'd00003944180'
+  created_at: <%= Time.now %>
+two:
+  id: 2
+  extra_order_id: '000039441800'
+  created_at: <%= Time.now %>
