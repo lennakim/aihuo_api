@@ -96,14 +96,19 @@ class Member < ActiveRecord::Base
 
   def self.send_private_message member
     content = Rails.cache.fetch("private_message_send_for_register_member", expires_in: 1.hours) do
-      Setting.find_by_name("private_message_send_for_register_member")
+      Setting.find_by_name("private_message_send_for_register_member").try(:value)
     end
     sender_id = Rails.cache.fetch("private_message_send_for_register_member_robot_id", expires_in: 1.hours) do
-      Setting.find_by_name("private_message_send_for_register_member_robot_id")
+      Setting.find_by_name("private_message_send_for_register_member_robot_id").try(:value)
     end
     if content
       sender_id ||= Member::CUSTOMER_ID
-      PrivateMessage.new({receiver_id: member.id, sender_id: sender_id, body: content}).save
+      message = PrivateMessage.new({receiver_id: member.id, sender_id: sender_id, body: content})
+      if message.save
+        unless Notification.send_reply_message_msg(member.devices.first.device_id)
+          logger.error "--------------推送发送失败-------------------"
+        end
+      end
     else
       logger.error "缺少必要的纸条内容"
     end
