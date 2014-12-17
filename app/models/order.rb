@@ -263,7 +263,7 @@ class Order < ActiveRecord::Base
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
-
+  
   def round_money(n)
     (n * 100).round / 100.0
   end
