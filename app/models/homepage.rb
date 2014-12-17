@@ -8,6 +8,7 @@ class Homepage < ActiveRecord::Base
   # scopes ....................................................................
   default_scope { where(activity: true) }
   scope :by_hour, ->(t) { where(hour: [0, t]).order("hour DESC") }
+
   scope :for_app, ->(app) {
     homepages = where(application_id: app.id).where.not(label: "tab")
     homepages.count.zero? ? where(application_id: 0) : homepages
