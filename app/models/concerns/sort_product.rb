@@ -7,7 +7,7 @@ module SortProduct
       when :tag
         order_by_tag_name(order, keyword)
       when :rank
-        order_by_rank(order)
+        order_by_tag_name(order, keyword)
       when :price
         order_by_price(order)
       when :volume
