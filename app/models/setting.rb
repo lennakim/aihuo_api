@@ -16,6 +16,18 @@ class Setting < ActiveRecord::Base
       conbine_arry << arr_values.to_h
     end
   end
+
+  def transport_setting
+    case self.name.to_sym
+    when :online_pay, :offline_pay
+      Setting::turn_transport_format([self])
+    when :transport
+      setting_keys = self.value.split("|")
+      Setting::turn_transport_format(Setting.where(name: setting_keys))
+    else
+      error! "configuration permit", 404
+    end
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
