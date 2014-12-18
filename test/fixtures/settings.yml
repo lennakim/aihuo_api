@@ -30,14 +30,17 @@ seven:
 eigth:
   name: "private_message_send_for_register_member_robot_id"
   value: 1
-ninth:
-  name: "offline_pay"
-  value: "transport_price:24.121321|transport_free_price:23.12332132|transport_description:namessadfa"
-ten:
-  name: "online_pay"
-  value: "transport_price:12.121321|transport_free_price:23.12332132|transport_description:namessadfa"
-eleven:
-  name: "transport"
-  value: "offline_pay|online_pay"
 
+online_shipping_fee:
+  name: "online_shipping_fee"
+  value: 24.0
+online_free_shipping_conditione:
+  name: "online_free_shipping_conditione"
+  value: 100.0
+cash_shipping_fee:
+  name: "cash_shipping_fee"
+  value: 10.5
+cash_free_shipping_conditione:
+  name: "cash_free_shipping_conditione"
+  value: 150.0
 
