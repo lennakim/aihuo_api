@@ -8,6 +8,26 @@ class Setting < ActiveRecord::Base
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
   # public instance methods ...................................................
+  def self.turn_transport_format setting_arry
+    setting_arry.inject([]) do |conbine_arry, setting|
+      values = setting.value.split("|")
+      arr_values = values.inject([]) {|arr, value| arr << value.split(":")}
+      arr_values << ["name", setting.name]
+      conbine_arry << arr_values.to_h
+    end
+  end
+
+  def transport_setting
+    case self.name.to_sym
+    when :online_pay, :offline_pay
+      Setting::turn_transport_format([self])
+    when :transport
+      setting_keys = self.value.split("|")
+      Setting::turn_transport_format(Setting.where(name: setting_keys))
+    else
+      error! "configuration permit", 404
+    end
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
