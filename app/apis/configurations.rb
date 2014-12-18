@@ -12,10 +12,8 @@ class Configurations < Grape::API
       end
 
       desc "get configuration relation"
-      params do
-      end
-      get '/', jbuilder: "configurations/transport" do
-        @transports = Setting.transport_setting(@setting)
+      get '/', jbuilder: "configurations/configuration" do
+        @configurations = Setting.transport_setting(@setting)
       end
     end
   end
