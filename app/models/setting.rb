@@ -8,8 +8,8 @@ class Setting < ActiveRecord::Base
   scope :transport_settings, -> { where(name: TRANSPORT_SETTING) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   TRANSPORT_SETTING = [
-    :online_shipping_fee, :online_free_shipping_conditione,
-    :cash_shipping_fee, :cash_free_shipping_conditione
+    :online_shipping_fee, :online_free_shipping_conditione, :online_description,
+    :cash_shipping_fee, :cash_free_shipping_conditione, :cash_description
   ]
   # class methods .............................................................
   # public instance methods ...................................................

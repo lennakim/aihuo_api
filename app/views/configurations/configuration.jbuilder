@@ -1,1 +1,1 @@
-json.(@configurations, :name, :value)
+json.configurations @configurations, :name, :value
