@@ -25,9 +25,15 @@ class ProductTest < ActiveSupport::TestCase
     assert_equal 3, product.send(:recommend_tag_with_children).first.size
   end
 
-  def test_serach_by_keyword
-    tags = ["玩具", "电动飞机", "电动汽车"]
-    assert_equal 10, Product.serach_by_keyword(tags, "any").length
+  def test_serach_by_keyword_context_is_tags
+    tags = ["男用", "玩具", "情趣内衣", "食品"]
+    assert_equal 60, Product.serach_by_keyword(tags, "any").length
+    assert_equal 60, Product.serach_by_keyword(tags, "any", "tags").length
+  end
+
+  def test_serach_by_keyword_context_is_recommends
+    tags = ["男用", "玩具", "情趣内衣", "食品"]
+    assert_equal 10, Product.serach_by_keyword(tags, "any", "recommends").length
   end
 
   # 无法测试，因为 order by field 是一个 mysql 函数
