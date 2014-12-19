@@ -20,7 +20,7 @@ fix_<%= i + 50 %>:
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>
 
-# tag 3 关联上 10 件产品, 产品id 71 - 80
+# tag 3 情趣内衣 关联上 10 件产品, 产品id 71 - 80
 <% 1.upto(10) do |i| %>
 fix_<%= i + 70 %>:
   id: <%= i + 70 %>
@@ -31,7 +31,7 @@ fix_<%= i + 70 %>:
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>
 
-# tag 4 关联上 10 件产品, 产品id 71 - 80
+# tag 4 玩具 关联上 10 件产品, 产品id 71 - 80
 <% 1.upto(10) do |i| %>
 fix_<%= i + 80 %>:
   id: <%= i + 80 %>

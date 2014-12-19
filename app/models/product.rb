@@ -20,7 +20,7 @@ class Product < ActiveRecord::Base
   }
   scope :healthy, -> { tagged_with("配合扫黄", any: true) }
   scope :banner, -> { where(:banner => true) }
-  scope :serach_by_keyword, ->(keyword, match) {
+  scope :serach_by_keyword, ->(keyword, match, context = "tags") {
     products =
       case keyword # was case keyword.class
       when Array
@@ -30,16 +30,16 @@ class Product < ActiveRecord::Base
         when String # keyword is array of tags
           case match
           when "any" # keyword is array of tags
-            tagged_with(keyword, any: true).distinct
+            tagged_with(keyword, on: context, any: true).distinct
           when "match_all" # keyword is array of categories and brands
             # TODO: fix this method
             keyword.inject(self) {
-              |mem, k| mem.tagged_with(k, any: true).distinct
+              |mem, k| mem.tagged_with(k, on: context, any: true).distinct
             }
           end
         end
       when String # keyword is a tag or word.
-        products = tagged_with(keyword, any: true).distinct
+        products = tagged_with(keyword, on: context, any: true).distinct
         products = where("products.title like ?", "%#{keyword}%") if products.blank?
         products
       when NilClass # keyword is nil, return all the products
