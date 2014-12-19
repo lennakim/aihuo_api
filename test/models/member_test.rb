@@ -51,10 +51,10 @@ class MemberTest < ActiveSupport::TestCase
     assert_equal "*HanMeiMei*nmnnasndfa一夜", member.nickname
   end
 
-  def test_send_private_message
-    member = Member.find_by_id(1)
-    Member.send_private_message member
-    assert_equal 1, member.received_private_messages.size
-    assert_equal "asndfansdfo", member.received_private_messages.last.body
-  end
+  # def test_send_private_message
+  #   member = Member.find_by_id(1)
+  #   Member.send_private_message member
+  #   assert_equal 1, member.received_private_messages.size
+  #   assert_equal "asndfansdfo", member.received_private_messages.last.body
+  # end
 end
