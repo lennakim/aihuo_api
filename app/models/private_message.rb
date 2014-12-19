@@ -45,28 +45,12 @@ class PrivateMessage < ActiveRecord::Base
     end
   end
 
-  # TODO: refacetor method name
-  def self.send_wx_message(member, device_id)
-    content = Rails.cache.fetch("private_message_send_for_register_member", expires_in: 1.hours) do
-      Setting.find_by_name("private_message_send_for_register_member").try(:value)
-    end
-    sender_id = Rails.cache.fetch("private_message_send_for_register_member_robot_id", expires_in: 1.hours) do
-      Setting.find_by_name("private_message_send_for_register_member_robot_id").try(:value)
-    end
-    if content
-      sender_id ||= Member::CUSTOMER_ID
-      message = PrivateMessage.new({receiver_id: member.id, sender_id: sender_id, body: content})
-      if message.save && device_id
-        if Notification.send_private_message_msg(device_id)
-          logger.error "**************推送发送**************"
-        else
-          logger.error "--------------推送发送失败-------------------"
-        end
-      else
-        logger.error "-------#{device_id} 是------"
-      end
-    else
-      logger.error "缺少必要的纸条内容"
+  def self.send_an_invitation_to_member(receiver_id)
+    sender_id = Setting.invitation_sender
+    content = Setting.invitation_content
+    if content && receiver_id
+      msg = PrivateMessage.create({receiver_id: receiver_id, sender_id: sender_id, body: content})
+      msg.valid?
     end
   end
   # public instance methods ...................................................
