@@ -44,3 +44,10 @@ cash_free_shipping_conditione:
   name: "cash_free_shipping_conditione"
   value: 150.0
 
+online_description:
+  name: "online_description"
+  value: "online_description created by"
+cash_description:
+  name: "cash_description"
+  value: "cash_description created by"
+

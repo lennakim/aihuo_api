@@ -101,7 +101,8 @@ class Order < ActiveRecord::Base
 
   # 满就包邮
   def calculate_shipping_charge
-    if pay_type == 0 && item_total >= 158 || pay_type == 1 && item_total >= 199
+    #pay_type = 0 为在线支付， = 1 为货到付款
+    if pay_type == 0 && item_total >= Setting.get_paytype_shipping_conditione(pay_type) || pay_type == 1 && item_total >= Setting.get_paytype_shipping_conditione(pay_type)
       update_column(:shipping_charge, 0)
     end
   end

@@ -13,6 +13,16 @@ class Setting < ActiveRecord::Base
   ]
   # class methods .............................................................
   # public instance methods ...................................................
+  def self.get_paytype_shipping_conditione paytype
+    case paytype
+    when 0
+      (Setting.find_by_name("online_free_shipping_conditione").try(:value) || 158).to_f.round(2)
+    when 1
+      (Setting.find_by_name("cash_free_shipping_conditione").try(:value) || 199).to_f.round(2)
+    else
+      nil
+    end
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
