@@ -28,12 +28,7 @@ class Members < Grape::API
       @member = Member.new(member_params)
       if @member.save
         @member.relate_to_device(params[:device_id])
-        begin
-          PrivateMessage.send_wx_message(@member, params[:device_id])
-          # Member.send_private_message(@member)
-        rescue Exception => e
-          log.error e.message
-        end
+        OperatingAgent.wechat_activitie(@member.id, params[:device_id])
       else
         error!(@member.errors.full_messages.join, 500)
       end

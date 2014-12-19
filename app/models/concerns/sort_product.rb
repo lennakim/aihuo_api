@@ -7,7 +7,7 @@ module SortProduct
       when :tag
         order_by_tag_name(order, keyword)
       when :rank
-        order_by_rank(order)
+        order_by_tag_name(order, keyword)
       when :price
         order_by_price(order)
       when :volume
@@ -47,8 +47,8 @@ module SortProduct
     scope :order_by_type, ->(type, order, ids = []) {
       case type
       when :product_ids
-        ids = (order == :desc ? ids.uniq : ids.uniq.reverse).join(",")
-        reorder("FIELD(products.id", ids, "0)")
+        ids = (order == :desc ? ids.uniq.reverse : ids.uniq).join(",")
+        reorder("FIELD(products.id", ids, "0) desc")
       else
         reorder("#{type} #{order}")
       end

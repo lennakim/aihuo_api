@@ -51,6 +51,8 @@ class Order < ActiveRecord::Base
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: 'bYqILlFMZn3xd8Cy'
   delegate :extra_order_id, to: :express
+  delegate :company, :to => :express, :prefix => true, :allow_nil => true
+
   accepts_nested_attributes_for :line_items
 
   NEWLY_STATE = "订单已下，等待确认"

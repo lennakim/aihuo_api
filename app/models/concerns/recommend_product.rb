@@ -22,7 +22,7 @@ module RecommendProduct
     tags = recommend_tag_with_children
 
     tags.inject([]) do |product_lists, tag_array|
-      products = Product.serach_by_keyword(tag_array, "any").order_by_sales_volumes(:desc).pluck(:id)
+      products = Product.serach_by_keyword(tag_array, "any", "recommends").order_by_sales_volumes(:desc).pluck(:id)
       product_lists << products unless products.empty?
       product_lists
     end

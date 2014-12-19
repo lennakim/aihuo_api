@@ -5,8 +5,26 @@ class Setting < ActiveRecord::Base
   # validations ...............................................................
   # callbacks .................................................................
   # scopes ....................................................................
+  scope :transport_settings, -> { where(name: TRANSPORT_SETTING) }
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
+  TRANSPORT_SETTING = [
+    :online_shipping_fee, :online_free_shipping_conditione, :online_description,
+    :cash_shipping_fee, :cash_free_shipping_conditione, :cash_description
+  ]
   # class methods .............................................................
+  def self.invitation_sender
+    self.fetch_by_key("private_message_send_for_register_member_robot_id")
+  end
+
+  def self.invitation_content
+    self.fetch_by_key("private_message_send_for_register_member")
+  end
+
+  def self.fetch_by_key(key)
+    Rails.cache.fetch(key, expires_in: 1.hours) do
+      Setting.find_by_name(key).try(:value)
+    end
+  end
   # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................
