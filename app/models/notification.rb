@@ -17,6 +17,17 @@ class Notification < ActiveRecord::Base
     message_type: 1,
   }
   # class methods .............................................................
+  # 设备注册(只要访问网站)发送消息
+  def self.send_visit_website_msg(device_id, app_id = nil)
+    # 爱侣应用发送另外一条0元购通知
+    article_id = Setting.fetch_by_key("visit_website_getui_article_id")
+    options = self::DEFAULT_MSG_OPTIONS.merge({
+      notice_id: article_id,
+      title: "0元购三天，您还等神马？！",
+      description: "0元带性福回家，只对新用户只限3天！再不抢就没啦！！！"
+    })
+    self.send_msg(device_id, options, app_id)
+  end
   # 刚注册的用户，发送第一条0元购的通知
   def self.send_sales_promotion_msg(device_id, app_id = nil)
     # 爱侣应用发送另外一条0元购通知
@@ -54,8 +65,8 @@ class Notification < ActiveRecord::Base
     self.send_msg(device_id, options)
   end
 
-  def self.send_msg(device_id, options = {})
-    device_info = DeviceInfo.where(device_id: device_id).first
+  def self.send_msg(device_id, options = {}, app_id = nil)
+    device_info = app_id.nil? ? DeviceInfo.where(device_id: device_id).first  :  DeviceInfo.where("device_id = ? and application_id = ?", device_id, app_id).first
     return unless device_info
     options.merge!({
       application_id: device_info.application_id,
