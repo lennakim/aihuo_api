@@ -11,6 +11,22 @@ class SettingTest < ActiveSupport::TestCase
     assert_equal "24.0", setting.value
   end
 
+  def test_fetch_by_key
+    key = "private_message_send_for_register_member"
+    setting = Setting.fetch_by_key key
+    assert_equal "asndfansdfo", setting
+  end
+
+  def test_invitation_content
+    setting = Setting.invitation_content
+    assert_equal "asndfansdfo", setting
+  end
+
+  def test_invitation_sender
+    setting = Setting.invitation_sender
+    assert_equal "2", setting
+  end
+
   def test_get_paytype_shipping_conditione
    shipping_charge = Setting.get_paytype_shipping_conditione 0
    assert_equal (100.0).round(2), shipping_charge
