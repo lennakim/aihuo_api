@@ -36,6 +36,10 @@ class Setting < ActiveRecord::Base
       nil
     end
   end
+
+  def self.meet_condition?(pay_type, item_total)
+    item_total >= Setting.get_paytype_shipping_conditione(pay_type)
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
