@@ -19,7 +19,7 @@ gem 'paranoia', '~> 2.0.1'
 gem 'china_sms'
 gem 'bluestorm_sms', '0.0.6', github: 'wjp2013/bluestorm_sms'
 gem 'dalli', github: 'mperham/dalli'
-gem 'igetui-ruby', '1.2.0', require: 'igetui'
+gem 'igetui-ruby', '1.2.1', require: 'igetui'
 
 # Because activesupport doesn't encoding invalid code anymore.
 # Add activesupport-json_encoder gem to Gemfile fix this issue.
