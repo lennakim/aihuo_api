@@ -1,0 +1,10 @@
+one:
+  id: 1
+  name: '首趣tab'
+  label: 'tab'
+  application_id: 1
+two:
+  id: 2
+  name: '全局tab'
+  label: 'tab'
+  application_id: 0
