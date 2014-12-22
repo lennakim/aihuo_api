@@ -122,4 +122,10 @@ class PrivateMessageTest < ActiveSupport::TestCase
     assert PrivateMessage.find_by(id: 2).receiver_deleted
     assert PrivateMessage.find_by(id: 6).receiver_deleted
   end
+
+  # 用户注册发送邀请加微信号的纸条
+  def test_send_an_invitation_to_member
+    msg = PrivateMessage.send_an_invitation_to_member(receiver.id)
+    assert msg
+  end
 end

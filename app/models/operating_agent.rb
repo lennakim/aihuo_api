@@ -14,7 +14,8 @@ class OperatingAgent
   # public instance methods ...................................................
   def wechat_activitie(member_id, device_id)
     message = send_an_invitation_private_mesage_to_member(member_id)
-    push_an_invitation_notification_to_member(device_id) if message
+    #sorry, when the message created it weill pusher a message to the receiver
+    # push_an_invitation_notification_to_member(device_id) if message
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
@@ -24,7 +25,7 @@ class OperatingAgent
     PrivateMessage.send_an_invitation_to_member(member_id)
   end
 
-  def push_an_invitation_notification_to_member(device_id)
-    Notification.send_private_message_msg(device_id) if device_id
-  end
+  # def push_an_invitation_notification_to_member(device_id)
+  #   Notification.send_private_message_msg(device_id) if device_id
+  # end
 end

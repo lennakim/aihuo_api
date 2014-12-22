@@ -103,9 +103,8 @@ class Order < ActiveRecord::Base
 
   # 满就包邮
   def calculate_shipping_charge
-    if pay_type == 0 && item_total >= 158 || pay_type == 1 && item_total >= 199
-      update_column(:shipping_charge, 0)
-    end
+    #pay_type = 0 为在线支付， = 1 为货到付款
+    update_column(:shipping_charge, 0) if meet_condition?
   end
 
   # 优惠劵逻辑
@@ -293,5 +292,9 @@ class Order < ActiveRecord::Base
   # 订单创建的时候，优惠劵是否在有效期之内
   def can_use_coupon?(coupon)
     coupon.start_time.beginning_of_day < created_at && coupon.end_time.end_of_day > created_at
+  end
+
+  def meet_condition?
+    Setting.meet_condition?(pay_type, item_total)
   end
 end
