@@ -29,7 +29,7 @@ seven:
   value: "asndfansdfo"
 eigth:
   name: "private_message_send_for_register_member_robot_id"
-  value: 1
+  value: 2
 
 online_shipping_fee:
   name: "online_shipping_fee"
@@ -43,4 +43,11 @@ cash_shipping_fee:
 cash_free_shipping_conditione:
   name: "cash_free_shipping_conditione"
   value: 150.0
+
+online_description:
+  name: "online_description"
+  value: "online_description created by"
+cash_description:
+  name: "cash_description"
+  value: "cash_description created by"
 

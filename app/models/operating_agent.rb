@@ -27,4 +27,5 @@ class OperatingAgent
   def push_an_invitation_notification_to_member(device_id)
     Notification.send_private_message_msg(device_id) if device_id
   end
+
 end
