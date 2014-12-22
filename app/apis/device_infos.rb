@@ -30,9 +30,6 @@ class DeviceInfos < Grape::API
       if sign_approval?
         current_device_info
         status 500 unless @device_info
-        if @device_info && @device_info.created_at > 5.seconds.ago
-          Notification.send_visit_website_msg(@device_info.device_id, @device_info.application_id)
-        end
       else
         error! "Access Denied", 401
       end
