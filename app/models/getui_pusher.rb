@@ -1,3 +1,4 @@
+# encoding: utf-8
 class GetuiPusher < Notification
   # extends ...................................................................
   # includes ..................................................................
@@ -52,9 +53,12 @@ class GetuiPusher < Notification
     # 发送一条通知到指定的客户端
     begin
       ret = pusher.push_message_to_single(single_message, client)
+      base_str = "client_id: #{args[:user_id]} content: #{content.inspect}"
+      base_str += (ret["result"] == "ok" ? " 成功" : "失败#{ret["result"]}")
+      MESSAGE_PUSHER_LOGGER.error base_str
       ret["result"] == "ok"
     rescue Exception => e
-      logger.error e.message
+      MESSAGE_PUSHER_LOGGER.error e.message
     end
   end
   # public instance methods ...................................................
