@@ -11,7 +11,7 @@ require 'mina/rvm'    # for rvm support. (http://rvm.io)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :domains, ['115.29.164.196', '115.29.4.146']
+set :domains, ['115.29.164.196', '115.29.4.146', '220.181.134.234']
 set :deploy_to, '/var/www/api.aihuo360.com'
 set :repository, 'git@bitbucket.org:Xiaopuzhu/adultshop_new.git'
 set :branch, 'master'
@@ -30,6 +30,8 @@ when 's1'
 when 's2'
   set :domain, '115.29.4.146' # production 2
 when 's3'
+  set :domain, '115.29.173.123' # production 3
+when 's4'
   set :domain, '114.215.180.151' # staging
   set :shared_paths, ['config/database.yml', 'config/newrelic.yml', 'config/secrets.yml', 'config/puma.rb', 'config/environments/production.rb', 'log', 'tmp']
 end
