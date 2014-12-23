@@ -26,7 +26,7 @@ environment 'production'
 daemonize true
 
 workers 4
-threads 16, 64
+threads 16, 45
 
 wd = File.expand_path('../../', __FILE__)
 tmp_path = File.join(wd, 'tmp')
