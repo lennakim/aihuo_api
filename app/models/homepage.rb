@@ -11,7 +11,7 @@ class Homepage < ActiveRecord::Base
 
   scope :for_app, ->(app) {
     homepages = where(application_id: app.id).where.not(label: "tab")
-    homepages.count.zero? ? where(application_id: 0) : homepages
+    homepages.count.zero? ? where(application_id: 0).where.not(label: "tab") : homepages
   }
   scope :for_app_tabs, ->(app) {
     homepages = unscope(where: :activity).where("label = 'tab' and application_id = ?", app.id)

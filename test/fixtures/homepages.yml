@@ -8,3 +8,9 @@ two:
   name: '全局tab'
   label: 'tab'
   application_id: 0
+three:
+  id: 3
+  name: '全部应用'
+  label: '官方'
+  activity: true
+  application_id: 0
