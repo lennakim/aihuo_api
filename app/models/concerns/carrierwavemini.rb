@@ -24,6 +24,9 @@ module CarrierWaveMini
     "/images/#{created_at.strftime('%Y%m%d')}/"
   end
 
+  def carrierwave_url_string(version, url)
+    store_host + material_dir + url
+  end
   # version nil
   # path :url, :path
   def carrierwave_material(version, path)

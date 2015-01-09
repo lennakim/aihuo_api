@@ -62,6 +62,14 @@ class Advertisement < ActiveRecord::Base
     })
   end
 
+  def url
+    website.present? ? website : apk_url
+  end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
+  private
+  def apk_url
+    carrierwave_url_string(nil, self[:url])
+  end
 end
