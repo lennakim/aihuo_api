@@ -1,4 +1,5 @@
-source 'https://rubygems.org'
+# source 'https://rubygems.org'
+source 'http://ruby.taobao.org/'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
@@ -41,6 +42,7 @@ group :development do
   gem 'rubocop', require: false
   gem 'guard'
   gem 'guard-minitest'
+  gem 'terminal-notifier-guard'
 end
 
 group :test do

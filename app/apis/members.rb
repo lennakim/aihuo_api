@@ -27,8 +27,8 @@ class Members < Grape::API
       verify_sign
       @member = Member.new(member_params)
       if @member.save
+        OperatingAgent.wechat_activitie(@member.id)
         @member.relate_to_device(params[:device_id])
-        OperatingAgent.wechat_activitie(@member.id, params[:device_id])
       else
         error!(@member.errors.full_messages.join, 500)
       end

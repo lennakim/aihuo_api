@@ -1,14 +1,12 @@
 json.advertisements @advertisements do |advertisement|
   json.cache! advertisement.cache_key, expires_in: 1.hours do
     json.id advertisement.id
-    json.(advertisement, :title, :description)
+    json.(advertisement, :title, :description, :url, :apk_sign)
     json.icon advertisement.carrierwave_material(nil, :icon)
     json.banner advertisement.carrierwave_material(nil, :banner)
     if advertisement.square_banner
       json.square_banner advertisement.carrierwave_material(nil, :square_banner)
     end
-    json.url advertisement.carrierwave_material(nil, :url)
-    json.apk_sign advertisement.apk_sign
   end
 end
 json.tactics @tactics do |tractic|
