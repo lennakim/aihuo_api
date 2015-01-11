@@ -97,6 +97,7 @@ module MergePendingOrder
   #     2. order pay type != origin pay type => crete order
   def need_merge?
     original_order = find_original_order
+    return false unless original_order
     pending_orders = original_order.find_pending_orders
     # 没有等待合并的订单
     return false if pending_orders && pending_orders.size.zero?
