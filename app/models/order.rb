@@ -5,6 +5,7 @@ class Order < ActiveRecord::Base
   include EncryptedId, MergePendingOrder, Commable
   # relationships .............................................................
   belongs_to :express, foreign_key: "shippingorder_id"
+  belongs_to :application
   has_many :line_items
   has_many :line_item_commments, source: :review, through: :line_items
   has_many :gift_items, -> { where(sale_price: 0) }, class_name: "LineItem"
@@ -22,6 +23,7 @@ class Order < ActiveRecord::Base
   before_destroy :logging_action
   before_create :compose_ship_address
   # after_create :merge_pending_orders # this method called in controller
+  after_create :set_state_for_franchised_store
   after_create :calculate_item_total
   after_create :register_device
   after_create :destroy_cart
@@ -56,6 +58,7 @@ class Order < ActiveRecord::Base
   accepts_nested_attributes_for :line_items
 
   NEWLY_STATE = "订单已下，等待确认"
+  NEWLY_STATE_FOR_FRANCHISED_STORE = "正在处理"
   DONE_STATES = [
     "客户拒签，原件返回",
     "客户签收，订单完成",
@@ -261,6 +264,7 @@ class Order < ActiveRecord::Base
   def comment_by_product(product)
     line_item_commments.find_by(product_id: product.id) || comments.try(:first)
   end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
@@ -296,5 +300,11 @@ class Order < ActiveRecord::Base
 
   def meet_condition?
     Setting.meet_condition?(pay_type, item_total)
+  end
+
+  def set_state_for_franchised_store
+    if application && application.belongs_to_franchised_store?
+      update_attribute(:state, Order::NEWLY_STATE_FOR_FRANCHISED_STORE)
+    end
   end
 end

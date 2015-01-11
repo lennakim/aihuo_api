@@ -1,0 +1,13 @@
+one:
+  id: 1
+  email: 'abc@abc.com'
+
+two:
+  id: 2
+  email: 'bcd@abc.com'
+  role: "jms"
+
+three:
+  id: 3
+  email: 'eff@abc.com'
+  role: "jms"
