@@ -8,7 +8,7 @@ class Products < Grape::API
     end
     get "/", jbuilder: 'products/products' do
       products = Rails.cache.fetch(products_cache_key, expires_in: 2.hours) do
-        products = Product.search(query_params, date_param, Date.today, params[:match])
+        products = Product.search(query_params, date_param, Date.today, params[:match], params[:tag_name])
         products = products.price_between(params[:min_price], params[:max_price])
         products.sort(params[:tag], params[:sort], params[:order])
       end

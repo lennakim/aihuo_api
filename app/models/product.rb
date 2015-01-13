@@ -20,7 +20,7 @@ class Product < ActiveRecord::Base
   }
   scope :healthy, -> { tagged_with("配合扫黄", any: true) }
   scope :banner, -> { where(:banner => true) }
-  scope :serach_by_keyword, ->(keyword, match, context = "tags") {
+  scope :serach_by_keyword, ->(keyword, match, context = "tags", tag_name) {
     products =
       case keyword # was case keyword.class
       when Array
@@ -47,10 +47,12 @@ class Product < ActiveRecord::Base
       end
     # 只显示打了 tag 的产品
     tagging_ids = self.with_tagging.pluck(:id)
+    # 当传递了 tag_name 的时候，只显示该 tag 下的产品
+    tagging_ids = tagged_with(tag_name, on: context, any: true).distinct.pluck(:id) if tag_name
     products = products.where(id: tagging_ids)
   }
-  scope :search, ->(keyword, date, today, match) {
-    products = serach_by_keyword(keyword, match)
+  scope :search, ->(keyword, date, today, match, tag_name) {
+    products = serach_by_keyword(keyword, match, tag_name)
     # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购
     if date.blank? || date && today && date < 2.days.ago(today)
       gifts_ids = self.gifts.pluck(:id)
