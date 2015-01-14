@@ -221,7 +221,9 @@ class Order < ActiveRecord::Base
   end
 
   def send_confirm_sms(type)
-    ShortMessage.send_confirm_sms(self, type)
+    unless  application || !application.belongs_to_franchised_store?
+      ShortMessage.send_confirm_sms(self, type)
+    end
   end
 
   # 订单可操作状态码，1 可取消; 2 可删除; 0 不可更改状态
