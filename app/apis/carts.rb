@@ -41,6 +41,7 @@ class Carts < Grape::API
     post '/', jbuilder: 'carts/cart' do
       if sign_approval?
         current_cart
+        OperatingAgent.notification_for_the_first_time_to_create_cart(params[:device_id], @application.id)
         @cart.clear_items!
         status 500 unless @cart.update_attributes(cart_params)
       else

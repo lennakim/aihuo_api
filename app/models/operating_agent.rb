@@ -10,6 +10,15 @@ module OperatingAgent
   def self.wechat_activitie(member_id)
     PrivateMessage.send_an_invitation_to_member(member_id)
   end
+
+  def self.notification_for_the_first_time_to_create_cart(device_id, app_id)
+    if device_id
+      carts = Cart.with_deleted.where(device_id: device_id)
+      if carts.count == 1
+        Notification.send_article_for_the_first_time_to_create_cart(device_id, app_id)
+      end
+    end
+  end
   # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................

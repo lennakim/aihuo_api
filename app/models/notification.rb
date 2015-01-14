@@ -20,36 +20,47 @@ class Notification < ActiveRecord::Base
   # 刚注册的用户，发送第一条0元购的通知
   def self.send_sales_promotion_msg(device_id, app_id = nil)
     # 爱侣应用发送另外一条0元购通知
-    article_id =
-      if app_id == 32
-        "1239"
+    article_id = app_id == 32 ? "1239" : Article.gifts.pluck(:id).first
+    title = "0元购三天，您还等神马？！"
+    desc = "0元带性福回家，只对新用户只限3天！再不抢就没啦！！！"
+    self.package_message_parameters_and_send_msg(device_id, article_id, title, desc)
+  end
+
+  def self.send_article_for_the_first_time_to_create_cart(device_id, app_id = nil)
+    article_id, title =
+      if app_id == 28
+        ["1442", "找到她，喂你实惠"]
+      elsif app_id == 62
+        ["1444", "对产品感兴趣？找她有惊喜哦"]
       else
-        Article.gifts.pluck(:id).first
+        ['', '']
       end
-    options = self::DEFAULT_MSG_OPTIONS.merge({
-      notice_id: article_id,
-      title: "0元购三天，您还等神马？！",
-      description: "0元带性福回家，只对新用户只限3天！再不抢就没啦！！！"
-    })
-    self.send_msg(device_id, options)
+    return if article_id.blank?
+    self.package_message_parameters_and_send_msg(device_id, article_id, title)
   end
 
   # 给小纸条的接收者发送消息
   def self.send_private_message_msg(device_id)
-    options = self::DEFAULT_MSG_OPTIONS.merge({
-      notice_type: "PrivateMessage",
-      title: "你收到一条新的纸条",
-      description: "有人给你发送一条小纸条，点击查看内容"
-    })
-    self.send_msg(device_id, options)
+    title = "你收到一条新的纸条"
+    desc = "有人给你发送一条小纸条，点击查看内容"
+    type = "PrivateMessage"
+    self.package_message_parameters_and_send_msg(device_id, '', title, desc, type)
   end
 
   # 新回复给被回复者发送消息
   def self.send_reply_message_msg(device_id)
+    title = "你收到一条新的回复"
+    desc = "有人给你回复啦，点击查看内容"
+    type = "Reply"
+    self.package_message_parameters_and_send_msg(device_id, '', title, desc, type)
+  end
+
+  def self.package_message_parameters_and_send_msg(device_id, id, title, desc = '', type = "Article")
     options = self::DEFAULT_MSG_OPTIONS.merge({
-      notice_type: "Reply",
-      title: "你收到一条新的回复",
-      description: "有人给你回复啦，点击查看内容"
+      notice_type: type,
+      notice_id: id,
+      title: title,
+      description: desc
     })
     self.send_msg(device_id, options)
   end

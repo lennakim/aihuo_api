@@ -48,3 +48,14 @@ four:
   getui_app_id: 'r4vsDdC0If7HLgCMcNhyLA'
   getui_app_key: 'ZrSPSE91SK9bRcoYa2UoV4'
   getui_master_secret: '3xz86XnQxJ6LQQMjiDikg6'
+
+five:
+  id: 32
+  name: '想爱正式'
+  api_key: '47da8d74'
+  secret_key: '98b11e2d70e7462de3c791f8f88e9e7b'
+  user_id: 3
+  display_advertising: 1
+  getui_app_id: 'cP3XJh0mFP6LMcsOMpJCQ3'
+  getui_app_key: 'ouSz0YnaI6AN45snjcIeq3'
+  getui_master_secret: 'q2PicXSlTr6mt0QrHZ7Sc6'

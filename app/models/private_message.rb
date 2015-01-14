@@ -49,7 +49,6 @@ class PrivateMessage < ActiveRecord::Base
     sender_id = Setting.invitation_sender
     content = Setting.invitation_content
     if content && receiver_id
-      MESSAGE_PUSHER_LOGGER.error "小纸条加粉的推送正在准备发送给设备 #{device_id}"
       msg = PrivateMessage.create({receiver_id: receiver_id, sender_id: sender_id, body: content})
       msg.valid?
     end
