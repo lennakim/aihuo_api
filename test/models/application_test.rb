@@ -58,4 +58,10 @@ class ApplicationTest < ActiveSupport::TestCase
     advertisements = Advertisement.by_tactics(tactics, control_volume: false)
     assert_equal [7], advertisements.pluck(:id)
   end
+
+
+  def test_belongs_to_franchised_store
+    app = Application.find_by(id: 3)
+    assert app.belongs_to_franchised_store?
+  end
 end

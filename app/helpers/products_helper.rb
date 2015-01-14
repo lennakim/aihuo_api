@@ -3,6 +3,7 @@ module ProductsHelper
 
   params :products do
     optional :id, type: Array, desc: "Product ids."
+    optional :tag_name, type: String, desc: "如果限定tag name，则只会搜索这个tag下的产品."
     optional :tag, type: String, desc: "Tag name or keyword."
     optional :tags, type: Array, desc: "Categroy and brand."
     optional :match, type: String, default: "any", desc: "Match filter type."
@@ -55,7 +56,7 @@ module ProductsHelper
   end
 
   def products_cache_key
-    [:v2, :products, params[:id], params[:tag], params[:tags], params[:match],
+    [:v2, :products, params[:id], params[:tag], params[:tags], params[:match], params[:tag_name],
     params[:min_price], params[:max_price], params[:register_date],
     params[:sku_visible], params[:page], params[:per_page], params[:sort], params[:order]].join("-")
   end

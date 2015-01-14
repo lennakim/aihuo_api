@@ -3,6 +3,7 @@ class Application < ActiveRecord::Base
   # includes ..................................................................
   include EncryptedId
   # relationships .............................................................
+  belongs_to :user
   has_many :homepages
   has_many :coupons
   has_many :resources, class_name: 'Resource'
@@ -26,6 +27,10 @@ class Application < ActiveRecord::Base
   # public instance methods ...................................................
   def advertisements
     Advertisement.by_tactics(tactics)
+  end
+
+  def belongs_to_franchised_store?
+    user && %w(jm_admin jm_cs jms).include?(user.role)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................
