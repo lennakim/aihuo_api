@@ -8,25 +8,29 @@ class Welcome < Grape::API
 
     cache(key: cacke_key, expires_in: 30.minutes) do
       current_application
+      unless @application.belongs_to_franchised_store?
 
-      page_for_360, page_for_authority, page_for_skin = get_homepage_data
+        page_for_360, page_for_authority, page_for_skin = get_homepage_data
 
-      get_banners(params[:filter])
-      case params[:filter]
-      when :healthy
-        get_submenus(page_for_skin)
-        get_categories(nil)
-        get_sections(page_for_skin)
-        get_brands(nil)
-      when :all
-        if params[:ref] == "360"
-          get_submenus(page_for_360)
-        else
-          get_submenus(page_for_authority)
+        get_banners(params[:filter])
+        case params[:filter]
+        when :healthy
+          get_submenus(page_for_skin)
+          get_categories(nil)
+          get_sections(page_for_skin)
+          get_brands(nil)
+        when :all
+          if params[:ref] == "360"
+            get_submenus(page_for_360)
+          else
+            get_submenus(page_for_authority)
+          end
+          get_categories(page_for_authority)
+          get_sections(page_for_authority)
+          get_brands(page_for_authority)
         end
-        get_categories(page_for_authority)
-        get_sections(page_for_authority)
-        get_brands(page_for_authority)
+      else
+        Homepage.for_union
       end
     end
   end
