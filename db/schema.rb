@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141113021142) do
+ActiveRecord::Schema.define(version: 20150115032611) do
 
   create_table "account_bill_infos", force: true do |t|
     t.integer  "account_bill_id"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20141113021142) do
     t.integer  "version_code"
     t.boolean  "trash",                                     default: false
     t.boolean  "deleted",                                   default: false
+    t.string   "website"
   end
 
   create_table "adv_contents_applications", id: false, force: true do |t|
@@ -183,6 +184,8 @@ ActiveRecord::Schema.define(version: 20141113021142) do
     t.string   "getui_app_id"
     t.string   "getui_app_key"
     t.string   "getui_master_secret"
+    t.string   "getui_app_secret"
+    t.string   "umeng_app_key"
   end
 
   create_table "applications_rules", id: false, force: true do |t|
@@ -284,8 +287,10 @@ ActiveRecord::Schema.define(version: 20141113021142) do
     t.string   "zip_code"
     t.string   "pinyin"
     t.string   "pinyin_abbr"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+    t.decimal  "cash_on_delivery", precision: 8, scale: 2, default: 0.0
+    t.decimal  "pay_online",       precision: 8, scale: 2, default: 0.0
   end
 
   add_index "cities", ["level"], name: "index_cities_on_level", using: :btree
@@ -316,13 +321,16 @@ ActiveRecord::Schema.define(version: 20141113021142) do
     t.string   "name"
     t.text     "content"
     t.datetime "comment_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "comment_num"
     t.string   "device_id"
     t.integer  "order_id"
     t.datetime "deleted_at"
-    t.boolean  "enabled",     default: false
+    t.boolean  "enabled",                 default: false
+    t.integer  "commable_id"
+    t.string   "commable_type"
+    t.integer  "score",         limit: 1
   end
 
   add_index "comments", ["order_id"], name: "index_comments_on_order_id", using: :btree
@@ -449,8 +457,10 @@ ActiveRecord::Schema.define(version: 20141113021142) do
     t.integer  "city_id"
     t.string   "pinyin"
     t.string   "pinyin_abbr"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+    t.decimal  "cash_on_delivery", precision: 8, scale: 2, default: 0.0
+    t.decimal  "pay_online",       precision: 8, scale: 2, default: 0.0
   end
 
   add_index "districts", ["city_id"], name: "index_districts_on_city_id", using: :btree
@@ -691,6 +701,7 @@ ActiveRecord::Schema.define(version: 20141113021142) do
     t.decimal  "payment_total",     precision: 8, scale: 2, default: 0.0
     t.boolean  "sms_sended",                                default: false
     t.boolean  "sms_unhandled",                             default: false
+    t.decimal  "actual_total",      precision: 6, scale: 2, default: 0.0
   end
 
   add_index "orders", ["device_id"], name: "index_orders_on_device_id", using: :btree
@@ -878,8 +889,10 @@ ActiveRecord::Schema.define(version: 20141113021142) do
     t.string   "name"
     t.string   "pinyin"
     t.string   "pinyin_abbr"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+    t.decimal  "cash_on_delivery", precision: 8, scale: 2, default: 0.0
+    t.decimal  "pay_online",       precision: 8, scale: 2, default: 0.0
   end
 
   add_index "provinces", ["name"], name: "index_provinces_on_name", using: :btree

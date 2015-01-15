@@ -1,0 +1,17 @@
+one:
+  id: 1
+  name: '吉林市'
+  province_id: 1
+  cash_on_delivery: 5
+  pay_online: 9
+  created_at: '2014-06-19 16:30:34'
+  updated_at: '2014-07-17 18:53:49'
+
+two:
+  id: 2
+  name: '长春市'
+  province_id: 1
+  cash_on_delivery: 0
+  pay_online: 0
+  created_at: '2014-06-19 16:30:34'
+  updated_at: '2014-07-17 18:53:49'

@@ -221,7 +221,9 @@ class Order < ActiveRecord::Base
   end
 
   def send_confirm_sms(type)
-    ShortMessage.send_confirm_sms(self, type)
+    unless belongs_to_franchised_store?
+      ShortMessage.send_confirm_sms(self, type)
+    end
   end
 
   # 订单可操作状态码，1 可取消; 2 可删除; 0 不可更改状态
@@ -265,6 +267,9 @@ class Order < ActiveRecord::Base
     line_item_commments.find_by(product_id: product.id) || comments.try(:first)
   end
 
+  def belongs_to_franchised_store?
+    application && application.belongs_to_franchised_store?
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
   private
@@ -303,7 +308,8 @@ class Order < ActiveRecord::Base
   end
 
   def set_state_for_franchised_store
-    if application && application.belongs_to_franchised_store?
+    #this method might be more suitable
+    if belongs_to_franchised_store?
       update_attribute(:state, Order::NEWLY_STATE_FOR_FRANCHISED_STORE)
     end
   end
