@@ -7,7 +7,7 @@ module ShippingChargeMethod
   private
   def get_shippint_charge(obj = nil)
     if cash_on_delivery == 0 || pay_online == 0
-      obj.nil? ? self.class.default_shipping_charge : obj.shipping_charge
+      obj.nil? ? ShippingChargeMethod.default_shipping_charge : obj.shipping_charge
     else
       [cash_on_delivery, pay_online]
     end
@@ -49,7 +49,7 @@ class ShippingCharge
     district = city.districts.find_by_name(district_name) if city
 
     cash_on_delivery, pay_online =
-      [district, city, province, ShippingChargeMethod].select { |obj| !obj.nil? }
+      [district, city, province, ShippingCharge].select { |obj| !obj.nil? }
         .first.shipping_charge
     Array.new(1, ShippingCharge.new(cash_on_delivery, pay_online))
   end
