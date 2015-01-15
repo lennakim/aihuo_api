@@ -46,11 +46,11 @@ class ShippingCharge
   def self.find_by_address(province_name, city_name, district_name)
     province = Province.find_by_name(province_name)
     city = province.cities.find_by_name(city_name) if province
-    district = city.cities.find_by_name(district_name) if city
+    district = city.districts.find_by_name(district_name) if city
 
     cash_on_delivery, pay_online =
       [district, city, province, ShippingChargeMethod].select { |obj| !obj.nil? }
         .first.shipping_charge
-      Array.new(1, ShippingCharge.new(cash_on_delivery, pay_online))
+    Array.new(1, ShippingCharge.new(cash_on_delivery, pay_online))
   end
 end
