@@ -6,6 +6,7 @@ fix_<%= i %>:
   name: 'tester'
   phone: <%= '13211111' + rand(10).to_s + rand(10).to_s %>
   shipping_charge: 20
+  application_id: 1
   created_at: <%= (i).days.ago(Time.now) %>
 
 fix_<%= i + 10 %>:
@@ -22,5 +23,6 @@ fix_<%= i + 20 %>:
   name: 'tester'
   phone: <%= '13211111' + rand(10).to_s + rand(10).to_s %>
   shipping_charge: 20
+  application_id: 3
   created_at: <%= (i).days.ago(Time.now) %>
 <% end %>
