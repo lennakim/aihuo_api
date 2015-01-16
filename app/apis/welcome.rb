@@ -14,7 +14,6 @@ class Welcome < Grape::API
             homepage = Homepage.for_union
             [homepage, homepage, homepage]
           end
-        page_for_360, page_for_authority, page_for_skin = get_homepage_data
 
         get_banners(params[:filter])
         case params[:filter]
