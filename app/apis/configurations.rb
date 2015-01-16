@@ -1,5 +1,4 @@
 class Configurations < Grape::API
-  helpers ConfigurationsHelper
 
   namespace :configurations do
     desc "get configuration relation"
@@ -8,9 +7,7 @@ class Configurations < Grape::API
     end
 
     get '/weixin_relate', jbuilder: "configurations/weixin_relate" do
-      @configurations = Rails.cache.fetch('configurations_weixin_relate', expires_in: 1.hours) do
-        turn_setting_to_special_hash(Setting.weixin_fans)
-      end
+      @configurations = Setting.weixin_fans.to_hash
     end
   end
 end

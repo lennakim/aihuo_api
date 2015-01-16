@@ -42,6 +42,14 @@ class Setting < ActiveRecord::Base
   def self.meet_condition?(pay_type, item_total)
     item_total >= Setting.get_paytype_shipping_conditione(pay_type)
   end
+
+  def self.to_hash
+    all.map { |s| [s.pretty_name.to_sym, s.value.try_to_boolean] }.to_h
+  end
+
+  def pretty_name
+    name[/_.*/][1..-1]
+  end
   # protected instance methods ................................................
   # private instance methods ..................................................
 end
