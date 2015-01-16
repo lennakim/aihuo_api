@@ -8,8 +8,12 @@ class Welcome < Grape::API
 
     cache(key: cacke_key, expires_in: 30.minutes) do
       current_application
-      unless @application.belongs_to_franchised_store?
-
+        page_for_360, page_for_authority, page_for_skin = unless @application.belongs_to_franchised_store?
+             get_homepage_data
+          else
+            homepage = Homepage.for_union
+            [homepage, homepage, homepage]
+          end
         page_for_360, page_for_authority, page_for_skin = get_homepage_data
 
         get_banners(params[:filter])
@@ -29,9 +33,6 @@ class Welcome < Grape::API
           get_sections(page_for_authority)
           get_brands(page_for_authority)
         end
-      else
-        Homepage.for_union
-      end
     end
   end
 
