@@ -20,7 +20,7 @@ class Homepage < ActiveRecord::Base
   }
 
   def self.for_union
-    union_name = Setting.find_by_name("micro_union").value
+    union_name = Setting.find_by_name("micro_union_configuration").value
     find_by_name(union_name.strip)
   end
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
