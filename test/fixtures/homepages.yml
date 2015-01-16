@@ -14,3 +14,9 @@ three:
   label: '官方'
   activity: true
   application_id: 0
+micro_union_configuration:
+  id: 4
+  name: '加盟商首页配置'
+  label: '官方'
+  activity: true
+  application_id: 0

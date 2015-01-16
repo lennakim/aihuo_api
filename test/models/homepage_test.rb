@@ -20,4 +20,9 @@ class HomepageTest < ActiveSupport::TestCase
     app = Application.find_by_id(2)
     assert_equal "全局tab", Homepage.for_app_tabs(app).name
   end
+
+
+  def test_for_union
+    assert_equal Homepage.find_by_name("加盟商首页配置"), Homepage.for_union
+  end
 end
