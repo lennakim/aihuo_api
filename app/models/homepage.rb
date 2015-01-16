@@ -18,6 +18,11 @@ class Homepage < ActiveRecord::Base
     homepages = homepages.count.zero? ? unscope(where: :activity).where("label = 'tab' and application_id = ?", 0) : homepages
     homepages.first
   }
+
+  def self.for_union
+    union_name = Setting.find_by_name("micro_union_configuration").value
+    find_by_name(union_name.strip)
+  end
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
   # public instance methods ...................................................

@@ -51,3 +51,7 @@ cash_description:
   name: "cash_description"
   value: "cash_description created by"
 
+micro_union_configuration:
+  name: "micro_union_configuration"
+  value: "加盟商首页配置"
+
