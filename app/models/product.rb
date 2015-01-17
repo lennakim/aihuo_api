@@ -52,7 +52,7 @@ class Product < ActiveRecord::Base
     products = products.where(id: tagging_ids)
   }
   scope :search, ->(keyword, date, today, match, tag_name = nil) {
-    products = serach_by_keyword(keyword, match, tag_name)
+    products = serach_by_keyword(keyword, match, 'tags', tag_name)
     # 未传递用户注册日期，或用户注册日期不在三天内，不显示0元购
     if date.blank? || date && today && date < 2.days.ago(today)
       gifts_ids = self.gifts.pluck(:id)
