@@ -8,5 +8,6 @@ json.operation_code order.operation_code
 json.express_number order.express_number
 json.express_company order.express_company
 json.zero_msg order.message
+json.comment order.comment
 # json.created_at order.created_at.strftime("%F %T")
 json.created_at order.created_at
