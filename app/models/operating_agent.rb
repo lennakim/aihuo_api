@@ -7,8 +7,9 @@ module OperatingAgent
   # scopes ....................................................................
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   # class methods .............................................................
-  def self.wechat_activitie(member_id)
+  def self.wechat_activitie(member_id, device_id = nil)
     PrivateMessage.send_an_invitation_to_member(member_id)
+    Notification.send_private_message_msg(device_id) if device_id
   end
 
   def self.notification_for_the_first_time_to_create_cart(device_id, app_id)

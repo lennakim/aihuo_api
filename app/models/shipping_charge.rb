@@ -49,7 +49,7 @@ class ShippingCharge
     district = city.districts.find_by_name(district_name) if city
 
     cash_on_delivery, pay_online =
-      [district, city, province, ShippingCharge].select { |obj| !obj.nil? }
+      [district, city, province, ShippingChargeMethod].select { |obj| !obj.nil? }
         .first.shipping_charge
     Array.new(1, ShippingCharge.new(cash_on_delivery, pay_online))
   end
