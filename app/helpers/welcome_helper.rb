@@ -79,7 +79,7 @@ module WelcomeHelper
     end
     # 为加盟商设置默认 banner，此功能稍后移除
     if @banners.size.zero?
-      @banners += Article.where(id: [1267, 1385])
+      @banners += Article.where(id: [1454])
     end
   end
 
