@@ -1,6 +1,6 @@
 module ShippingChargeMethod
   class << self
-    def default_shipping_charge; [15, 15]; end
+    def default_shipping_charge; [12, 12]; end
     alias_method :shipping_charge, :default_shipping_charge
   end
 
