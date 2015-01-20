@@ -14,7 +14,8 @@ class Articles < Grape::API
 
     desc 'Listing articles.'
     params do
-      optional :filter, type: Symbol, values: [:healthy, :all], default: :all, desc: 'Filtering for blacklist.'
+      optional :filter, type: Symbol, values: [:healthy, :all, :tag], default: :all, desc: 'Filtering for blacklist.'
+      optional :filter_value, type: String, desc: 'filter value'
       optional :register_date, type: String, desc: 'Date looks like 20130401.'
       optional :page, type: Integer, desc: 'Page number.'
       optional :per_page, type: Integer, default: 10, desc: 'Per page value.'
@@ -26,6 +27,8 @@ class Articles < Grape::API
           Article.available.healthy
         when :all
           Article.available.search(date_param, Date.today)
+        when :tag
+          Article.available.tagged_with(params[:filter_value], any: true)
         end
       if hide_gift_products?
         @articles = paginate(articles.without_gifts)
