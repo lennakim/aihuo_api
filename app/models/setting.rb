@@ -12,7 +12,7 @@ class Setting < ActiveRecord::Base
     :online_shipping_fee, :online_free_shipping_conditione, :online_description,
     :cash_shipping_fee, :cash_free_shipping_conditione, :cash_description
   ]
-  WEIXIN_FANS = [:cart_weixin_visible, :cart_use_policy, :cart_weixin_id, :cart_weixin_content]
+  WEIXIN_FANS = [:cart_weixin_visible, :cart_use_policy, :cart_weixin_id, :cart_weixin_content, :cart_weixin_image]
   # class methods .............................................................
   def self.invitation_sender
     self.fetch_by_key("private_message_send_for_register_member_robot_id")
