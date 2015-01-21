@@ -20,6 +20,16 @@ module OperatingAgent
       end
     end
   end
+
+  def self.add_a_topic_in_recommend_list(topics, filter, page)
+    if filter == :recommend && page == 1
+      topic_id = Setting.find_by(name: 'recommend_top_topic_id').try(:value)
+      topic = Topic.find_by(id: topic_id) if topic_id
+      topics.unshift(topic) if topic
+    end
+    topics
+  end
+
   # public instance methods ...................................................
   # protected instance methods ................................................
   # private instance methods ..................................................
