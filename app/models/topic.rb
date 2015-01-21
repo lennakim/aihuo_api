@@ -34,7 +34,7 @@ class Topic < ActiveRecord::Base
   accepts_nested_attributes_for :topic_images
   # class methods .............................................................
   def self.scope_by_filter(filter, device_id = nil , app = nil)
-    return safe_content_by_filter(filter) if (app && "31cbdb3c" == app.api_key) && is_switch_open?
+    return safe_content_by_filter(filter) if is_switch_open?(app)
     case filter
     when :recommend
       approved.recommend
@@ -92,12 +92,11 @@ class Topic < ActiveRecord::Base
     self.member = member if member && member.authenticate?(password)
   end
 
-  # protected instance methods ................................................
-  # private instance methods ..................................................
-  def self.is_switch_open?
-    "on" == Setting.find_by_name("ios_topic_switch").try(:value)
+  def self.is_switch_open?(app)
+    setting = Setting.find_by_name("ios_topic_switch")
+    app && setting && app.api_key == '31cbdb3c' && setting.value == 'on'
   end
-  
+
   #if a device is apple device then return specially topics
   def self.get_certain_topics(filter)
     return [] unless [:best, :new, :hot].include?(filter)
@@ -107,8 +106,10 @@ class Topic < ActiveRecord::Base
     end
     Topic.where(id: arr)
   end
+  # protected instance methods ................................................
+  # private instance methods ..................................................
   private
-  
+
   def set_approved_status
     self.approved = false if new_record?
   end

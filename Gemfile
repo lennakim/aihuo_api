@@ -55,7 +55,7 @@ end
 
 group :development, :test do
   # gem 'api_taster', '0.6.0'
-  gem 'pry'
+  gem 'pry-byebug'
 end
 
 group :production do

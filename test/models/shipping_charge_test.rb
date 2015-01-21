@@ -41,6 +41,6 @@ class ShippingChargeTest < ActiveSupport::TestCase
     assert_equal [5, 10], [shipping_charge.cash_on_delivery, shipping_charge.pay_online]
 
     shipping_charge = ShippingCharge.find_by_address('山东省', nil, nil).first
-    assert_equal [15, 15], [shipping_charge.cash_on_delivery, shipping_charge.pay_online]
+    assert_equal [12, 12], [shipping_charge.cash_on_delivery, shipping_charge.pay_online]
   end
 end
