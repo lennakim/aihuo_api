@@ -34,7 +34,7 @@ class ShippingCharge
     district = city.districts.find_by_name(district_name) if city
 
     cash_on_delivery, pay_online =
-      [district, city, province, self].select(&:present?).first.shipping_charge
+      [district, city, province, self].detect(&:present?).shipping_charge
     Array.new(1, ShippingCharge.new(cash_on_delivery, pay_online))
   end
 end
