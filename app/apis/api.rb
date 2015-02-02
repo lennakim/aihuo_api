@@ -118,4 +118,5 @@ class API < Grape::API
   mount ::Comments
   mount ::Configurations
   mount ::ShippingCharges
+  mount ::Reports
 end
