@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150115032611) do
+ActiveRecord::Schema.define(version: 20150202085955) do
 
   create_table "account_bill_infos", force: true do |t|
     t.integer  "account_bill_id"
@@ -173,20 +173,24 @@ ActiveRecord::Schema.define(version: 20150115032611) do
 
   create_table "applications", force: true do |t|
     t.string   "name"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.string   "api_key"
     t.string   "secret_key"
     t.string   "description"
     t.integer  "platform"
     t.integer  "user_id"
-    t.boolean  "display_advertising", default: false
+    t.boolean  "display_advertising",             default: false
     t.string   "getui_app_id"
     t.string   "getui_app_key"
     t.string   "getui_master_secret"
     t.string   "getui_app_secret"
     t.string   "umeng_app_key"
+    t.integer  "qr_scene_id"
+    t.string   "qr_ticket",           limit: 500
   end
+
+  add_index "applications", ["qr_scene_id"], name: "index_applications_on_qr_scene_id", using: :btree
 
   create_table "applications_rules", id: false, force: true do |t|
     t.integer "application_id", null: false
@@ -315,6 +319,45 @@ ActiveRecord::Schema.define(version: 20150115032611) do
 
   add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
   add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type", using: :btree
+
+  create_table "clearing_items", force: true do |t|
+    t.integer  "clearing_id"
+    t.integer  "order_id",                                          null: false
+    t.integer  "user_id",                                           null: false
+    t.decimal  "order_amount", precision: 10, scale: 0, default: 0
+    t.decimal  "earn_amount",  precision: 10, scale: 0, default: 0
+    t.decimal  "real_amount",  precision: 10, scale: 0, default: 0
+    t.string   "state"
+    t.text     "notes"
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.string   "item_type"
+    t.string   "pay_type"
+  end
+
+  add_index "clearing_items", ["clearing_id"], name: "index_clearing_items_on_clearing_id", using: :btree
+  add_index "clearing_items", ["item_type"], name: "index_clearing_items_on_item_type", using: :btree
+  add_index "clearing_items", ["order_id"], name: "index_clearing_items_on_order_id", using: :btree
+  add_index "clearing_items", ["pay_type"], name: "index_clearing_items_on_pay_type", using: :btree
+  add_index "clearing_items", ["state"], name: "index_clearing_items_on_state", using: :btree
+  add_index "clearing_items", ["user_id"], name: "index_clearing_items_on_user_id", using: :btree
+
+  create_table "clearings", force: true do |t|
+    t.integer  "user_id",                                            null: false
+    t.decimal  "sale_money",    precision: 10, scale: 0, default: 0
+    t.decimal  "comission",     precision: 10, scale: 0, default: 0
+    t.decimal  "push_money",    precision: 10, scale: 0, default: 0
+    t.date     "deadline"
+    t.string   "clearing_type"
+    t.string   "state"
+    t.text     "notes"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+  end
+
+  add_index "clearings", ["clearing_type"], name: "index_clearings_on_type", using: :btree
+  add_index "clearings", ["state"], name: "index_clearings_on_state", using: :btree
+  add_index "clearings", ["user_id"], name: "index_clearings_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.integer  "product_id"
@@ -798,19 +841,20 @@ ActiveRecord::Schema.define(version: 20150115032611) do
 
   create_table "product_props", force: true do |t|
     t.integer  "product_id"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
     t.string   "values"
     t.string   "name"
     t.string   "sku"
-    t.decimal  "purchase_price", precision: 8, scale: 2, default: 0.0
-    t.decimal  "sale_price",     precision: 8, scale: 2, default: 0.0
-    t.integer  "quantity",                               default: 0
+    t.decimal  "purchase_price",             precision: 8, scale: 2, default: 0.0
+    t.decimal  "sale_price",                 precision: 8, scale: 2, default: 0.0
+    t.integer  "quantity",                                           default: 0
     t.integer  "supplier_id"
-    t.decimal  "original_price", precision: 8, scale: 2, default: 0.0
+    t.decimal  "original_price",             precision: 8, scale: 2, default: 0.0
     t.integer  "rzx_stock"
     t.integer  "rzx_validity"
-    t.integer  "safe_stock",                             default: 0
+    t.integer  "safe_stock",                                         default: 0
+    t.float    "franchise_price", limit: 24
   end
 
   add_index "product_props", ["product_id"], name: "index_product_props_on_product_id", using: :btree
@@ -863,6 +907,7 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.string   "itemsn"
     t.boolean  "auto_pick_up",                                               default: true
     t.string   "video"
+    t.text     "selling_point"
   end
 
   add_index "products", ["brand_id"], name: "index_products_on_brand_id", using: :btree
@@ -939,6 +984,15 @@ ActiveRecord::Schema.define(version: 20150115032611) do
   add_index "replies", ["member_id"], name: "index_replies_on_member_id", using: :btree
   add_index "replies", ["replyable_id", "replyable_type"], name: "index_replies_on_replyable_id_and_replyable_type", using: :btree
   add_index "replies", ["topic_id"], name: "index_replies_on_topic_id", using: :btree
+
+  create_table "reports", force: true do |t|
+    t.string   "device_id"
+    t.string   "reportable_id"
+    t.string   "reportable_type"
+    t.string   "reason"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "resources", force: true do |t|
     t.integer  "application_id"
@@ -1174,9 +1228,15 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.datetime "updated_at",                          null: false
     t.string   "role"
     t.string   "username"
+    t.string   "phone"
+    t.string   "qq"
+    t.string   "alipay"
+    t.string   "openid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["openid"], name: "index_users_on_openid", unique: true, using: :btree
+  add_index "users", ["phone"], name: "index_users_on_phone", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "workorders", force: true do |t|

@@ -23,15 +23,14 @@ class Report < ActiveRecord::Base
     report_object(obj.member_id, "Member")
   end
 
-  def report_object(reportable_id, reportable_type)
-    if reportable_id
-      report = Report.new(
-        reportable_id: reportable_id,
-        reportable_type: reportable_type,
+  def report_object(reportable_obj_id, reportable_obj_type)
+    if reportable_obj_id && reportable_obj_type
+      Report.create(
+        reportable_id: reportable_obj_id,
+        reportable_type: reportable_obj_type,
         device_id: device_id,
         reason: reason
       )
-      report.save
     end
   end
 end
