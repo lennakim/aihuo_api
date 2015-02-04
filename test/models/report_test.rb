@@ -5,6 +5,10 @@ class ReportTest < ActiveSupport::TestCase
     @topic || Topic.find_by(id: 1)
   end
 
+  def reply
+    Reply.find_by(id: 59)
+  end
+
   def report_params(reportable_obj_id, reportable_obj_type)
     {
       device_id: '863092024963194',
@@ -30,4 +34,19 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal 1, Report.count
   end
 
+
+  def test_delete_topic_or_reply
+    topic_report_up_limit = Setting.find_by(name: "Topic_report_up_limit").value.to_i
+    topic_report_up_limit.times.each do |item|
+      report = Report.create(report_params(topic.id, 'Topic'))
+    end
+    assert_nil Topic.find_by(id: 1)
+    assert_not_nil Topic.with_deleted.find_by(id: 1)
+
+    reply_report_up_limit = Setting.find_by(name: "Reply_report_up_limit").value.to_i
+    reply_report_up_limit.times.each do |item|
+      report = Report.create(report_params(reply.id, 'Reply'))
+    end
+    assert_nil reply
+  end
 end
