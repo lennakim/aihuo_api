@@ -55,3 +55,11 @@ micro_union_configuration:
   name: "micro_union_configuration"
   value: "加盟商首页配置"
 
+Reply_report_up_limit:
+  name: "Reply_report_up_limit"
+  value: 10
+Topic_report_up_limit:
+  name: "Topic_report_up_limit"
+  value: 10
+
+
