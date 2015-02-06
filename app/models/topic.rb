@@ -51,7 +51,15 @@ class Topic < ActiveRecord::Base
     when :followed
       favorites_by_device(device_id)
     when :all
-      self
+      all
+    end
+  end
+
+  def self.vision_of_topic(device_id = nil)
+    if device_id
+      with_deleted.where("topics.device_id = ? OR topics.deleted_at IS NOT NULL", device_id)
+    else
+     all
     end
   end
   #iOS应用，并且打开了安全开关
@@ -72,7 +80,6 @@ class Topic < ActiveRecord::Base
     when :followed
       favorites_by_device(device_id)
     when :all
-      self
     end
   end
   # public instance methods ...................................................
