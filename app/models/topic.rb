@@ -16,8 +16,9 @@ class Topic < ActiveRecord::Base
   validates_uniqueness_of :body, :scope => :device_id, :message => "请勿重复发言"
   # callbacks .................................................................
   after_initialize :set_approved_status
+  after_save :auto_vertify
   # scopes ....................................................................
-  default_scope { order("updated_at DESC") }
+  default_scope { order("topics.updated_at DESC") }
   scope :approved, -> { where(approved: true) }
   scope :by_device, ->(device_id) { where(device_id: device_id) }
   scope :popular, -> { where("replies_count >= 50") }
@@ -29,37 +30,54 @@ class Topic < ActiveRecord::Base
   scope :favorites_by_device, ->(device_id) {
     joins(:favorites).where(favorites: { device_id: device_id })
   }
+  scope :hot_to_recommend_filter, ->(up_limie) {where("likes_count + replies_count > ?", up_limie)}
   # additional config (i.e. accepts_nested_attribute_for etc...) ..............
   encrypted_id key: '36aAoQHCaJKETWHR'
   accepts_nested_attributes_for :topic_images
   # class methods .............................................................
+  REPORT_LIMIT = "10"
+
+  FILTER = 4
+  NEED_VERTIFY = 1
+  #filter掉用户因为被举报次数太多，而导致，帖子不可见
+  def self.member_topic_filter
+    joins("INNER JOIN members on members.id = topics.member_id").where("NOT members.report_num_filter & ?", Topic::FILTER)
+  end
+
+  #控制帖子可见性
   def self.scope_by_filter(filter, device_id = nil , app = nil)
     return safe_content_by_filter(filter) if is_switch_open?(app)
+    member_topic_filter.vision_of_topic(device_id).scoping do
     case filter
-    when :recommend
-      approved.recommend
-    when :best
-      approved.excellent
-    when :checking
-      checking
-    when :hot
-      approved.latest
-    when :new
-      approved.newly
-    when :mine
-      with_deleted.by_device(device_id)
-    when :followed
-      favorites_by_device(device_id)
-    when :all
-      all
+      when :recommend
+        #用最热的帖子代替推荐的帖子
+        # approved.recommend
+        filter_value = Setting.fetch_by_key("hot_to_recommend_filter_value", "5").to_i
+        approved.hot_to_recommend_filter(filter_value).latest
+      when :best
+        approved.excellent
+      when :checking
+        checking
+      when :hot
+        approved.latest
+      when :new
+        approved.newly
+      when :mine
+        unscoped.with_deleted.by_device(device_id)
+      when :followed
+        favorites_by_device(device_id)
+      when :all
+        all
+      end
     end
   end
 
   def self.vision_of_topic(device_id = nil)
     if device_id
-      with_deleted.where("topics.device_id = ? OR topics.deleted_at IS NOT NULL", device_id)
+      report_limit = Setting.fetch_by_key("#{self.name}_report_up_limit", Topic::REPORT_LIMIT)
+      with_deleted.where("topics.device_id = ? OR (topics.report_num < ? AND topics.deleted_at IS NULL)", device_id, report_limit.to_i)
     else
-     all
+      all
     end
   end
   #iOS应用，并且打开了安全开关
@@ -112,6 +130,20 @@ class Topic < ActiveRecord::Base
       arr.delete(id) if id != id.strip
     end
     Topic.where(id: arr)
+  end
+
+  def auto_vertify
+    i_approved = (topic_images.size == 0 && !have_harmonious_word? && Member.find_by(id: self.member_id).try(:topic_auto_approve?))
+    update_columns(approved: i_approved)
+  end
+
+  def have_harmonious_word?
+    key_word = Setting.fetch_by_key("topic_content_key_word_harmonious")
+    key_word && body.force_encoding("UTF-8").index(Regexp.new(key_word))
+  end
+
+  def update_report_num(report_num_incr = 1)
+    increment!(:report_num, report_num_incr)
   end
   # protected instance methods ................................................
   # private instance methods ..................................................

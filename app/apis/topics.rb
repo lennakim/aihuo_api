@@ -8,7 +8,7 @@ class Topics < Grape::API
     end
     get "/", jbuilder: 'topics/topics' do
       current_application
-      topics = Topic.vision_of_topic(params[:device_id]).scope_by_filter(params[:filter], params[:device_id], @application)
+      topics = Topic.member_topic_filter.scope_by_filter(params[:filter], params[:device_id], @application)
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
       @topics = OperatingAgent.add_a_topic_in_recommend_list(@topics, params[:filter], params[:page])
     end
@@ -119,7 +119,7 @@ class Topics < Grape::API
           use :replies
         end
         get "/", jbuilder: 'replies/replies' do
-          @replies = paginate(@topic.replies.sort(params[:sort]))
+          @replies = paginate(@topic.replies.vision_of_reply(current_device_id).sort(params[:sort]))
         end
 
         desc "Create a reply to the topic."

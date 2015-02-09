@@ -3,6 +3,9 @@ class Member < ActiveRecord::Base
   # includes ..................................................................
   include CoinRule, ScoreRule, EncryptedId, HarmoniousFormatter
   # mount_uploader :avatar, AvatarUploader
+  #NOTICE
+  #report_num_filter字段的解释， bit位标识
+  #回复屏蔽， 帖子屏蔽， 回复审核，帖子审核
   # relationships .............................................................
   has_one :device, -> { order('updated_at DESC') }, class_name: "Device"
   has_many :devices
@@ -92,6 +95,25 @@ class Member < ActiveRecord::Base
   def next_level
     level + 1
   end
+
+  def update_member_report_num_filter(i_report_num = 1)
+    report_filter = Member.member_report_num_filter(i_report_num)
+    update_columns(report_num_filter: report_filter)
+  end
+
+  def self.member_report_num_filter(i_report_num)
+    if i_report_num > Setting.fetch_by_key("member_report_up_limit", "3").to_i
+      Reply::FILTER + Topic::FILTER + Topic::NEED_VERTIFY
+    else
+      0
+    end
+  end
+
+  #这里与操作，00000000001是为0不需要审核
+  def topic_auto_approve?
+    (report_num_filter & 1) == 0
+  end
+
   # protected instance methods ................................................
   # private instance methods ..................................................
   private

@@ -41,4 +41,7 @@ module TopicsHelper
     params[:reply].to_h
   end
 
+  def current_device_id
+    request.headers["Device-Id"]
+  end
 end

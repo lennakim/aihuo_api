@@ -14,7 +14,7 @@ class Reports < Grape::API
         params[:report][:reportable_id],
         params[:report][:reportable_type]
       )
-      params[:report][:reportable_id] =
+      params[:report][:reportable_id] = reportable_id
       declared(params, include_missing: false)[:report]
     end
   end
@@ -33,6 +33,7 @@ class Reports < Grape::API
     post "/", jbuilder: 'reports/report' do
       verify_sign
       @report = Report.create(reportable_params)
+      @report = Report.new(reportable_params) unless @report
     end
   end
 end

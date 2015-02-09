@@ -8,7 +8,7 @@ class TopicsTest < ActiveSupport::TestCase
   def node
     @node_2 = Node.find_by(id: 2)
   end
-  
+
   def topic
     @topic || Topic.find_by(id: 1)
   end
@@ -83,13 +83,13 @@ class TopicsTest < ActiveSupport::TestCase
     replies = topic.replies.sort("desc")
     assert replies.first.created_at > replies.second.created_at
   end
-  
+
 #iOS版上架--因APP审核问题，在上架之前要配合扫黄审查，因此在审查期间打开过滤黄色配置
   # 情景1:iOS应用请求最新帖子时会返回指定id的帖子：47691
   def test_iso_get_new_topics
     assert_equal 47691, Topic.scope_by_filter(:new, "1212", ios_app)[0].id
   end
-  
+
   # 情景2:iOS应用请求最热帖子时会返回指定id的帖子：47691
   #最新最热帖子返回数据相同
   def test_iso_get_hot_topics
@@ -100,29 +100,44 @@ class TopicsTest < ActiveSupport::TestCase
   def test_iso_get_best_topics
     assert_equal 448805, Topic.scope_by_filter(:best, "1212", ios_app)[0].id
   end
-  
+
   # 情景4:iOS应用请求某一node下最新帖子时会返回指定id的帖子：47691
   def test_iso_get_node_new_topics
     assert_equal 47691, node.topics.scope_by_filter(:new, "1212", ios_app)[0].id
   end
-  
+
   # 情景5:iOS应用请求某一node下最热帖子时会返回指定id的帖子：47691
   def test_iso_get_node_hot_topics
     assert_equal 47691, node.topics.scope_by_filter(:hot, "1212", ios_app)[0].id
   end
-  
+
   # 情景6:iOS应用请求某一node下精华帖子时会返回指定id的帖子：448805
   def test_iso_get_node_best_topics
     assert_equal 448805, node.topics.scope_by_filter(:best, "1212", ios_app)[0].id
   end
-  
+
   # 情景7:测试scope_by_filter修改后的兼容性测试#回归测试
   def test_regerss_topics
     assert_equal 47691, Topic.scope_by_filter(:best, "1212")[0].id
   end
-  
+
   # 情景8:测试scope_by_filter修改后的兼容性测试#回归测试-某一节点下
   def test_regerss_topics_node
     assert_equal 47691, node.topics.scope_by_filter(:best, "1212")[0].id
+  end
+
+  def test_have_harmonious_word?
+    result = Topic.find_by(id: "448806").have_harmonious_word? ? true : false
+    assert_equal true, result
+  end
+
+  def test_member_topic_filter
+    Topic.member_topic_filter.pluck("members.id").each do |item|
+      assert_equal 2, item
+    end
+  end
+
+  def test_hot_to_recommend_filter
+    assert_equal [1], Topic.hot_to_recommend_filter(5).pluck(:id)
   end
 end

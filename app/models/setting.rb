@@ -22,9 +22,9 @@ class Setting < ActiveRecord::Base
     self.fetch_by_key("private_message_send_for_register_member")
   end
 
-  def self.fetch_by_key(key)
+  def self.fetch_by_key(key, default_value = nil)
     Rails.cache.fetch(key, expires_in: 1.hours) do
-      Setting.find_by_name(key).try(:value)
+      Setting.find_by_name(key).try(:value) || default_value
     end
   end
   # public instance methods ...................................................

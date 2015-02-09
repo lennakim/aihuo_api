@@ -3,12 +3,13 @@ class Report < ActiveRecord::Base
   # includes ..................................................................
   # relationships .............................................................
   belongs_to :reportable, polymorphic: true
+  validates_uniqueness_of :reportable_id, scope: [:device_id, :reportable_type], if: ->(reply) {["Reply", "Topic"].include?(reply.reportable_type)}
   # validations ...............................................................
   # TODO: 每个设备只能对同一个对象举报一次
   # callbacks .................................................................
-  after_create :report_device_and_member, :delete_topic_or_reply
+  after_create :report_device_and_member
   # after_create :delete_topic_or_reply
-  skip_callback :create, :after, :report_device_and_member, :delete_topic_or_reply,
+  skip_callback :create, :after, :report_device_and_member,
     if: -> { ["Member", "Device"].include? self.reportable_type }
 
 
@@ -22,8 +23,13 @@ class Report < ActiveRecord::Base
 
   def report_device_and_member
     obj = self.reportable_type.constantize.find_by(id: self.reportable_id)
-    report_object(obj.device_id, "Device")
-    report_object(obj.member_id, "Member")
+    if obj
+      report_object(obj.device_id, "Device")
+      report_object(obj.member_id, "Member")
+      obj.update_report_num
+      report_times = Report.member_report_num(obj.member_id)
+      Member.find_by(id: obj.member_id).update_member_report_num_filter(report_times)
+    end
   end
 
   def report_object(reportable_obj_id, reportable_obj_type)
@@ -37,11 +43,7 @@ class Report < ActiveRecord::Base
     end
   end
 
-  def delete_topic_or_reply
-    model_id, model_type = self.reportable_id, self.reportable_type
-    report_count = Report.where(reportable_type: model_type, reportable_id: model_id).count
-    report_limit = Setting.find_by_name("#{model_type}_report_up_limit").value.to_i
-    self.reportable.try(:destroy) if report_count >= report_limit
+  def self.member_report_num(i_member_id)
+    Report.where(reportable_id: i_member_id, reportable_type: "Member", created_at: Date.today.beginning_of_day..Date.today.end_of_day).count
   end
-
 end
