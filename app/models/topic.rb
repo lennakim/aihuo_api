@@ -16,6 +16,7 @@ class Topic < ActiveRecord::Base
   validates_uniqueness_of :body, :scope => :device_id, :message => "请勿重复发言"
   # callbacks .................................................................
   after_initialize :set_approved_status
+  after_save :auto_vertify
   # scopes ....................................................................
   default_scope { order("topics.updated_at DESC") }
   scope :approved, -> { where(approved: true) }
@@ -131,9 +132,9 @@ class Topic < ActiveRecord::Base
     Topic.where(id: arr)
   end
 
-  def auto_vertify(topic_image)
-    # self.approved = (!topic_image && !have_harmonious_word? && Device.is_in_safe_condition?(device_id))
-    self.approved = (!topic_image && !have_harmonious_word? && Member.find_by(id: self.member_id).try(:topic_auto_approve?))
+  def auto_vertify
+    i_approved = (topic_images.size == 0 && !have_harmonious_word? && Member.find_by(id: self.member_id).try(:topic_auto_approve?))
+    update_columns(approved: i_approved)
   end
 
   def have_harmonious_word?

@@ -98,7 +98,6 @@ class Nodes < Grape::API
                 params[:member][:id],
                 params[:member][:password]
               )
-              @topic.auto_vertify(params[:topic_images_attributes])
             end
             status 422 unless @topic.save
           else
