@@ -22,5 +22,11 @@ class ReplyTest < ActiveSupport::TestCase
     assert_equal 3, member.level
   end
 
-end
 
+  def test_reply_topic_filter
+    Reply.member_topic_filter.pluck("members.id").each do |item|
+      assert_equal 1, item
+    end
+  end
+
+end

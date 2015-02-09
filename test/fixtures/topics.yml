@@ -27,7 +27,7 @@ two:
   member_id: 1
   created_at: <%= 20.day.ago(Time.now) %>
   updated_at: '2014-07-17 18:53:49'
-  
+
 three:
   id: 47691
   body: "iOS特定topic-47691-最新最热贴"
@@ -38,7 +38,7 @@ three:
   member_id: 1
   created_at: <%= 20.day.ago(Time.now) %>
   updated_at: '2014-07-17 18:53:49'
-  
+
 four:
   id: 448805
   body: "iOS特定topic-47691-精华贴"
@@ -46,6 +46,35 @@ four:
   device_id: '1234'
   approved: true
   member_id: 1
+  created_at: <%= 20.day.ago(Time.now) %>
+  updated_at: '2014-07-17 18:53:49'
+five:
+  id: 448806
+  body: "操sadfasdf"
+  node_id: 2
+  device_id: '1234'
+  approved: true
+  member_id: 1
+  created_at: <%= 20.day.ago(Time.now) %>
+  updated_at: '2014-07-17 18:53:49'
+
+six:
+  id: 448807
+  body: "操sadfasdf"
+  node_id: 2
+  device_id: '1234'
+  approved: true
+  member_id: 2
+  created_at: <%= 20.day.ago(Time.now) %>
+  updated_at: '2014-07-17 18:53:49'
+
+sever:
+  id: 448808
+  body: "操sadfasdf"
+  node_id: 2
+  device_id: '1234'
+  approved: true
+  member_id: 2
   created_at: <%= 20.day.ago(Time.now) %>
   updated_at: '2014-07-17 18:53:49'
 

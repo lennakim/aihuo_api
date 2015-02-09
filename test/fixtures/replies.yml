@@ -8,6 +8,7 @@ fix_<%= i %>:
   updated_at: <%= (i).days.ago(Time.now) %>
   replyable_id: 1
   replyable_type: Topic
+  member_id: 1
 <% end %>
 
 <% 30.upto(59) do |i| %>
@@ -20,6 +21,7 @@ fix_<%= i %>:
   updated_at: <%= (i).days.ago(Time.now) %>
   replyable_id: 2
   replyable_type: Topic
+  member_id: 2
 <% end %>
 
 
