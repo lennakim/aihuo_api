@@ -106,8 +106,8 @@ class Order < ActiveRecord::Base
 
   # 满就包邮
   def calculate_shipping_charge
-    #pay_type = 0 为在线支付， = 1 为货到付款
-    update_column(:shipping_charge, 0) if meet_condition?
+    #pay_type = 0 为在线支付， = 1 为货到付款 #联盟订单不用默认包邮政策
+    update_column(:shipping_charge, 0) if meet_condition? && !belongs_to_franchised_store?
   end
 
   # 优惠劵逻辑
