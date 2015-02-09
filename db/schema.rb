@@ -11,27 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150115032611) do
+ActiveRecord::Schema.define(version: 20150205012415) do
 
   create_table "account_bill_infos", force: true do |t|
     t.integer  "account_bill_id"
     t.integer  "adv_content_id"
-    t.integer  "amount"
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.decimal  "price",           precision: 6, scale: 2, default: 0.0
+    t.integer  "amount"
   end
 
   create_table "account_bills", force: true do |t|
     t.integer  "amount"
+    t.decimal  "balance",                precision: 8, scale: 2, default: 0.0
     t.datetime "created_at",                                                     null: false
     t.datetime "updated_at",                                                     null: false
-    t.decimal  "balance",                precision: 8, scale: 2, default: 0.0
     t.integer  "user_id"
-    t.string   "company"
     t.string   "state"
+    t.string   "company"
     t.string   "details"
     t.decimal  "after_tax_balance",      precision: 8, scale: 2, default: 0.0
     t.decimal  "tax",                    precision: 6, scale: 2, default: 0.0
@@ -75,21 +75,21 @@ ActiveRecord::Schema.define(version: 20150115032611) do
 
   create_table "adv_contents", force: true do |t|
     t.string   "title"
-    t.string   "description"
-    t.string   "url"
-    t.string   "icon"
     t.string   "banner"
     t.string   "apk_sign"
-    t.boolean  "activity",                                  default: false
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
     t.integer  "plan_view_count",                           default: 0
     t.integer  "actual_view_count",                         default: 0
     t.integer  "today_view_count",                          default: 0
     t.integer  "total_view_count",                          default: 0
     t.string   "square_banner"
+    t.boolean  "activity",                                  default: false
+    t.string   "url"
+    t.datetime "updated_at",                                                null: false
+    t.string   "description"
+    t.datetime "created_at",                                                null: false
     t.decimal  "price",             precision: 6, scale: 2, default: 0.0
     t.integer  "user_id"
+    t.string   "icon"
     t.string   "tag"
     t.string   "version_name"
     t.integer  "version_code"
@@ -173,20 +173,24 @@ ActiveRecord::Schema.define(version: 20150115032611) do
 
   create_table "applications", force: true do |t|
     t.string   "name"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                      null: false
     t.string   "api_key"
     t.string   "secret_key"
     t.string   "description"
     t.integer  "platform"
     t.integer  "user_id"
-    t.boolean  "display_advertising", default: false
+    t.boolean  "display_advertising",             default: false
     t.string   "getui_app_id"
     t.string   "getui_app_key"
     t.string   "getui_master_secret"
+    t.datetime "updated_at",                                      null: false
     t.string   "getui_app_secret"
     t.string   "umeng_app_key"
+    t.integer  "qr_scene_id"
+    t.string   "qr_ticket",           limit: 500
   end
+
+  add_index "applications", ["qr_scene_id"], name: "index_applications_on_qr_scene_id", using: :btree
 
   create_table "applications_rules", id: false, force: true do |t|
     t.integer "application_id", null: false
@@ -316,6 +320,45 @@ ActiveRecord::Schema.define(version: 20150115032611) do
   add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
   add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type", using: :btree
 
+  create_table "clearing_items", force: true do |t|
+    t.integer  "clearing_id"
+    t.integer  "order_id",                                          null: false
+    t.integer  "user_id",                                           null: false
+    t.decimal  "order_amount", precision: 10, scale: 0, default: 0
+    t.decimal  "earn_amount",  precision: 10, scale: 0, default: 0
+    t.decimal  "real_amount",  precision: 10, scale: 0, default: 0
+    t.string   "state"
+    t.text     "notes"
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.string   "item_type"
+    t.string   "pay_type"
+  end
+
+  add_index "clearing_items", ["clearing_id"], name: "index_clearing_items_on_clearing_id", using: :btree
+  add_index "clearing_items", ["item_type"], name: "index_clearing_items_on_item_type", using: :btree
+  add_index "clearing_items", ["order_id"], name: "index_clearing_items_on_order_id", using: :btree
+  add_index "clearing_items", ["pay_type"], name: "index_clearing_items_on_pay_type", using: :btree
+  add_index "clearing_items", ["state"], name: "index_clearing_items_on_state", using: :btree
+  add_index "clearing_items", ["user_id"], name: "index_clearing_items_on_user_id", using: :btree
+
+  create_table "clearings", force: true do |t|
+    t.integer  "user_id",                                            null: false
+    t.decimal  "sale_money",    precision: 10, scale: 0, default: 0
+    t.decimal  "comission",     precision: 10, scale: 0, default: 0
+    t.decimal  "push_money",    precision: 10, scale: 0, default: 0
+    t.date     "deadline"
+    t.string   "clearing_type"
+    t.string   "state"
+    t.text     "notes"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+  end
+
+  add_index "clearings", ["clearing_type"], name: "index_clearings_on_type", using: :btree
+  add_index "clearings", ["state"], name: "index_clearings_on_state", using: :btree
+  add_index "clearings", ["user_id"], name: "index_clearings_on_user_id", using: :btree
+
   create_table "comments", force: true do |t|
     t.integer  "product_id"
     t.string   "name"
@@ -337,10 +380,10 @@ ActiveRecord::Schema.define(version: 20150115032611) do
   add_index "comments", ["product_id"], name: "index_comments_on_product_id", using: :btree
 
   create_table "contents", force: true do |t|
-    t.string   "user_avatar"
     t.string   "user_name"
     t.string   "text"
     t.string   "image"
+    t.string   "user_avatar"
     t.integer  "width"
     t.integer  "height"
     t.integer  "likes_count",   default: 0
@@ -376,7 +419,7 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.datetime "user_end_at"
     t.string   "message_subject"
     t.text     "message_body"
-    t.integer  "pay_type",                                     default: 1
+    t.integer  "pay_type"
     t.integer  "application_id"
     t.string   "application_ver"
   end
@@ -397,17 +440,17 @@ ActiveRecord::Schema.define(version: 20150115032611) do
   end
 
   create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0
-    t.integer  "attempts",   default: 0
-    t.text     "handler"
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
     t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
@@ -451,6 +494,7 @@ ActiveRecord::Schema.define(version: 20150115032611) do
 
   add_index "devices", ["channel_id"], name: "channel_id_on_devices", using: :btree
   add_index "devices", ["device_id"], name: "index_devices_on_device_id", using: :btree
+  add_index "devices", ["member_id"], name: "index_devices_on_member_id", using: :btree
 
   create_table "districts", force: true do |t|
     t.string   "name"
@@ -668,15 +712,15 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.string   "state"
     t.string   "device_id"
     t.string   "address"
-    t.string   "phone"
     t.string   "name"
+    t.string   "phone"
     t.string   "postal_code"
     t.string   "product_name"
     t.decimal  "price",             precision: 8, scale: 2, default: 0.0
-    t.integer  "quantity"
     t.decimal  "shipping_charge",   precision: 8, scale: 2, default: 0.0
     t.string   "num_iid"
     t.datetime "created_at",                                                null: false
+    t.integer  "quantity"
     t.datetime "updated_at",                                                null: false
     t.integer  "application_id"
     t.text     "comment"
@@ -702,6 +746,7 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.boolean  "sms_sended",                                default: false
     t.boolean  "sms_unhandled",                             default: false
     t.decimal  "actual_total",      precision: 6, scale: 2, default: 0.0
+    t.string   "come_from"
   end
 
   add_index "orders", ["device_id"], name: "index_orders_on_device_id", using: :btree
@@ -798,19 +843,20 @@ ActiveRecord::Schema.define(version: 20150115032611) do
 
   create_table "product_props", force: true do |t|
     t.integer  "product_id"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
     t.string   "values"
     t.string   "name"
     t.string   "sku"
-    t.decimal  "purchase_price", precision: 8, scale: 2, default: 0.0
-    t.decimal  "sale_price",     precision: 8, scale: 2, default: 0.0
-    t.integer  "quantity",                               default: 0
+    t.decimal  "purchase_price",             precision: 8, scale: 2, default: 0.0
+    t.decimal  "sale_price",                 precision: 8, scale: 2, default: 0.0
+    t.integer  "quantity",                                           default: 0
     t.integer  "supplier_id"
-    t.decimal  "original_price", precision: 8, scale: 2, default: 0.0
+    t.decimal  "original_price",             precision: 8, scale: 2, default: 0.0
     t.integer  "rzx_stock"
     t.integer  "rzx_validity"
-    t.integer  "safe_stock",                             default: 0
+    t.integer  "safe_stock",                                         default: 0
+    t.float    "franchise_price", limit: 24
   end
 
   add_index "product_props", ["product_id"], name: "index_product_props_on_product_id", using: :btree
@@ -819,7 +865,6 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.integer  "brand_id"
     t.string   "title"
     t.string   "image"
-    t.decimal  "price",                              precision: 8, scale: 2, default: 0.0
     t.string   "sell_link",              limit: 512
     t.integer  "rank",                                                       default: 0
     t.datetime "created_at",                                                                 null: false
@@ -829,6 +874,7 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.boolean  "banner",                                                     default: false
     t.string   "num_iid"
     t.datetime "activate_at"
+    t.decimal  "price",                              precision: 8, scale: 2, default: 0.0
     t.datetime "expire_at"
     t.boolean  "noticed",                                                    default: false
     t.string   "seller_credit_score"
@@ -863,6 +909,7 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.string   "itemsn"
     t.boolean  "auto_pick_up",                                               default: true
     t.string   "video"
+    t.text     "selling_point"
   end
 
   add_index "products", ["brand_id"], name: "index_products_on_brand_id", using: :btree
@@ -928,17 +975,27 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.integer  "topic_id"
     t.string   "device_id"
     t.string   "nickname"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "replyable_id"
     t.string   "replyable_type"
     t.integer  "member_id"
+    t.integer  "report_num",     default: 0
+    t.datetime "deleted_at"
   end
 
-  add_index "replies", ["device_id"], name: "index_replies_on_decvice_id", using: :btree
   add_index "replies", ["member_id"], name: "index_replies_on_member_id", using: :btree
   add_index "replies", ["replyable_id", "replyable_type"], name: "index_replies_on_replyable_id_and_replyable_type", using: :btree
   add_index "replies", ["topic_id"], name: "index_replies_on_topic_id", using: :btree
+
+  create_table "reports", force: true do |t|
+    t.string   "reportable_id"
+    t.string   "reportable_type"
+    t.string   "device_id"
+    t.string   "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "resources", force: true do |t|
     t.integer  "application_id"
@@ -998,13 +1055,19 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.string   "contact"
     t.string   "leavetime"
     t.text     "data"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
     t.integer  "amount"
     t.string   "extra_order_id"
     t.datetime "deleted_at"
     t.integer  "state"
     t.datetime "worked"
+    t.decimal  "pay_back_fee",    precision: 6, scale: 2, default: 0.0
+    t.decimal  "handle_fee",      precision: 6, scale: 2, default: 0.0
+    t.decimal  "return_back_fee", precision: 6, scale: 2, default: 0.0
+    t.decimal  "shipping_charge", precision: 6, scale: 2, default: 0.0
+    t.integer  "handle_state",                            default: 0
+    t.decimal  "server_fee",      precision: 6, scale: 2, default: 0.0
   end
 
   create_table "shopping_items", force: true do |t|
@@ -1150,6 +1213,7 @@ ActiveRecord::Schema.define(version: 20150115032611) do
     t.datetime "bested_at"
     t.boolean  "recommend",     default: false
     t.integer  "forward_count", default: 0
+    t.integer  "report_num",    default: 0
   end
 
   add_index "topics", ["approved"], name: "index_topics_on_approved", using: :btree
@@ -1157,26 +1221,38 @@ ActiveRecord::Schema.define(version: 20150115032611) do
   add_index "topics", ["deleted_at", "node_id", "approved", "best"], name: "index_topics_on_select", using: :btree
   add_index "topics", ["device_id"], name: "index_topics_on_device_id", using: :btree
   add_index "topics", ["member_id"], name: "index_topics_on_member_id", using: :btree
-  add_index "topics", ["recommend"], name: "index_topics_on_recommend", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "encrypted_password",                              default: "",  null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
+    t.integer  "sign_in_count",                                   default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                                    null: false
+    t.datetime "updated_at",                                                    null: false
+    t.string   "email",                                                         null: false
     t.string   "role"
     t.string   "username"
+    t.string   "phone"
+    t.string   "qq"
+    t.string   "alipay"
+    t.string   "openid"
+    t.integer  "reviewed",                                        default: 0
+    t.string   "identification"
+    t.string   "invication_code"
+    t.string   "invicated_from"
+    t.decimal  "jm_debt",                precision: 10, scale: 2, default: 0.0
+    t.integer  "supervisor_id",                                   default: 0
+    t.string   "wechat"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["openid"], name: "index_users_on_openid", unique: true, using: :btree
+  add_index "users", ["phone"], name: "index_users_on_phone", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "workorders", force: true do |t|
