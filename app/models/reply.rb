@@ -36,17 +36,19 @@ class Reply < ActiveRecord::Base
   RPORT_LIMIE = "10"
   FILTER = 8
 
-  def self.member_topic_filter
+  #join member，去除用户因为被举报次数太多，而隐藏起所以回复
+  def self.member_reply_filter
     joins("INNER JOIN members on members.id = replies.member_id").where("NOT members.report_num_filter & ?", FILTER)
   end
   # class methods .............................................................
   # public instance methods ...................................................
+  #过滤回复，过滤被举报不可见的回复
   def self.vision_of_reply(device_id = nil)
     if device_id
       report_limit = Setting.fetch_by_key("#{self.name}_report_up_limit", Reply::RPORT_LIMIE)
-      with_deleted.where("replies.device_id = ? OR (replies.report_num < ? AND replies.deleted_at IS NULL)", device_id, report_limit.to_i)
+      member_reply_filter.with_deleted.where("replies.device_id = ? OR (replies.report_num < ? AND replies.deleted_at IS NULL)", device_id, report_limit.to_i)
     else
-      all
+      member_reply_filter.all
     end
   end
 

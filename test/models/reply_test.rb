@@ -24,7 +24,7 @@ class ReplyTest < ActiveSupport::TestCase
 
 
   def test_reply_topic_filter
-    Reply.member_topic_filter.pluck("members.id").each do |item|
+    Reply.member_reply_filter.pluck("members.id").each do |item|
       assert_equal 1, item
     end
   end

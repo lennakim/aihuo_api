@@ -111,7 +111,7 @@ class Member < ActiveRecord::Base
 
   #这里与操作，00000000001是为0不需要审核
   def topic_auto_approve?
-    (report_num_filter & 1) == 0 ? true : false
+    (report_num_filter & 1) == 0
   end
 
   # protected instance methods ................................................

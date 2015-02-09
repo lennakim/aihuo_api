@@ -119,7 +119,7 @@ class Topics < Grape::API
           use :replies
         end
         get "/", jbuilder: 'replies/replies' do
-          @replies = paginate(@topic.replies.member_topic_filter.vision_of_reply(current_device_id).sort(params[:sort]))
+          @replies = paginate(@topic.replies.vision_of_reply(current_device_id).sort(params[:sort]))
         end
 
         desc "Create a reply to the topic."

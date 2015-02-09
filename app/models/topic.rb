@@ -38,14 +38,15 @@ class Topic < ActiveRecord::Base
 
   FILTER = 4
   NEED_VERTIFY = 1
-
+  #filter掉用户因为被举报次数太多，而导致，帖子不可见
   def self.member_topic_filter
     joins("INNER JOIN members on members.id = topics.member_id").where("NOT members.report_num_filter & ?", Topic::FILTER)
   end
 
+  #控制帖子可见性
   def self.scope_by_filter(filter, device_id = nil , app = nil)
     return safe_content_by_filter(filter) if is_switch_open?(app)
-    vision_of_topic(device_id).scoping do
+    member_topic_filter.vision_of_topic(device_id).scoping do
     case filter
       when :recommend
         #用最热的帖子代替推荐的帖子
@@ -61,7 +62,7 @@ class Topic < ActiveRecord::Base
       when :new
         approved.newly
       when :mine
-        with_deleted.by_device(device_id)
+        unscoped.with_deleted.by_device(device_id)
       when :followed
         favorites_by_device(device_id)
       when :all

@@ -12,7 +12,7 @@ one:
   node_id: 1
   device_id: '1234'
   approved: true
-  member_id: 1
+  member_id: 2
   likes_count: 100
   forward_count: 50
   created_at: <%= 3.day.ago(Time.now) %>
@@ -35,7 +35,7 @@ three:
   device_id: '1234'
   approved: true
   best: true
-  member_id: 1
+  member_id: 2
   created_at: <%= 20.day.ago(Time.now) %>
   updated_at: '2014-07-17 18:53:49'
 
