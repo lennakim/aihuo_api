@@ -13,6 +13,8 @@ one:
   gender: true
   phone: '13522412871'
   captcha: '123456'
+  report_num_filter: 4
+
 
 two:
   id: 2
@@ -24,6 +26,7 @@ two:
   gender: true
   phone: '13522412871'
   captcha: '123456'
+  report_num_filter: 8
 
 three:
   id: 3
@@ -35,6 +38,7 @@ three:
   gender: true
   phone: '13522412871'
   captcha: '123456'
+  report_num_filter: 1
 
 four:
   id: 4

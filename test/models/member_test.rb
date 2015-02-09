@@ -57,4 +57,24 @@ class MemberTest < ActiveSupport::TestCase
   #   assert_equal 1, member.received_private_messages.size
   #   assert_equal "asndfansdfo", member.received_private_messages.last.body
   # end
+
+  def test_update_member_report_num_filter
+    member = Member.find_by_id(1)
+    up_limit = Setting.fetch_by_key("member_report_up_limit", "3").to_i
+    (0..(up_limit + 10)).each do |item|
+      member.update_member_report_num_filter(item)
+      if item <= up_limit
+        assert_equal 0, member.report_num_filter
+      else
+        assert_equal Reply::FILTER + Topic::FILTER + Topic::NEED_VERTIFY, member.report_num_filter
+      end
+    end
+  end
+
+  def test_topic_auto_approve?
+    member = Member.find_by_id(3)
+    assert_equal false, member.topic_auto_approve?
+    member = Member.find_by_id(1)
+    assert_equal true, member.topic_auto_approve?
+  end
 end
