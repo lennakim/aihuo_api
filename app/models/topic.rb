@@ -16,7 +16,7 @@ class Topic < ActiveRecord::Base
   validates_uniqueness_of :body, :scope => :device_id, :message => "请勿重复发言"
   # callbacks .................................................................
   after_initialize :set_approved_status
-  after_save :auto_vertify
+  after_create :auto_vertify
   # scopes ....................................................................
   default_scope { order("topics.updated_at DESC") }
   scope :approved, -> { where(approved: true) }

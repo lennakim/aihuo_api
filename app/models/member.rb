@@ -98,7 +98,7 @@ class Member < ActiveRecord::Base
 
   def update_member_report_num_filter(i_report_num = 1)
     report_filter = Member.member_report_num_filter(i_report_num)
-    update_columns(report_num_filter: report_filter)
+    update_columns(report_num_filter: report_filter) if report_filter > report_num_filter
   end
 
   def self.member_report_num_filter(i_report_num)
