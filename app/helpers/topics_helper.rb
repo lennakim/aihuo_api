@@ -44,4 +44,8 @@ module TopicsHelper
   def current_device_id
     request.headers["Device-Id"]
   end
+
+  def cacke_key
+    [:v2, :topic, params[:filter], params[:page], params[:per_page]]
+  end
 end
