@@ -20,7 +20,9 @@ class Notification < ActiveRecord::Base
   # 刚注册的用户，发送第一条0元购的通知
   def self.send_sales_promotion_msg(device_id, app_id = nil)
     # 爱侣应用发送另外一条0元购通知
-    article_id = app_id == 32 ? "1239" : Article.gifts.pluck(:id).first
+    # article_id = app_id == 32 ? "1239" : Article.gifts.pluck(:id).first
+    #
+    article_id = Article.gifts.pluck(:id).first
     title = "0元购三天，您还等神马？！"
     desc = "0元带性福回家，只对新用户只限3天！再不抢就没啦！！！"
     self.package_message_parameters_and_send_msg(device_id, article_id, title, desc)
