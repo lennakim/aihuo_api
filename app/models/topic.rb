@@ -39,6 +39,7 @@ class Topic < ActiveRecord::Base
 
   FILTER = 4
   NEED_VERTIFY = 1
+  BODY_LENTH = 10
   #filter掉用户因为被举报次数太多，而导致，帖子不可见
   def self.member_topic_filter
     joins("INNER JOIN members on members.id = topics.member_id").where("NOT members.report_num_filter & ?", Topic::FILTER)
@@ -73,13 +74,10 @@ class Topic < ActiveRecord::Base
   end
 
   def self.vision_of_topic(device_id = nil)
-    if device_id
-      report_limit = Setting.fetch_by_key("#{self.name}_report_up_limit", Topic::REPORT_LIMIT)
-      with_deleted.where("topics.device_id = ? OR (topics.report_num < ? AND topics.deleted_at IS NULL)", device_id, report_limit.to_i)
-    else
-      all
-    end
+    report_limit = Setting.fetch_by_key("#{self.name}_report_up_limit", Topic::REPORT_LIMIT)
+    with_deleted.where("topics.report_num < ? AND topics.deleted_at IS NULL", report_limit.to_i)
   end
+
   #iOS应用，并且打开了安全开关
   def self.safe_content_by_filter(filter)
     case filter
@@ -133,7 +131,7 @@ class Topic < ActiveRecord::Base
   end
 
   def auto_vertify
-    i_approved = (topic_images.size == 0 && !have_harmonious_word? && Member.find_by(id: self.member_id).try(:topic_auto_approve?))
+    i_approved = (topic_images.size == 0 && !have_harmonious_word? && (body.length > Setting.fetch_by_key("topic_body_min_length", BODY_LENTH).to_i) && Member.find_by(id: self.member_id).try(:topic_auto_approve?))
     update_columns(approved: i_approved)
   end
 

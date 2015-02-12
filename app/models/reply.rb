@@ -44,12 +44,8 @@ class Reply < ActiveRecord::Base
   # public instance methods ...................................................
   #过滤回复，过滤被举报不可见的回复
   def self.vision_of_reply(device_id = nil)
-    if device_id
-      report_limit = Setting.fetch_by_key("#{self.name}_report_up_limit", Reply::RPORT_LIMIE)
-      member_reply_filter.with_deleted.where("replies.device_id = ? OR (replies.report_num < ? AND replies.deleted_at IS NULL)", device_id, report_limit.to_i)
-    else
-      member_reply_filter.all
-    end
+    report_limit = Setting.fetch_by_key("#{self.name}_report_up_limit", Reply::RPORT_LIMIE)
+    member_reply_filter.with_deleted.where("replies.report_num < ? AND replies.deleted_at IS NULL", report_limit.to_i)
   end
 
   def relate_to_member_with_authenticate(member_id, password)

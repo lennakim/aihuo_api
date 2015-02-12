@@ -8,7 +8,7 @@ class Topics < Grape::API
     end
     get "/", jbuilder: 'topics/topics' do
       current_application
-      topics = Topic.member_topic_filter.scope_by_filter(params[:filter], params[:device_id], @application)
+      topics = Topic.scope_by_filter(params[:filter], params[:device_id], @application)
       @topics = paginate(topics.order("top DESC, updated_at DESC"))
       @topics = OperatingAgent.add_a_topic_in_recommend_list(@topics, params[:filter], params[:page])
     end
