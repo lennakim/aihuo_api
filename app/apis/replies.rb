@@ -1,4 +1,6 @@
 class Replies < Grape::API
+  helpers TopicsHelper
+
   resources 'replies' do
 
     desc "Listing replies for the user."
