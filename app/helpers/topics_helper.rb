@@ -42,7 +42,7 @@ module TopicsHelper
   end
 
   def current_device_id
-    request.headers["Device-Id"]
+    @current_device_id = request.headers["Device-Id"] || params[:device_id]
   end
 
   def cacke_key
