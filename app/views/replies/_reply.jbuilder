@@ -21,7 +21,7 @@ if reply.member
 end
 
 unless reply.replies.size.zero?
-  json.replies reply.replies.vision_of_reply(current_device_id) do |reply|
+  json.replies reply.replies.vision_of_reply(@current_device_id) do |reply|
     json.partial! "replies/reply", reply: reply
   end
 end

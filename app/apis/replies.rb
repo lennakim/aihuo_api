@@ -8,6 +8,7 @@ class Replies < Grape::API
       optional :per_page, type: Integer, default: 10, desc: "Per page value."
     end
     get '/', jbuilder: 'replies/replies' do
+      current_device_id
       @replies = paginate(Reply.to_me(params[:device_id]))
     end
 
