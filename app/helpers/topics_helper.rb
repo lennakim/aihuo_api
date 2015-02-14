@@ -46,6 +46,6 @@ module TopicsHelper
   end
 
   def cacke_key
-    [:v2, :topic, params[:filter], params[:page], params[:per_page]]
+    [:v2, :topic, params[:filter], params[:device_id], params[:page], params[:per_page]]
   end
 end

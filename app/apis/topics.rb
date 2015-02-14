@@ -7,10 +7,12 @@ class Topics < Grape::API
       use :topics
     end
     get "/", jbuilder: 'topics/topics' do
-      current_application
-      topics = Topic.scope_by_filter(params[:filter], params[:device_id], @application)
-      @topics = paginate(topics.order("top DESC, updated_at DESC"))
-      @topics = OperatingAgent.add_a_topic_in_recommend_list(@topics, params[:filter], params[:page])
+      cache(key: cacke_key, expires_in: 1.minutes) do
+        current_application
+        topics = Topic.scope_by_filter(params[:filter], params[:device_id], @application)
+        @topics = paginate(topics.order("top DESC, updated_at DESC"))
+        @topics = OperatingAgent.add_a_topic_in_recommend_list(@topics, params[:filter], params[:page])
+      end
     end
 
     desc "Delete multiplea topics."
