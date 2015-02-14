@@ -46,6 +46,8 @@ module TopicsHelper
   end
 
   def cacke_key
-    [:v2, :topic, params[:filter], params[:device_id], params[:page], params[:per_page]]
+    key = [:v2, :topic, params[:filter], params[:page], params[:per_page]]
+    key.push(params[:device_id]) if [:mine, :followed].include? params[:filter]
+    key
   end
 end
